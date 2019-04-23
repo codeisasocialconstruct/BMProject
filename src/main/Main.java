@@ -1,14 +1,8 @@
-package sample;
+package main;
 
-import javafx.animation.Animation;
 import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class Main extends Application
 {
@@ -25,7 +19,12 @@ public class Main extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        primaryStage.setTitle("The Horse in Motion");
+        ViewManager manager = new ViewManager();
+
+        primaryStage = manager.getMainStage();
+        primaryStage.show();
+        ///////////////Cat animation/////////////////
+        /*primaryStage.setTitle("The Horse in Motion");
 
         final ImageView imageView = new ImageView(IMAGE);
         imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
@@ -41,7 +40,7 @@ public class Main extends Application
         animation.play();
 
         primaryStage.setScene(new Scene(new Group(imageView)));
-        primaryStage.show();
+        primaryStage.show();*/
     }
 
 
