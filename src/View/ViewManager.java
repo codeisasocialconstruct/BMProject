@@ -1,8 +1,9 @@
-package main;
+package View;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import Model.NavigationButton;
 
 public class ViewManager {
 
@@ -18,9 +19,17 @@ public class ViewManager {
         mainStage = new Stage();
 
         mainStage.setScene(mainScene);
+        CreateButtons();
     }
 
     public Stage getMainStage() {
         return mainStage;
+    }
+
+    private void CreateButtons() {
+        NavigationButton button = new NavigationButton("Click!");
+        button.setLayoutX(100);
+        button.setLayoutY(100);
+        mainPane.getChildren().add(button);
     }
 }
