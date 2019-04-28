@@ -12,7 +12,7 @@ import java.io.FileNotFoundException;
 
 public class NavigationButton extends Button {
 
-    private final String FONT_PATH = "src/Model/Resources/Fonts/HeartbitXX.ttf";
+    private final String FONT_PATH = "src/Model/Resources/Fonts/PressStart2P-Regular.ttf";
     private final String BUTTON_PRESSED_STYLE = "-fx-background-color: transparent; -fx-background-image: url('/Model/Resources/MenuContent/Button_BG_pressed.png')";
     private final String BUTTON_FREE_STYLE = "-fx-background-color: transparent; -fx-background-image: url('/Model/Resources/MenuContent/Button_BG_shadow.png')";
 
@@ -28,17 +28,17 @@ public class NavigationButton extends Button {
 
     private void setButtonFont() {
         try {
-            setFont(Font.loadFont(new FileInputStream(FONT_PATH), 30));
-            setTextFill(Color.WHITE);
+            setFont(Font.loadFont(new FileInputStream(FONT_PATH), 15));
+            setTextFill(Color.WHITE); //change font color
         } catch (FileNotFoundException e) {
-            setFont(Font.font("Comic Sans", 25));
+            setFont(Font.font("Comic Sans", 25)); //in case of missing font load comic sans
             setTextFill(Color.WHITE);
         }
     }
 
     private void setButtonPressedStyle() {
         setStyle(BUTTON_PRESSED_STYLE);
-        setPrefHeight(44);
+        setPrefHeight(44); //little squish effect to simulate pressing the button
         setLayoutY(getLayoutY() + 4); //movement due to different size of button
     }
 
@@ -57,7 +57,7 @@ public class NavigationButton extends Button {
             }
         });
 
-        //Lambda function that creates new mouse event
+        //Lambda function that creates new mouse event. If button button released, style is changing
         setOnMouseReleased(event -> {
             if(event.getButton().equals(MouseButton.PRIMARY)) {
                 setButtonReleasedStyle();
