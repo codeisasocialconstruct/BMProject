@@ -1,6 +1,5 @@
 package View;
 
-import Model.InfoLabel;
 import Model.MenuPanel;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -15,32 +14,39 @@ import java.util.List;
 public class ViewManager {
 
     //Constants for managing layout
-    private final int HEIGHT = 600;
-    private final int WIDTH = 800;
     private AnchorPane mainPane;
     private Scene mainScene;
     private Stage mainStage;
+
+    private final int HEIGHT = 600;
+    private final int WIDTH = 800;
     private final int MENU_BUTTON_START_X = 100;
     private final int MENU_BUTTON_START_Y = 100;
 
     private List<NavigationButton> menuButtons;
     private  MenuPanel helpPanel;
+    private  MenuPanel optionsPanel;
+    private static boolean twoPlayersMode = false;
 
     public ViewManager() {
-        menuButtons = new ArrayList<>(); //creating list to manage buttons
+        //creating list to manage buttons
+        menuButtons = new ArrayList<>();
+        //initializing main components of window
         mainPane = new AnchorPane();
         mainScene = new Scene(mainPane, WIDTH, HEIGHT);
         mainStage = new Stage();
 
         mainStage.setScene(mainScene);
         createButtons();
-        CreateBackground();
+        createBackground();
+        createHelpPanel();
     }
 
     public Stage getMainStage() {
         return mainStage;
     }
 
+    ///////////////////////MENU METHODS//////////////////////////////
     private void createButtons() {
         createPlayButton();
         createHelpButton();
@@ -51,8 +57,10 @@ public class ViewManager {
     private void addMenuButton(NavigationButton button) {
         button.setLayoutX(MENU_BUTTON_START_X);
         button.setLayoutY(MENU_BUTTON_START_Y + menuButtons.size()*100);
-        menuButtons.add(button); //adding new button to button list
-        mainPane.getChildren().add(button); //showing button on screen
+        //adding new button to button list
+        menuButtons.add(button);
+        //showing button on screen
+        mainPane.getChildren().add(button);
     }
 
     private void createPlayButton() {
@@ -64,7 +72,8 @@ public class ViewManager {
         NavigationButton helpButton = new NavigationButton("HELP");
         addMenuButton(helpButton);
 
-        helpButton.setOnAction(event -> helpPanel.movePanel()); //action handler to call panel animation whenever button is pressed
+        //action handler to call panel animation whenever button is pressed
+        helpButton.setOnAction(event -> helpPanel.movePanel());
     }
 
     private void createOptionsButton() {
@@ -76,17 +85,28 @@ public class ViewManager {
         NavigationButton exitButton = new NavigationButton("EXIT");
         addMenuButton(exitButton);
 
-        exitButton.setOnAction(event -> Platform.exit()); //handler to exit app if button is pressed
+        //handler to exit app if button is pressed
+        exitButton.setOnAction(event -> Platform.exit());
     }
 
-    private void CreateBackground() {
+    private void createBackground() {
         Image backgroundMenuImage = new Image("View/resources/temp_background.png", WIDTH, HEIGHT, false, true);
         BackgroundImage backgroundMenu = new BackgroundImage(backgroundMenuImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
         mainPane.setBackground(new Background(backgroundMenu));
     }
 
-    private void CreateHelpPanel() {
+    private void createHelpPanel() {
         helpPanel = new MenuPanel();
         mainPane.getChildren().add(helpPanel);
+    }
+
+    private void createOptionsPanel() {
+        optionsPanel = new MenuPanel();
+        mainPane.getChildren().add(optionsPanel);
+    }
+
+    //////////////////GAME METHODS///////////////////
+    private void createGame(boolean twoPlayersMode) {
+
     }
 }

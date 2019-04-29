@@ -22,6 +22,8 @@ public class Main extends Application
 
         primaryStage = manager.getMainStage();
         primaryStage.show();
+
+
         ///////////////Cat animation/////////////////
         /*primaryStage.setTitle("The Horse in Motion");
 
