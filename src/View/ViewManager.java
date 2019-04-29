@@ -36,10 +36,12 @@ public class ViewManager {
         mainScene = new Scene(mainPane, WIDTH, HEIGHT);
         mainStage = new Stage();
 
+        mainStage.setTitle("Battle Metropolis");
         mainStage.setScene(mainScene);
         createButtons();
         createBackground();
         createHelpPanel();
+        createOptionsPanel();
     }
 
     public Stage getMainStage() {
@@ -73,12 +75,22 @@ public class ViewManager {
         addMenuButton(helpButton);
 
         //action handler to call panel animation whenever button is pressed
-        helpButton.setOnAction(event -> helpPanel.movePanel());
+        helpButton.setOnAction(event -> {
+            if (!optionsPanel.isHid())
+                optionsPanel.movePanel();
+            helpPanel.movePanel();
+        });
     }
 
     private void createOptionsButton() {
         NavigationButton optionsButton = new NavigationButton("OPTIONS");
         addMenuButton(optionsButton);
+
+        optionsButton.setOnAction(event -> {
+            if (!helpPanel.isHid())
+                helpPanel.movePanel();
+            optionsPanel.movePanel();
+        });
     }
 
     private void createExitButton() {

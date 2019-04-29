@@ -44,4 +44,6 @@ public class MenuPanel extends SubScene {
         }
         transition.play();
     }
+
+    public boolean isHid() {return isHidden;}
 }
