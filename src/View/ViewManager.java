@@ -68,6 +68,11 @@ public class ViewManager {
     private void createPlayButton() {
         NavigationButton playButton = new NavigationButton("PLAY");
         addMenuButton(playButton);
+
+        playButton.setOnAction(event -> {
+            GameViewManager gameViewManager = new GameViewManager();
+            gameViewManager.createGame(mainStage, false);
+        });
     }
 
     private void createHelpButton() {
@@ -117,8 +122,4 @@ public class ViewManager {
         mainPane.getChildren().add(optionsPanel);
     }
 
-    //////////////////GAME METHODS///////////////////
-    private void createGame(boolean twoPlayersMode) {
-
-    }
 }

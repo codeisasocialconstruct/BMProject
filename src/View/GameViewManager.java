@@ -1,6 +1,7 @@
 package View;
 
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -11,13 +12,14 @@ public class GameViewManager {
     private AnchorPane gamePane;
     private Scene gameScene;
     private Stage gameStage;
+    private Stage menuStage;
+    private ImageView playerOneTank;
 
     private final static int GAME_WIDTH = 800;
     private final static int GAME_HEIGHT = 600;
 
     public GameViewManager() {
         initializeStage();
-        gameScene.setFill(Color.BLACK);
         createKeyListeners();
     }
 
@@ -66,6 +68,22 @@ public class GameViewManager {
 
             }
         });
+    }
+
+    //showing game window
+    public void createGame(Stage menuStage, boolean twoPlayersMode) {
+        this.menuStage = menuStage;
+        this.menuStage.hide();
+        createTank();
+        gameStage.show();
+    }
+
+    private void createTank() {
+        playerOneTank = new ImageView("View/resources/tank_red.png");
+        playerOneTank.setLayoutX(GAME_WIDTH/2);
+        playerOneTank.setLayoutY(GAME_HEIGHT-50);
+
+        gamePane.getChildren().add(playerOneTank);
     }
 
 }
