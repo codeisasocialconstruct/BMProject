@@ -1,17 +1,22 @@
 package View;
+// TODO create Tank class and PlayerTank class, move methods there
+
 // TODO  collision system,
 
 // TODO  shooting system,
 
 // TODO  enemies
 
+import Model.NavigationButton;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
 public class GameViewManager {
@@ -50,6 +55,8 @@ public class GameViewManager {
         gameScene = new Scene(gamePane, GAME_WIDTH, GAME_HEIGHT);
         gameStage = new Stage();
         gameStage.setScene(gameScene);
+        gameStage.initStyle(StageStyle.UNDECORATED);
+        gameStage.setTitle("Battle Metropolis");
         gridMode = false;
     }
 
@@ -119,10 +126,22 @@ public class GameViewManager {
         });
     }
 
+    private void createExitButton() {
+        NavigationButton exitButton = new NavigationButton("EXIT");
+        exitButton.setLayoutX(0);
+        exitButton.setLayoutY(0);
+        //showing button on screen
+        gamePane.getChildren().add(exitButton);
+
+        //handler to exit app if button is pressed
+        exitButton.setOnAction(event -> Platform.exit());
+    }
+
     //showing game window
     public void createGame(Stage menuStage, boolean twoPlayersMode) {
         this.menuStage = menuStage;
         this.menuStage.hide();
+        createExitButton();
         createTank();
         createGameLoop();
         gameStage.show();
@@ -158,7 +177,6 @@ public class GameViewManager {
 
     //////////////////////////ANIMATIONS AND TANK MOTION////////////////////////////////////
     private void moveTank() {
-        //TODO fix rotation
         //Checking if only one key is pressed
         if(isLeftKeyPressed && !isRightKeyPressed && !isUpKeyPressed && !isDownKeyPressed) {
             if(angle == 90)
