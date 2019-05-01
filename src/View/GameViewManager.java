@@ -27,6 +27,7 @@ public class GameViewManager {
     private boolean isUpKeyPressed;
     private boolean isDownKeyPressed;
     private boolean isSpaceKeyPressed;  //shoot key
+    private boolean fullSpin;
     private int angle;  //current angle of first player tank
     private char directionOfMovement;
     private int moveIterator;
@@ -127,7 +128,12 @@ public class GameViewManager {
         gameStage.show();
     }
 
-    //Timer to call animation in every frame
+    /*
+    Timer to call animation in every frame
+    After calling moveTank, moveIterator is set to 9, so continueTankMovement will be called instead of moveTank.
+    That make sure, user input won`t interrupt animation, because continueTankMovement does not depends on user input.
+    Thanks to that, we make sure that tank is moving only by 50 pixels, which is map block size and animation will be smooth.
+    */
     private void createGameLoop() {
         gameTimer = new AnimationTimer() {
             @Override
@@ -155,27 +161,43 @@ public class GameViewManager {
         //TODO fix rotation
         //Checking if only one key is pressed
         if(isLeftKeyPressed && !isRightKeyPressed && !isUpKeyPressed && !isDownKeyPressed) {
+            if(angle == 90)
+                fullSpin=true;
+            else
+                fullSpin=false;
             directionOfMovement = 'L';  //giving direction to continue movement
             moveTankLeftOneIteration();
-            moveIterator = 9;
+            moveIterator = 9;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of moveTank
         }
 
         if(isRightKeyPressed && !isLeftKeyPressed && !isUpKeyPressed && !isDownKeyPressed) {
+            if(angle == -90)
+                fullSpin=true;
+            else
+                fullSpin=false;
             directionOfMovement = 'R';  //giving direction to continue movement
             moveTankRightOneIteration();
-            moveIterator = 9;
+            moveIterator = 9;            //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of moveTank
         }
 
         if(isUpKeyPressed && !isDownKeyPressed && !isLeftKeyPressed && !isRightKeyPressed) {
+            if(angle == -180 || angle == 180)
+                fullSpin=true;
+            else
+                fullSpin=false;
             directionOfMovement = 'U';  //giving direction to continue movement
             moveTankUpOneIteration();
-            moveIterator = 9;
+            moveIterator = 9;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of moveTank
         }
 
         if(isDownKeyPressed && !isUpKeyPressed && !isLeftKeyPressed && !isRightKeyPressed) {
+            if(angle == 0)
+                fullSpin=true;
+            else
+                fullSpin=false;
             directionOfMovement = 'D';  //giving direction to continue movement
             moveTankDownOneIteration();
-            moveIterator = 9;
+            moveIterator = 9;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of moveTank
         }
     }
 
@@ -197,10 +219,16 @@ public class GameViewManager {
 
     private void moveTankDownOneIteration() {
         if(angle < 180 && angle >= 0) {  //checking angle of tank do select rotation direction - 3rd & 4th quarter
-            angle +=10;
+            if(fullSpin)
+                angle +=18;
+            else
+                angle +=10;
         }
         if(angle > -180 && angle < 0) {  //movement if tank is still in game area
-            angle -=10;
+            if(fullSpin)
+                angle -=18;
+            else
+                angle -=10;
         }
         if(angle >=-180 && angle <= 180)
             playerOneTank.setRotate(angle);
@@ -212,10 +240,16 @@ public class GameViewManager {
 
     private void moveTankUpOneIteration() {
         if(angle >=-180 && angle < 0) {  //checking angle of tank do select rotation direction - 3rd & 4th quarter
-            angle +=10;
+            if(fullSpin)
+                angle +=18;             //changing angle rotation due to fullSpin, makes sure that spin will be complete after 10 frames
+            else
+                angle +=10;
         }
         if(angle >0 && angle <= 180) {  //1st & 2nd quarter
-            angle -=10;
+            if(fullSpin)
+                angle -=18;             //changing angle rotation due to fullSpin, makes sure that spin will be complete after 10 frames
+            else
+                angle -=10;
         }
         playerOneTank.setRotate(angle);
         if (playerOneTank.getLayoutY() > 0) {   //movement if tank is still in game area
@@ -225,15 +259,21 @@ public class GameViewManager {
 
     private void moveTankRightOneIteration() {
         if(angle >=-90 && angle < 90) { //checking angle of tank do select rotation direction - 1st & 4th quarter
-            angle +=10;
+            if(fullSpin)
+                angle +=18;             //changing angle rotation due to fullSpin, makes sure that spin will be complete after 10 frames
+            else
+                angle +=10;
         }
         if(angle <=-90 || angle > 90) { //3rd & 4th quarter
-            angle -=10;
+            if(fullSpin)
+                angle -=18;
+            else
+                angle -=10;
         }
-        if(angle == 190)                //if passed 180 degrees point, change to minus half
-            angle = -170;
-        else if(angle == -190)          //if passed -180 degrees point, change to plus half
-            angle = 170;
+        if(angle > 180)                //if passed 180 degrees point, change to minus half
+            angle -= 360;
+        else if(angle < -180)          //if passed -180 degrees point, change to plus half
+            angle += 360;
 
         playerOneTank.setRotate(angle);
         if (playerOneTank.getLayoutX() < GAME_WIDTH-50) { //movement if tank is still in game area
@@ -243,15 +283,21 @@ public class GameViewManager {
 
     private void moveTankLeftOneIteration() {
         if (angle > -90 && angle <= 90) {     //checking angle of tank do select rotation direction - 1st & 4th quarter of circle
-            angle -= 10;
+            if(fullSpin)
+                angle -= 18;
+            else
+                angle -= 10;
         }
         if (angle < -90 || angle >= 90) {     //3rd & 4th quarter
-            angle += 10;
+            if(fullSpin)        //if tank is spinning 180 degrees for each frame it needs to spin by 18 degrees
+                angle+=18;
+            else
+                angle += 10;
         }
-        if (angle == 190)                    //if passed 180 degrees point, change to minus half
-            angle = -170;
-        else if (angle == -190)              //if passed -180 degrees point, change to plus half
-            angle = 170;
+        if (angle > 180)                    //if passed 180 degrees point, change to minus half
+            angle -= 360;
+        else if (angle < -180)              //if passed -180 degrees point, change to plus half
+            angle += 360;
 
         playerOneTank.setRotate(angle);
 
