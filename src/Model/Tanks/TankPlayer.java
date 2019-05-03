@@ -23,9 +23,9 @@ public class TankPlayer extends Tank{
     private KeyCode shootKey;
 
 
-    public TankPlayer(AnchorPane gamePane, Scene gameScene, int spawnPosX, int spawnPosY, String tankSpriteUrl, List<Tank> tankList,
+    public TankPlayer(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix,
                       KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey) {
-        super(gamePane, spawnPosX, spawnPosY, tankSpriteUrl, tankList);
+        super(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix);
         this.gameScene = gameScene;
         this.moveLeftKey = moveLeftKey;
         this.moveRightKey = moveRightKey;
@@ -85,9 +85,15 @@ public class TankPlayer extends Tank{
                 fullSpin=true;
             else
                 fullSpin=false;
+
             directionOfMovement = 'L';  //giving direction to continue movement
-            moveTankLeftOneIteration();
-            moveIterator = 9;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
+            allowedToMove = checkIfLeftEmpty();
+            if (moveTankLeftOneIteration()) {
+                positionMatrix[currentX-1][currentY]=Integer.toString(ID);
+                positionMatrix[currentX][currentY]=null;
+                currentX--;
+            }
+            moveIterator = BLOCK_SIZE/5 - 1;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
         }
 
         if(isRightKeyPressed && !isLeftKeyPressed && !isUpKeyPressed && !isDownKeyPressed) {
@@ -95,9 +101,15 @@ public class TankPlayer extends Tank{
                 fullSpin=true;
             else
                 fullSpin=false;
+
             directionOfMovement = 'R';  //giving direction to continue movement
-            moveTankRightOneIteration();
-            moveIterator = 9;            //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
+            allowedToMove = checkIfRightEmpty();
+            if (moveTankRightOneIteration()) {
+                positionMatrix[currentX+1][currentY]=Integer.toString(ID);
+                positionMatrix[currentX][currentY]=null;
+                currentX++;
+            }
+            moveIterator = BLOCK_SIZE/5 - 1;            //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
         }
 
         if(isUpKeyPressed && !isDownKeyPressed && !isLeftKeyPressed && !isRightKeyPressed) {
@@ -105,9 +117,15 @@ public class TankPlayer extends Tank{
                 fullSpin=true;
             else
                 fullSpin=false;
+
             directionOfMovement = 'U';  //giving direction to continue movement
-            moveTankUpOneIteration();
-            moveIterator = 9;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
+            allowedToMove = checkIfUpEmpty();
+            if (moveTankUpOneIteration()) {
+                positionMatrix[currentX][currentY-1]=Integer.toString(ID);
+                positionMatrix[currentX][currentY]=null;
+                currentY--;
+            }
+            moveIterator = BLOCK_SIZE/5 - 1;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
         }
 
         if(isDownKeyPressed && !isUpKeyPressed && !isLeftKeyPressed && !isRightKeyPressed) {
@@ -115,9 +133,15 @@ public class TankPlayer extends Tank{
                 fullSpin=true;
             else
                 fullSpin=false;
+
             directionOfMovement = 'D';  //giving direction to continue movement
-            moveTankDownOneIteration();
-            moveIterator = 9;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
+            allowedToMove = checkIfDownEmpty();
+            if (moveTankDownOneIteration()) {
+                positionMatrix[currentX][currentY+1]=Integer.toString(ID);
+                positionMatrix[currentX][currentY]=null;
+                currentY++;
+            }
+            moveIterator = BLOCK_SIZE/5 - 1;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
         }
     }
 

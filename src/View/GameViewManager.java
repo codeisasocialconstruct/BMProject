@@ -1,11 +1,7 @@
 package View;
-// TODO create Tank class and PlayerTank class, move methods there
-
-// TODO  collision system,
-
 // TODO  shooting system,
 
-// TODO  enemies
+// TODO fix second player key listener (two listeners don`t work in the same time)
 
 import Model.NavigationButton;
 import Model.Tanks.Tank;
@@ -28,8 +24,6 @@ public class GameViewManager {
     private Scene gameScene;
     private Stage gameStage;
     private Stage menuStage;
-    private Tank testTank;
-    private Tank playerOneTank;
 
     //variables for animation
     private List<Tank> tanksList;
@@ -40,8 +34,11 @@ public class GameViewManager {
     private final static int GAME_WIDTH = 800;  //Map divided into blocks 50x50 pixels each
     private final static int GAME_HEIGHT = 600; //Map has size 16x12 blocks
     private final static int BLOCK_SIZE = 50;
+    private static String[][] positionMatrix;   //array used to detect collisions
+
     private final static String standardTankSprite = "Model/Resources/tankSprites/tank_dark.png";
     private final static String playerOneTankSprite = "Model/Resources/tankSprites/tank_red.png";
+    private final static String playerTwoTankSprite = "Model/Resources/tankSprites/tankBlue.png";
 
 
     public GameViewManager() {
@@ -54,9 +51,9 @@ public class GameViewManager {
         gameScene = new Scene(gamePane, GAME_WIDTH, GAME_HEIGHT);
         gameStage = new Stage();
         gameStage.setScene(gameScene);
-        gameStage.initStyle(StageStyle.UNDECORATED);
+        gameStage.initStyle(StageStyle.UNDECORATED); //hiding system window bar
         gameStage.setTitle("Battle Metropolis");
-        gridMode = false;
+        gridMode = true;
     }
 
     private void createBackground() {
@@ -88,37 +85,67 @@ public class GameViewManager {
 
     //showing game window
     public void createGame(Stage menuStage, boolean twoPlayersMode) {
-        tanksList = new ArrayList<>();
+        tanksList = new ArrayList<>();  //initializing array list that allows to manage all tanks on map
+        positionMatrix = new String[GAME_WIDTH/BLOCK_SIZE][GAME_HEIGHT/BLOCK_SIZE]; //initializing new array to represent map
         this.menuStage = menuStage;
         this.menuStage.hide();
-        createExitButton();
-        testTank = new Tank(gamePane, GAME_WIDTH/2, GAME_HEIGHT/2, standardTankSprite, tanksList);
-        testTank = new Tank(gamePane, GAME_WIDTH/2, GAME_HEIGHT/2, standardTankSprite, tanksList);
-        testTank = new Tank(gamePane, GAME_WIDTH/2, GAME_HEIGHT/2, standardTankSprite, tanksList);
-        playerOneTank = new TankPlayer(gamePane, gameScene, GAME_WIDTH/2, GAME_HEIGHT-50, playerOneTankSprite, tanksList,
+
+        createExitButton(); //adding exit button
+        positionMatrix[0][0]="Exit";    //Blocking movement on exit button squares
+        positionMatrix[1][0]="Exit";
+        positionMatrix[2][0]="Exit";
+        positionMatrix[3][0]="Exit";
+
+        //spawning test tanks
+        spawnPlayerTank(gamePane, gameScene, 8, 11, playerOneTankSprite, tanksList, positionMatrix,
                 KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN, KeyCode.SPACE);
+        spawnNeutralTank(gamePane, 3, 2, standardTankSprite, tanksList, positionMatrix);
+        spawnNeutralTank(gamePane, 8, 5, standardTankSprite, tanksList, positionMatrix);
+        spawnNeutralTank(gamePane, 8, 5, standardTankSprite, tanksList, positionMatrix);
         createGameLoop();
         gameStage.show();
     }
 
     /*
     Timer to call animation in every frame
-    After calling moveTank, moveIterator is set to 9, so continueTankMovement will be called instead of moveTank.
-    That make sure, user input won`t interrupt animation, because continueTankMovement does not depends on user input.
-    Thanks to that, we make sure that tank is moving only by 50 pixels, which is map block size and animation will be smooth.
+    After calling moveTank, moveIterator is set to BlockSize/5 that in this case equals 9.
+    Now continueTankMovement will be called instead of moveTank.
+    This makes sure, user input won`t interrupt animation, because continueTankMovement does not depends on user input.
+    Thanks to that, we make sure that tank is moving only by 50, which is map block size and animation will be smooth.
     */
     private void createGameLoop() {
         gameTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 for(Tank tanks: tanksList)
-                    tanks.moveTank();
+                    tanks.moveTank();   //moving every tank on the map every frame
             }
         };
         gameTimer.start();
     }
 
+    //function that checks if spawn position is empty and coordinates are correct, if they are, the Tank constructor is called
+    private boolean spawnNeutralTank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY,
+                                     String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix) {
+        if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null && spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
+            Tank spawningTank = new Tank(gamePane, spawnPosArrayX , spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix);
+            return true;
+        }
+        else
+            return false;
+    }
 
+    //function that checks if spawn position is emptyand coordinates are correct, if they are, the PlayerTank constructor is called
+    private boolean spawnPlayerTank(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix,
+                                    KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey) {
+        if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null && spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
+            TankPlayer spawningTank = new TankPlayer(gamePane, gameScene, spawnPosArrayX , spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix,
+                    moveLeftKey, moveRightKey, moveUpKey, moveDownKey, shootKey);
+            return true;
+        }
+        else
+            return false;
+    }
 
 
 }

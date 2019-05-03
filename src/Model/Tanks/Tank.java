@@ -11,29 +11,96 @@ public class Tank {
     private ImageView tankSprite;
 
     protected int lifePoints;
+    protected int ID;
 
     protected boolean fullSpin;
-    protected int angle;  //current angle of first player tank
+    protected int angle;  //current angle of tank
     protected char directionOfMovement;
     protected int moveIterator;
+    protected static String[][] positionMatrix;
+    protected int currentX; //current X position in positionMatrix
+    protected int currentY; //current Y position in positionMatrix
+    protected boolean allowedToMove; //For checking if congruent block is empty
 
-    private final static int GAME_WIDTH = 800;  //Map divided into blocks 50x50 pixels each
-    private final static int GAME_HEIGHT = 600; //Map has size 16x12 blocks
-    private final static int BLOCK_SIZE = 50;
+    protected final static int GAME_WIDTH = 800;  //Map divided into blocks 50x50 pixels each
+    protected final static int GAME_HEIGHT = 600; //Map size is 16x12 blocks
+    protected final static int BLOCK_SIZE = 50;
 
-    public Tank(AnchorPane gamePane, int spawnPosX, int spawnPosY, String tankSpriteUrl, List<Tank> tankList) {
+    public Tank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix) {
         this.gamePane = gamePane;
-        tankSprite = new ImageView(tankSpriteUrl);
-        tankSprite.setLayoutX(spawnPosX);
-        tankSprite.setLayoutY(spawnPosY);
+
+        positionMatrix = collisionMatrix; //passing position matrix through reference
+        ID = tankList.size();             //generating new ID
+        tankList.add(this);               //adding tank to tanks list
+
+        collisionMatrix[spawnPosArrayX][spawnPosArrayY] = Integer.toString(ID); //saving tank position in collision matrix
+        currentX = spawnPosArrayX;
+        currentY = spawnPosArrayY;
+
+        tankSprite = new ImageView(tankSpriteUrl);  //loading sprite
+        tankSprite.setLayoutX(spawnPosArrayX*50);
+        tankSprite.setLayoutY(spawnPosArrayY*50);
+
         gamePane.getChildren().add(tankSprite);
 
-        tankList.add(this);
         angle = 0; //starting angle
         moveIterator = 0;
     }
 
-    protected void moveTankDownOneIteration() {
+    public int getCurrentX() {
+        return currentX;
+    }
+
+    public int getCurrentY() {
+        return currentY;
+    }
+
+    protected boolean checkIfDownEmpty() {
+        if (currentY < GAME_HEIGHT/BLOCK_SIZE-1) {
+            if (positionMatrix[currentX][currentY + 1] == null)
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
+    }
+
+    protected boolean checkIfUpEmpty() {
+        if (currentY > 0) {
+            if (positionMatrix[currentX][currentY - 1] == null)
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
+    }
+
+    protected boolean checkIfRightEmpty() {
+        if (currentX < GAME_WIDTH/BLOCK_SIZE-1) {
+            if (positionMatrix[currentX + 1][currentY] == null)
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
+    }
+
+    protected boolean checkIfLeftEmpty() {
+        if(currentX>0) {
+            if (positionMatrix[currentX - 1][currentY] == null)
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
+    }
+
+    //////////////////////////ANIMATIONS AND TANK MOTION////////////////////////////////////
+    protected boolean moveTankDownOneIteration() {
         if(angle < 180 && angle >= 0) {  //checking angle of tank do select rotation direction - 3rd & 4th quarter
             if(fullSpin)
                 angle +=18;
@@ -48,12 +115,17 @@ public class Tank {
         }
         if(angle >=-180 && angle <= 180)
             tankSprite.setRotate(angle);
-        if (tankSprite.getLayoutY() < GAME_HEIGHT-BLOCK_SIZE) {  //movement if tank is still in game area
+
+        //movement if tank is still in game area and congruent block is empty
+        if (tankSprite.getLayoutY() < GAME_HEIGHT-BLOCK_SIZE && allowedToMove ) {
             tankSprite.setLayoutY(tankSprite.getLayoutY()+5);
+            return true;
         }
+        else
+            return false;
     }
 
-    protected void moveTankUpOneIteration() {
+    protected boolean moveTankUpOneIteration() {
         if(angle >=-180 && angle < 0) {  //checking angle of tank do select rotation direction - 3rd & 4th quarter
             if(fullSpin)
                 angle +=18;             //changing angle rotation due to fullSpin, makes sure that spin will be complete after 10 frames
@@ -67,12 +139,17 @@ public class Tank {
                 angle -=10;
         }
         tankSprite.setRotate(angle);
-        if (tankSprite.getLayoutY() > 0) {   //movement if tank is still in game area
+
+        //movement if tank is still in game area and congruent block is empty
+        if (tankSprite.getLayoutY() > 0 && allowedToMove) {
             tankSprite.setLayoutY(tankSprite.getLayoutY()-5);
+            return true;
         }
+        else
+            return false;
     }
 
-    protected void moveTankRightOneIteration() {
+    protected boolean moveTankRightOneIteration() {
         if(angle >=-90 && angle < 90) { //checking angle of tank do select rotation direction - 1st & 4th quarter
             if(fullSpin)
                 angle +=18;             //changing angle rotation due to fullSpin, makes sure that spin will be complete after 10 frames
@@ -90,13 +167,17 @@ public class Tank {
         else if(angle < -180)          //if passed -180 degrees point, change to plus half
             angle += 360;
 
+        //movement if tank is still in game area and congruent block is empty
         tankSprite.setRotate(angle);
-        if (tankSprite.getLayoutX() < GAME_WIDTH-BLOCK_SIZE) { //movement if tank is still in game area
+        if (tankSprite.getLayoutX() < GAME_WIDTH-BLOCK_SIZE && allowedToMove) {
             tankSprite.setLayoutX(tankSprite.getLayoutX()+5);
+            return true;
         }
+        else
+            return false;
     }
 
-    protected void moveTankLeftOneIteration() {
+    protected boolean moveTankLeftOneIteration() {
         if (angle > -90 && angle <= 90) {     //checking angle of tank do select rotation direction - 1st & 4th quarter of circle
             if(fullSpin)
                 angle -= 18;
@@ -116,9 +197,13 @@ public class Tank {
 
         tankSprite.setRotate(angle);
 
-        if (tankSprite.getLayoutX() > 0.0) {     //movement if tank is still in game area
+        //movement if tank is still in game area and congruent block is empty
+        if (tankSprite.getLayoutX() > 0.0 && allowedToMove) {
             tankSprite.setLayoutX(tankSprite.getLayoutX() - 5);
+            return true;
         }
+        else
+            return false;
     }
 
     private void startTankMovement() {
@@ -131,9 +216,15 @@ public class Tank {
                 fullSpin=true;
             else
                 fullSpin=false;
+
             directionOfMovement = 'L';  //giving direction to continue movement
-            moveTankLeftOneIteration();
-            moveIterator = 9;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
+            allowedToMove = checkIfLeftEmpty();
+            if (moveTankLeftOneIteration()) {
+                positionMatrix[currentX-1][currentY]=Integer.toString(ID);
+                positionMatrix[currentX][currentY]=null;
+                currentX--;
+            }
+            moveIterator = BLOCK_SIZE/5 - 1;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
         }
 
         if(n==1) {
@@ -141,9 +232,15 @@ public class Tank {
                 fullSpin=true;
             else
                 fullSpin=false;
+
             directionOfMovement = 'R';  //giving direction to continue movement
-            moveTankRightOneIteration();
-            moveIterator = 9;            //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
+            allowedToMove = checkIfRightEmpty();
+            if (moveTankRightOneIteration()) {
+                positionMatrix[currentX+1][currentY]=Integer.toString(ID);
+                positionMatrix[currentX][currentY]=null;
+                currentX++;
+            }
+            moveIterator = BLOCK_SIZE/5 - 1;            //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
         }
 
         if(n==2) {
@@ -151,9 +248,15 @@ public class Tank {
                 fullSpin=true;
             else
                 fullSpin=false;
+
             directionOfMovement = 'U';  //giving direction to continue movement
-            moveTankUpOneIteration();
-            moveIterator = 9;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
+            allowedToMove = checkIfUpEmpty();
+            if (moveTankUpOneIteration()) {
+                positionMatrix[currentX][currentY-1]=Integer.toString(ID);
+                positionMatrix[currentX][currentY]=null;
+                currentY--;
+            }
+            moveIterator = BLOCK_SIZE/5 - 1;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
         }
 
         if(n==3) {
@@ -161,9 +264,15 @@ public class Tank {
                 fullSpin=true;
             else
                 fullSpin=false;
+
             directionOfMovement = 'D';  //giving direction to continue movement
-            moveTankDownOneIteration();
-            moveIterator = 9;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
+            allowedToMove = checkIfDownEmpty();
+            if (moveTankDownOneIteration()) {
+                positionMatrix[currentX][currentY+1]=Integer.toString(ID);
+                positionMatrix[currentX][currentY]=null;
+                currentY++;
+            }
+            moveIterator = BLOCK_SIZE/5 - 1;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
         }
     }
 
