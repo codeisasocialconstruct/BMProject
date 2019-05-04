@@ -334,8 +334,10 @@ public class Tank {
         if(shootDelay==0)
             shoot();
 
-        for (Projectile projectile: listOfActiveProjectiles) {
-            projectile.moveProjectile();
+        for (int x = 0; x<listOfActiveProjectiles.size(); x++) {
+            listOfActiveProjectiles.get(x).moveProjectile();
+            if( listOfActiveProjectiles.get(x).getHitConfirmed())
+                listOfActiveProjectiles.remove(x);
         }
 
         if(shootDelay==30)

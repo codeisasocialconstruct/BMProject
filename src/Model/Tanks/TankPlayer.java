@@ -176,7 +176,7 @@ public class TankPlayer extends Tank{
             projectile.moveProjectile();
         }
 
-        if(shootDelay==30)
+        if(shootDelay==20)
             shootDelay=0;
         else
             shootDelay++;

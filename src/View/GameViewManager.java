@@ -1,5 +1,7 @@
 package View;
-// TODO  shooting system,
+// TODO  damage system,
+
+// TODO fix shooting delay (not variable, maybe timer object that count cooldown)
 
 // TODO fix second player key listener (two listeners don`t work in the same time)
 
@@ -101,7 +103,7 @@ public class GameViewManager {
                 KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN, KeyCode.CONTROL);
         spawnNeutralTank(gamePane, 3, 2, standardTankSprite, tanksList, positionMatrix);
         spawnNeutralTank(gamePane, 8, 5, standardTankSprite, tanksList, positionMatrix);
-        spawnNeutralTank(gamePane, 8, 5, standardTankSprite, tanksList, positionMatrix);
+        spawnNeutralTank(gamePane, 10, 5, standardTankSprite, tanksList, positionMatrix);
         createGameLoop();
         gameStage.show();
     }
