@@ -98,7 +98,7 @@ public class GameViewManager {
 
         //spawning test tanks
         spawnPlayerTank(gamePane, gameScene, 8, 11, playerOneTankSprite, tanksList, positionMatrix,
-                KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN, KeyCode.SPACE);
+                KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN, KeyCode.CONTROL);
         spawnNeutralTank(gamePane, 3, 2, standardTankSprite, tanksList, positionMatrix);
         spawnNeutralTank(gamePane, 8, 5, standardTankSprite, tanksList, positionMatrix);
         spawnNeutralTank(gamePane, 8, 5, standardTankSprite, tanksList, positionMatrix);
@@ -117,8 +117,10 @@ public class GameViewManager {
         gameTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                for(Tank tanks: tanksList)
+                for(Tank tanks: tanksList) {
                     tanks.moveTank();   //moving every tank on the map every frame
+                    tanks.moveProjectiles();
+                }
             }
         };
         gameTimer.start();
@@ -135,7 +137,7 @@ public class GameViewManager {
             return false;
     }
 
-    //function that checks if spawn position is emptyand coordinates are correct, if they are, the PlayerTank constructor is called
+    //function that checks if spawn position is empty and coordinates are correct, if they are, the PlayerTank constructor is called
     private boolean spawnPlayerTank(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix,
                                     KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey) {
         if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null && spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {

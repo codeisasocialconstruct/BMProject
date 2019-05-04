@@ -3,6 +3,7 @@ package Model.Tanks;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -21,6 +22,9 @@ public class Tank {
     protected int currentX; //current X position in positionMatrix
     protected int currentY; //current Y position in positionMatrix
     protected boolean allowedToMove; //For checking if congruent block is empty
+    protected List<Projectile> listOfActiveProjectiles;
+    protected Projectile projectile;
+    protected int shootDelay;
 
     protected final static int GAME_WIDTH = 800;  //Map divided into blocks 50x50 pixels each
     protected final static int GAME_HEIGHT = 600; //Map size is 16x12 blocks
@@ -45,6 +49,8 @@ public class Tank {
 
         angle = 0; //starting angle
         moveIterator = 0;
+        listOfActiveProjectiles = new ArrayList<>();
+        shootDelay = 0;
     }
 
     public int getCurrentX() {
@@ -297,5 +303,44 @@ public class Tank {
             continueTankMovement();
         else
             startTankMovement();
+    }
+
+    public boolean shoot() {
+        if(angle == 90) {
+            if (checkIfRightEmpty()) {
+                projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'R', listOfActiveProjectiles);
+            }
+        }
+        else if(angle == -90) {
+            if(checkIfLeftEmpty()) {
+                projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'L', listOfActiveProjectiles);
+            }
+        }
+        else if(angle == 0) {
+            if(checkIfUpEmpty()) {
+                projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'U', listOfActiveProjectiles);
+            }
+        }
+        else if(angle == -180 || angle == 180) {
+            if(checkIfDownEmpty()) {
+                projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'D', listOfActiveProjectiles);
+            }
+        }
+
+        return false;
+    }
+
+    public void moveProjectiles() {
+        if(shootDelay==0)
+            shoot();
+
+        for (Projectile projectile: listOfActiveProjectiles) {
+            projectile.moveProjectile();
+        }
+
+        if(shootDelay==30)
+            shootDelay=0;
+        else
+            shootDelay++;
     }
 }

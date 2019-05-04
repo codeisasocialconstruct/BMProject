@@ -168,4 +168,18 @@ public class TankPlayer extends Tank{
             startTankMovement();
     }
 
+    public void moveProjectiles() {
+        if(isShootKeyPressed && shootDelay==0)
+            shoot();
+
+        for (Projectile projectile: listOfActiveProjectiles) {
+            projectile.moveProjectile();
+        }
+
+        if(shootDelay==30)
+            shootDelay=0;
+        else
+            shootDelay++;
+    }
+
 }
