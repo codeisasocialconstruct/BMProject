@@ -1,7 +1,4 @@
 package View;
-// TODO  damage system,
-
-// TODO fix shooting delay (not variable, maybe timer object that count cooldown)
 
 // TODO fix second player key listener (two listeners don`t work in the same time)
 
@@ -36,13 +33,15 @@ public class GameViewManager {
     private final static int GAME_WIDTH = 800;  //Map divided into blocks 50x50 pixels each
     private final static int GAME_HEIGHT = 600; //Map has size 16x12 blocks
     private final static int BLOCK_SIZE = 50;
-    private static String[][] positionMatrix;   //array used to detect collisions
+    private static String[][] positionMatrix;
+    //array used to detect collisions. It contains strings. If string is a number
+    //that means in this position tank is present and number equals it`s. If any other string
 
     private final static String standardTankSprite = "Model/Resources/tankSprites/tank_dark.png";
     private final static String playerOneTankSprite = "Model/Resources/tankSprites/tank_red.png";
     private final static String playerTwoTankSprite = "Model/Resources/tankSprites/tankBlue.png";
 
-
+    ///////////////////////WINDOW INITIALIZATION////////////////////////////////////
     public GameViewManager() {
         initializeStage();
         createBackground();
@@ -71,9 +70,6 @@ public class GameViewManager {
         gamePane.setBackground(new Background(backgroundGame));
     }
 
-    //Creating Listeners to inform which buttons are pressed - used to determine which animation is called
-
-
     private void createExitButton() {
         NavigationButton exitButton = new NavigationButton("EXIT");
         exitButton.setLayoutX(0);
@@ -85,6 +81,7 @@ public class GameViewManager {
         exitButton.setOnAction(event -> Platform.exit());
     }
 
+    //////////////////////////GAME ELEMENTS////////////////////////////////////////
     //showing game window
     public void createGame(Stage menuStage, boolean twoPlayersMode) {
         tanksList = new ArrayList<>();  //initializing array list that allows to manage all tanks on map
@@ -119,20 +116,28 @@ public class GameViewManager {
         gameTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                for(Tank tanks: tanksList) {
-                    tanks.moveTank();   //moving every tank on the map every frame
-                    tanks.moveProjectiles();
+                for(int iterator = 0; iterator<tanksList.size(); iterator++) {
+                    if(tanksList.get(iterator).getLifePoints()>0) {
+                        tanksList.get(iterator).moveTank();   //moving every tank on the map every frame
+                        tanksList.get(iterator).moveProjectiles();
+                    }
+                    else {
+                        tanksList.get(iterator).tankDestruction();
+                        tanksList.remove(iterator);
+                    }
                 }
             }
         };
         gameTimer.start();
     }
 
+    /////////////////////////////////SPAWN METHODS////////////////////////////////////////////////////////////
+
     //function that checks if spawn position is empty and coordinates are correct, if they are, the Tank constructor is called
     private boolean spawnNeutralTank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY,
                                      String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix) {
         if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null && spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
-            Tank spawningTank = new Tank(gamePane, spawnPosArrayX , spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix);
+            Tank spawningTank = new Tank(gamePane, spawnPosArrayX , spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 3);
             return true;
         }
         else

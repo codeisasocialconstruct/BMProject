@@ -25,7 +25,7 @@ public class TankPlayer extends Tank{
 
     public TankPlayer(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix,
                       KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey) {
-        super(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix);
+        super(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 5);
         this.gameScene = gameScene;
         this.moveLeftKey = moveLeftKey;
         this.moveRightKey = moveRightKey;
@@ -35,6 +35,7 @@ public class TankPlayer extends Tank{
         createKeyListeners();
     }
 
+    //Creating Listeners to inform which buttons are pressed - used to determine which animation is called
     private void createKeyListeners() {
         gameScene.setOnKeyPressed(event -> {    //lambda function to handle key pressing event
             if(event.getCode() == moveLeftKey) {
@@ -168,15 +169,19 @@ public class TankPlayer extends Tank{
             startTankMovement();
     }
 
+    ///////////////////////////////////SHOOTING////////////////////////////
     public void moveProjectiles() {
         if(isShootKeyPressed && shootDelay==0)
             shoot();
 
-        for (Projectile projectile: listOfActiveProjectiles) {
-            projectile.moveProjectile();
+        for (int x = 0; x<listOfActiveProjectiles.size(); x++) {
+            listOfActiveProjectiles.get(x).moveProjectile();
+            if( listOfActiveProjectiles.get(x).getHitConfirmed())
+                listOfActiveProjectiles.remove(x);  //if projectile hit anything it is deleted
         }
 
-        if(shootDelay==20)
+        //delay to prevent spam shooting
+        if(shootDelay==20)      // TODO fix shooting delay (not variable, maybe timer object that count cooldown)
             shootDelay=0;
         else
             shootDelay++;

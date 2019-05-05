@@ -10,7 +10,7 @@ import java.util.Random;
 public class Tank {
     private AnchorPane gamePane;
     private ImageView tankSprite;
-
+    private static int nextID = 0;
     protected int lifePoints;
     protected int ID;
 
@@ -22,6 +22,7 @@ public class Tank {
     protected int currentX; //current X position in positionMatrix
     protected int currentY; //current Y position in positionMatrix
     protected boolean allowedToMove; //For checking if congruent block is empty
+    protected List<Tank> tankList;
     protected List<Projectile> listOfActiveProjectiles;
     protected Projectile projectile;
     protected int shootDelay;
@@ -30,11 +31,12 @@ public class Tank {
     protected final static int GAME_HEIGHT = 600; //Map size is 16x12 blocks
     protected final static int BLOCK_SIZE = 50;
 
-    public Tank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix) {
+    public Tank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
+                String[][] collisionMatrix, int maxLifePoints) {
         this.gamePane = gamePane;
-
         positionMatrix = collisionMatrix; //passing position matrix through reference
-        ID = tankList.size();             //generating new ID
+        ID = nextID;             //generating new ID
+        nextID++;
         tankList.add(this);               //adding tank to tanks list
 
         collisionMatrix[spawnPosArrayX][spawnPosArrayY] = Integer.toString(ID); //saving tank position in collision matrix
@@ -47,11 +49,15 @@ public class Tank {
 
         gamePane.getChildren().add(tankSprite);
 
+        lifePoints = maxLifePoints;
         angle = 0; //starting angle
         moveIterator = 0;
-        listOfActiveProjectiles = new ArrayList<>();
+        this.tankList = tankList;
+        listOfActiveProjectiles = new ArrayList<>(); //creating arraylist to manage projectiles created by this tank
         shootDelay = 0;
     }
+
+    public int getID() {return ID;}
 
     public int getCurrentX() {
         return currentX;
@@ -61,6 +67,7 @@ public class Tank {
         return currentY;
     }
 
+    //////////////////////////////////COLLISION SYSTEM////////////////////////////////////
     protected boolean checkIfDownEmpty() {
         if (currentY < GAME_HEIGHT/BLOCK_SIZE-1) {
             if (positionMatrix[currentX][currentY + 1] == null)
@@ -305,26 +312,19 @@ public class Tank {
             startTankMovement();
     }
 
+
+    /////////////////////////////SHOOTING//////////////////////////////////////
     public boolean shoot() {
-        if(angle == 90) {
-            if (checkIfRightEmpty()) {
-                projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'R', listOfActiveProjectiles);
-            }
-        }
+        if(angle == 90)
+                projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'R', listOfActiveProjectiles, tankList);
         else if(angle == -90) {
-            if(checkIfLeftEmpty()) {
-                projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'L', listOfActiveProjectiles);
-            }
+            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'L', listOfActiveProjectiles,tankList);
         }
         else if(angle == 0) {
-            if(checkIfUpEmpty()) {
-                projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'U', listOfActiveProjectiles);
-            }
+            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'U', listOfActiveProjectiles,tankList);
         }
         else if(angle == -180 || angle == 180) {
-            if(checkIfDownEmpty()) {
-                projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'D', listOfActiveProjectiles);
-            }
+            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'D', listOfActiveProjectiles,tankList);
         }
 
         return false;
@@ -345,4 +345,22 @@ public class Tank {
         else
             shootDelay++;
     }
+
+    ///////////////////////////LIFE POINTS AND TANK DESTRUCTION/////////////////////
+    public int getLifePoints() {return lifePoints;}
+
+    public void takeDamage() {
+        lifePoints--;
+    }
+
+    public void tankDestruction() {
+        positionMatrix[currentX][currentY] = null;
+        for (Projectile projectile: listOfActiveProjectiles) {
+            projectile.hideProjectile();
+        }
+        listOfActiveProjectiles.clear();
+        gamePane.getChildren().remove(tankSprite);
+    }
+
+    private void destructionAnimation() {}//TODO destruction animation
 }

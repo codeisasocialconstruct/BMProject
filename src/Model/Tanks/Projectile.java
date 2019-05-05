@@ -8,6 +8,7 @@ import java.util.List;
 public class Projectile {
     private AnchorPane gamePane;
     private String[][] positionMatrix;
+    private List<Tank> tankList;
     private char directionOfMovement;
     private ImageView projectileSprite;
     private int currentX;
@@ -17,15 +18,17 @@ public class Projectile {
 
     private final static String PROJECTILE_SPRITE = "Model/Resources/Projectiles/shotThin.png";
 
-    public Projectile(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String[][] positionMatrix, char directionOfMovement, List<Projectile> projectileList) {
+    public Projectile(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String[][] positionMatrix, char directionOfMovement,
+                      List<Projectile> projectileList, List<Tank> tankList) {
         this.gamePane = gamePane;
         this.positionMatrix = positionMatrix;
         this.directionOfMovement = directionOfMovement;
+        this.tankList = tankList;
         currentX = spawnPosArrayX;
         currentY = spawnPosArrayY;
 
         projectileSprite = new ImageView(PROJECTILE_SPRITE);  //loading sprite
-        if(directionOfMovement=='L') {
+        if(directionOfMovement=='L') {          //Depending on direction, rotate and move sprite to good location
             projectileSprite.setRotate(-90);
             projectileSprite.setLayoutY(spawnPosArrayY*50 + 12);
             projectileSprite.setLayoutX(spawnPosArrayX*50 - 5);
@@ -51,8 +54,34 @@ public class Projectile {
         hitConfirmed = false;
     }
 
+    public void hideProjectile(){
+        gamePane.getChildren().remove(projectileSprite);
+    }
+
     public boolean getHitConfirmed() {return hitConfirmed;}
 
+    ///////////////////////////////////DAMAGE SYSTEM////////////////////////////
+    public boolean damageTank(int positionArrayX, int positionArrayY) {
+        int IDToFind;
+        //Geting hit tank ID from positionMatrix
+        if (positionArrayX >=0 && positionArrayX < Tank.GAME_WIDTH/Tank.BLOCK_SIZE && positionArrayY >=0 && positionArrayY < Tank.GAME_HEIGHT/Tank.BLOCK_SIZE) {
+            try {
+                IDToFind = Integer.parseInt(positionMatrix[positionArrayX][positionArrayY]); //Checking if hit object is Tank
+            } catch (NumberFormatException e) { //if not function returns false
+                return false;
+            }
+
+            for(Tank tank: tankList) {  //Looking hit tank in tanks list, by it`s ID
+                if(IDToFind==tank.getID())
+                    tank.takeDamage();  //when found get damage
+            }
+            return true;
+        }
+        else
+            return false;
+    }
+
+    //////////////////////////////COLLISION SYSTEM//////////////////////////////////
     protected boolean checkIfDownEmpty() {
         if (currentY < Tank.GAME_HEIGHT/Tank.BLOCK_SIZE-1) {
             if (positionMatrix[currentX][currentY + 1] == null)
@@ -104,23 +133,26 @@ public class Projectile {
             continueMovement();
     }
 
+    ////////////////////////////PROJECTILES MOVEMENT/////////////////////////////////////
     private void startMovement() {
         if(directionOfMovement=='R') {
             projectileSprite.setLayoutX(projectileSprite.getLayoutX() + 10);
 
-            if(!checkIfRightEmpty()) {
+            if(!checkIfRightEmpty()) {  //if next block is not empty, that means the projectile hit something
                 hitConfirmed = true;
-                gamePane.getChildren().remove(projectileSprite);
+                hideProjectile();
+                damageTank(currentX +1, currentY);
             }
             else
-                currentX++;
+                currentX++;         //if next block is empty, the projectile moves on
         }
         else if(directionOfMovement=='L') {
             projectileSprite.setLayoutX(projectileSprite.getLayoutX() - 10);
 
             if(!checkIfLeftEmpty()) {
                 hitConfirmed = true;
-                gamePane.getChildren().remove(projectileSprite);
+                hideProjectile();
+                damageTank(currentX - 1, currentY);
             }
             else
                 currentX--;
@@ -130,7 +162,8 @@ public class Projectile {
 
             if(!checkIfUpEmpty()) {
                 hitConfirmed = true;
-                gamePane.getChildren().remove(projectileSprite);
+                hideProjectile();
+                damageTank(currentX, currentY - 1);
             }
             else
                 currentY--;
@@ -140,7 +173,8 @@ public class Projectile {
 
             if(!checkIfDownEmpty()) {
                 hitConfirmed = true;
-                gamePane.getChildren().remove(projectileSprite);
+                hideProjectile();
+                damageTank(currentX, currentY + 1);
             }
             else
                 currentY++;
