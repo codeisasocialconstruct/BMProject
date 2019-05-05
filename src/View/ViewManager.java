@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import Model.NavigationButton;
+import javafx.stage.StageStyle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class ViewManager {
         mainPane = new AnchorPane();
         mainScene = new Scene(mainPane, WIDTH, HEIGHT);
         mainStage = new Stage();
-
+        mainStage.initStyle(StageStyle.UNDECORATED);
         mainStage.setTitle("Battle Metropolis");
         mainStage.setScene(mainScene);
         createButtons();

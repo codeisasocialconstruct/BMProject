@@ -3,6 +3,9 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import View.ViewManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main extends Application
 {
 
