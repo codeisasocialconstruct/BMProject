@@ -7,36 +7,34 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Tank {
     private AnchorPane gamePane;
-    protected ImageView tankSprite;
+    ImageView tankSprite;
     private static int nextID = 0;
-    protected int lifePoints;
-    protected int ID;
+    int lifePoints;
+    int ID;
 
-    protected boolean fullSpin;
-    protected int angle;  //current angle of tank
-    protected char directionOfMovement;
-    protected int moveIterator;
-    protected static String[][] positionMatrix;
-    protected int currentX; //current X position in positionMatrix
-    protected int currentY; //current Y position in positionMatrix
-    protected boolean allowedToMove; //For checking if congruent block is empty
-    protected List<Tank> tankList;
-    protected List<Projectile> listOfActiveProjectiles;
-    protected Projectile projectile;
-    protected int shootDelay;
+    boolean fullSpin;
+    int angle;  //current angle of tank
+    char directionOfMovement;
+    int moveIterator;
+    static String[][] positionMatrix;
+    int currentX; //current X position in positionMatrix
+    int currentY; //current Y position in positionMatrix
+    boolean allowedToMove; //For checking if congruent block is empty
+    List<Tank> tankList;
+    List<Projectile> listOfActiveProjectiles;
+    Projectile projectile;
+    ShootDelayTimer shootDelayTimer;
 
-    protected ImageView tankExplosion;
-    protected final static String EXPLOSION_SPRITE_SHEET = "Model/Resources/tankSprites/TankExplosionSpriteSheet.png";
+    ImageView tankExplosion;
+    final static String EXPLOSION_SPRITE_SHEET = "Model/Resources/tankSprites/TankExplosionSpriteSheet.png";
 
-    protected final static int GAME_WIDTH = 800;  //Map divided into blocks 50x50 pixels each
-    protected final static int GAME_HEIGHT = 600; //Map size is 16x12 blocks
-    protected final static int BLOCK_SIZE = 50;
+    final static int GAME_WIDTH = 800;  //Map divided into blocks 50x50 pixels each
+    final static int GAME_HEIGHT = 600; //Map size is 16x12 blocks
+    final static int BLOCK_SIZE = 50;
 
     public Tank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
                 String[][] collisionMatrix, int maxLifePoints) {
@@ -52,6 +50,7 @@ public class Tank {
         currentY = spawnPosArrayY;
 
         tankSprite = new ImageView(tankSpriteUrl);  //loading sprite
+        tankSprite.setClip(new ImageView(tankSpriteUrl));   //deleting background from sprite
         tankSprite.setLayoutX(spawnPosArrayX*50);
         tankSprite.setLayoutY(spawnPosArrayY*50);
 
@@ -61,7 +60,7 @@ public class Tank {
         angle = 0; //starting angle
         moveIterator = 0;
         listOfActiveProjectiles = new ArrayList<>(); //creating arraylist to manage projectiles created by this tank
-        shootDelay = 0;
+        shootDelayTimer = new ShootDelayTimer();
     }
 
     public int getID() {return ID;}
@@ -75,7 +74,7 @@ public class Tank {
     }
 
     //////////////////////////////////COLLISION SYSTEM////////////////////////////////////
-    protected boolean checkIfDownEmpty() {
+    boolean checkIfDownEmpty() {
         if (currentY < GAME_HEIGHT/BLOCK_SIZE-1) {
             if (positionMatrix[currentX][currentY + 1] == null)
                 return true;
@@ -86,7 +85,7 @@ public class Tank {
             return false;
     }
 
-    protected boolean checkIfUpEmpty() {
+    boolean checkIfUpEmpty() {
         if (currentY > 0) {
             if (positionMatrix[currentX][currentY - 1] == null)
                 return true;
@@ -97,7 +96,7 @@ public class Tank {
             return false;
     }
 
-    protected boolean checkIfRightEmpty() {
+    boolean checkIfRightEmpty() {
         if (currentX < GAME_WIDTH/BLOCK_SIZE-1) {
             if (positionMatrix[currentX + 1][currentY] == null)
                 return true;
@@ -108,7 +107,7 @@ public class Tank {
             return false;
     }
 
-    protected boolean checkIfLeftEmpty() {
+    boolean checkIfLeftEmpty() {
         if(currentX>0) {
             if (positionMatrix[currentX - 1][currentY] == null)
                 return true;
@@ -120,7 +119,7 @@ public class Tank {
     }
 
     //////////////////////////ANIMATIONS AND TANK MOTION////////////////////////////////////
-    protected boolean moveTankDownOneIteration() {
+    boolean moveTankDownOneIteration() {
         if(angle < 180 && angle >= 0) {  //checking angle of tank do select rotation direction - 3rd & 4th quarter
             if(fullSpin)
                 angle +=18;
@@ -145,7 +144,7 @@ public class Tank {
             return false;
     }
 
-    protected boolean moveTankUpOneIteration() {
+    boolean moveTankUpOneIteration() {
         if(angle >=-180 && angle < 0) {  //checking angle of tank do select rotation direction - 3rd & 4th quarter
             if(fullSpin)
                 angle +=18;             //changing angle rotation due to fullSpin, makes sure that spin will be complete after 10 frames
@@ -169,7 +168,7 @@ public class Tank {
             return false;
     }
 
-    protected boolean moveTankRightOneIteration() {
+    boolean moveTankRightOneIteration() {
         if(angle >=-90 && angle < 90) { //checking angle of tank do select rotation direction - 1st & 4th quarter
             if(fullSpin)
                 angle +=18;             //changing angle rotation due to fullSpin, makes sure that spin will be complete after 10 frames
@@ -197,7 +196,7 @@ public class Tank {
             return false;
     }
 
-    protected boolean moveTankLeftOneIteration() {
+    boolean moveTankLeftOneIteration() {
         if (angle > -90 && angle <= 90) {     //checking angle of tank do select rotation direction - 1st & 4th quarter of circle
             if(fullSpin)
                 angle -= 18;
@@ -321,7 +320,7 @@ public class Tank {
 
 
     /////////////////////////////SHOOTING//////////////////////////////////////
-    public boolean shoot() {
+    boolean shoot() {
         if(angle == 90)
             projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'R', listOfActiveProjectiles, tankList);
         else if(angle == -90) {
@@ -338,26 +337,28 @@ public class Tank {
     }
 
     public void moveProjectiles() {
-        if(shootDelay==0)
+        if(shootDelayTimer.getCanShoot()) {
             shoot();
+            shootDelayTimer.afterShootDelay(600);
+        }
 
         for (int x = 0; x<listOfActiveProjectiles.size(); x++) {
             listOfActiveProjectiles.get(x).moveProjectile();
             if( listOfActiveProjectiles.get(x).getHitConfirmed())
                 listOfActiveProjectiles.remove(x);
         }
-
-        if(shootDelay==30)
-            shootDelay=0;
-        else
-            shootDelay++;
     }
 
     ///////////////////////////LIFE POINTS AND TANK DESTRUCTION/////////////////////
     public int getLifePoints() {return lifePoints;}
 
-    public void takeDamage() {
+    void takeDamage() {
         lifePoints--;
+        hitAnimation();
+    }
+
+    private void hitAnimation() {
+        CoulorChangerTimer timer = new CoulorChangerTimer(tankSprite);
     }
 
     public void tankDestruction() {
@@ -372,11 +373,11 @@ public class Tank {
 
     private void destructionAnimation() {
         tankExplosion = new ImageView(EXPLOSION_SPRITE_SHEET);
-        tankExplosion.setLayoutX(tankSprite.getLayoutX() - BLOCK_SIZE/2); //placing animation
-        tankExplosion.setLayoutY(tankSprite.getLayoutY()-BLOCK_SIZE/2);
         tankExplosion.setFitWidth(2*BLOCK_SIZE);
         tankExplosion.setFitHeight(2*BLOCK_SIZE);
-        tankExplosion.setViewport(new Rectangle2D(0, 0, 2*BLOCK_SIZE, 2*BLOCK_SIZE)); //preventing from showing whole sprite sheet
+        tankExplosion.setLayoutX(tankSprite.getLayoutX() - BLOCK_SIZE/2); //placing animation
+        tankExplosion.setLayoutY(tankSprite.getLayoutY()-BLOCK_SIZE/2);
+        tankExplosion.setViewport(new Rectangle2D(0, 0, 128, 128)); //preventing from showing whole sprite sheet
 
         final Animation explosionAnimation = new SpriteAnimation(
                 tankExplosion,
@@ -389,7 +390,5 @@ public class Tank {
         explosionAnimation.setOnFinished(event -> gamePane.getChildren().remove(tankExplosion));    //removing sprite after animation is done
         gamePane.getChildren().add(tankExplosion);
         explosionAnimation.play();
-
-
     }
 }

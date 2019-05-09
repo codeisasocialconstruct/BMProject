@@ -171,8 +171,10 @@ public class TankPlayer extends Tank{
 
     ///////////////////////////////////SHOOTING////////////////////////////
     public void moveProjectiles() {
-        if(isShootKeyPressed && shootDelay==0)
+        if(isShootKeyPressed && shootDelayTimer.getCanShoot()) {
             shoot();
+            shootDelayTimer.afterShootDelay(400);
+        }
 
         for (int x = 0; x<listOfActiveProjectiles.size(); x++) {
             listOfActiveProjectiles.get(x).moveProjectile();
@@ -180,11 +182,7 @@ public class TankPlayer extends Tank{
                 listOfActiveProjectiles.remove(x);  //if projectile hit anything it is deleted
         }
 
-        //delay to prevent spam shooting
-        if(shootDelay==20)      // TODO fix shooting delay (not variable, maybe timer object that count cooldown)
-            shootDelay=0;
-        else
-            shootDelay++;
+
     }
 
 }
