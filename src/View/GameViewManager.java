@@ -54,7 +54,7 @@ public class GameViewManager {
         gameStage.setScene(gameScene);
         gameStage.initStyle(StageStyle.UNDECORATED); //hiding system window bar
         gameStage.setTitle("Battle Metropolis");
-        gridMode = true;
+        gridMode = false;
     }
 
     private void createBackground() {
@@ -114,10 +114,11 @@ public class GameViewManager {
     */
     private void createGameLoop() {
         gameTimer = new AnimationTimer() {
+            @SuppressWarnings("SuspiciousListRemoveInLoop")
             @Override
             public void handle(long now) {
                 for(int iterator = 0; iterator<tanksList.size(); iterator++) {
-                    if(tanksList.get(iterator).getLifePoints()>0) {
+                    if(tanksList.get(iterator).getLifePoints()>0) { //checking if tank is alive
                         tanksList.get(iterator).moveTank();   //moving every tank on the map every frame
                         tanksList.get(iterator).moveProjectiles();
                     }

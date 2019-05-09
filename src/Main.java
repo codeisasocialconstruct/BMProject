@@ -33,7 +33,7 @@ public class Main extends Application
         final ImageView imageView = new ImageView(IMAGE);
         imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
 
-        final Animation animation = new SpriteAnimation(
+        final Animation animation = new Model.SpriteAnimation(
                 imageView,
                 Duration.millis(500),
                 COUNT, COLUMNS,

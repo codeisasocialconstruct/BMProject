@@ -1,7 +1,11 @@
 package Model.Tanks;
 
+import Model.SpriteAnimation;
+import javafx.animation.Animation;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +13,7 @@ import java.util.Random;
 
 public class Tank {
     private AnchorPane gamePane;
-    private ImageView tankSprite;
+    protected ImageView tankSprite;
     private static int nextID = 0;
     protected int lifePoints;
     protected int ID;
@@ -27,6 +31,9 @@ public class Tank {
     protected Projectile projectile;
     protected int shootDelay;
 
+    protected ImageView tankExplosion;
+    protected final static String EXPLOSION_SPRITE_SHEET = "Model/Resources/tankSprites/TankExplosionSpriteSheet.png";
+
     protected final static int GAME_WIDTH = 800;  //Map divided into blocks 50x50 pixels each
     protected final static int GAME_HEIGHT = 600; //Map size is 16x12 blocks
     protected final static int BLOCK_SIZE = 50;
@@ -38,6 +45,7 @@ public class Tank {
         ID = nextID;             //generating new ID
         nextID++;
         tankList.add(this);               //adding tank to tanks list
+        this.tankList = tankList;
 
         collisionMatrix[spawnPosArrayX][spawnPosArrayY] = Integer.toString(ID); //saving tank position in collision matrix
         currentX = spawnPosArrayX;
@@ -52,7 +60,6 @@ public class Tank {
         lifePoints = maxLifePoints;
         angle = 0; //starting angle
         moveIterator = 0;
-        this.tankList = tankList;
         listOfActiveProjectiles = new ArrayList<>(); //creating arraylist to manage projectiles created by this tank
         shootDelay = 0;
     }
@@ -316,7 +323,7 @@ public class Tank {
     /////////////////////////////SHOOTING//////////////////////////////////////
     public boolean shoot() {
         if(angle == 90)
-                projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'R', listOfActiveProjectiles, tankList);
+            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'R', listOfActiveProjectiles, tankList);
         else if(angle == -90) {
             projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'L', listOfActiveProjectiles,tankList);
         }
@@ -358,9 +365,31 @@ public class Tank {
         for (Projectile projectile: listOfActiveProjectiles) {
             projectile.hideProjectile();
         }
+        destructionAnimation();
         listOfActiveProjectiles.clear();
         gamePane.getChildren().remove(tankSprite);
     }
 
-    private void destructionAnimation() {}//TODO destruction animation
+    private void destructionAnimation() {
+        tankExplosion = new ImageView(EXPLOSION_SPRITE_SHEET);
+        tankExplosion.setLayoutX(tankSprite.getLayoutX() - BLOCK_SIZE/2); //placing animation
+        tankExplosion.setLayoutY(tankSprite.getLayoutY()-BLOCK_SIZE/2);
+        tankExplosion.setFitWidth(2*BLOCK_SIZE);
+        tankExplosion.setFitHeight(2*BLOCK_SIZE);
+        tankExplosion.setViewport(new Rectangle2D(0, 0, 2*BLOCK_SIZE, 2*BLOCK_SIZE)); //preventing from showing whole sprite sheet
+
+        final Animation explosionAnimation = new SpriteAnimation(
+                tankExplosion,
+                Duration.millis(1000),
+                12, 12,
+                0, 0,
+                128, 128
+        );
+        explosionAnimation.setCycleCount(1);
+        explosionAnimation.setOnFinished(event -> gamePane.getChildren().remove(tankExplosion));    //removing sprite after animation is done
+        gamePane.getChildren().add(tankExplosion);
+        explosionAnimation.play();
+
+
+    }
 }
