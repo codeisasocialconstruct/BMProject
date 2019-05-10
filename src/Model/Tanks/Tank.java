@@ -5,6 +5,7 @@ import javafx.animation.Animation;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.AudioClip;
 import javafx.util.Duration;
 
 import java.util.*;
@@ -28,9 +29,14 @@ public class Tank {
     List<Projectile> listOfActiveProjectiles;
     Projectile projectile;
     ShootDelayTimer shootDelayTimer;
+    Random shootChance;
+    AudioClip sounds;
 
     ImageView tankExplosion;
     final static String EXPLOSION_SPRITE_SHEET = "Model/Resources/tankSprites/TankExplosionSpriteSheet.png";
+    final static String SHOOT_SOUND = "../Resources/TankSounds/shoot_sound.wav";
+    final static String HIT_SOUND = "../Resources/TankSounds/get_hit_sound.wav";
+    final static String TANK_EXPLOSION_SOUND = "../Resources/TankSounds/tank_explosion_sound.wav";
 
     final static int GAME_WIDTH = 800;  //Map divided into blocks 50x50 pixels each
     final static int GAME_HEIGHT = 600; //Map size is 16x12 blocks
@@ -61,6 +67,7 @@ public class Tank {
         moveIterator = 0;
         listOfActiveProjectiles = new ArrayList<>(); //creating arraylist to manage projectiles created by this tank
         shootDelayTimer = new ShootDelayTimer();
+        shootChance = new Random();
     }
 
     public int getID() {return ID;}
@@ -333,13 +340,18 @@ public class Tank {
             projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'D', listOfActiveProjectiles,tankList);
         }
 
+        playShootSound();
+
         return false;
     }
 
     public void moveProjectiles() {
+
         if(shootDelayTimer.getCanShoot()) {
-            shoot();
-            shootDelayTimer.afterShootDelay(600);
+            if(shootChance.nextInt(100) > 90) {     //randomize shoot chance
+                shoot();
+                shootDelayTimer.afterShootDelay(600);   //calling timer to prevent non stop shooting
+            }
         }
 
         for (int x = 0; x<listOfActiveProjectiles.size(); x++) {
@@ -354,6 +366,7 @@ public class Tank {
 
     void takeDamage() {
         lifePoints--;
+        playHitSound();
         hitAnimation();
     }
 
@@ -366,6 +379,8 @@ public class Tank {
         for (Projectile projectile: listOfActiveProjectiles) {
             projectile.hideProjectile();
         }
+        playTankExplosionSound();
+
         destructionAnimation();
         listOfActiveProjectiles.clear();
         gamePane.getChildren().remove(tankSprite);
@@ -390,5 +405,26 @@ public class Tank {
         explosionAnimation.setOnFinished(event -> gamePane.getChildren().remove(tankExplosion));    //removing sprite after animation is done
         gamePane.getChildren().add(tankExplosion);
         explosionAnimation.play();
+    }
+
+
+    ////////////////////////////////SOUNDS//////////////////////////////////////
+
+    void playShootSound() {
+        sounds = new AudioClip(this.getClass().getResource(SHOOT_SOUND).toExternalForm());
+        sounds.setCycleCount(1);
+        sounds.play(0.4);
+    }
+
+    void playHitSound() {
+        sounds = new AudioClip(this.getClass().getResource(HIT_SOUND).toExternalForm());
+        sounds.setCycleCount(1);
+        sounds.play(0.4);
+    }
+
+    void playTankExplosionSound() {
+        sounds = new AudioClip(this.getClass().getResource(TANK_EXPLOSION_SOUND).toExternalForm());
+        sounds.setCycleCount(1);
+        sounds.play(0.5);
     }
 }

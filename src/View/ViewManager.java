@@ -4,6 +4,7 @@ import Model.MenuPanel;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import Model.NavigationButton;
@@ -23,11 +24,14 @@ public class ViewManager {
     private final int WIDTH = 800;
     private final int MENU_BUTTON_START_X = 100;
     private final int MENU_BUTTON_START_Y = 100;
+    private final String TITLE = "View/resources/Title.png";
 
     private List<NavigationButton> menuButtons;
     private  MenuPanel helpPanel;
     private  MenuPanel optionsPanel;
     private static boolean twoPlayersMode = false;
+
+    private MusicManager musicManager;
 
     public ViewManager() {
         //creating list to manage buttons
@@ -43,6 +47,9 @@ public class ViewManager {
         createBackground();
         createHelpPanel();
         createOptionsPanel();
+        createTitle();
+        musicManager = new MusicManager();
+        musicManager.playMenuTheme();
     }
 
     public Stage getMainStage() {
@@ -50,6 +57,15 @@ public class ViewManager {
     }
 
     ///////////////////////MENU METHODS//////////////////////////////
+    private void createTitle() {
+        ImageView title = new ImageView(TITLE);
+        title.setFitWidth(450);
+        title.setFitHeight(40);
+        title.setLayoutX(WIDTH - 475);
+        title.setLayoutY(150);
+        mainPane.getChildren().add(title);
+    }
+
     private void createButtons() {
         createPlayButton();
         createHelpButton();
@@ -71,7 +87,8 @@ public class ViewManager {
         addMenuButton(playButton);
 
         playButton.setOnAction(event -> {
-            GameViewManager gameViewManager = new GameViewManager();
+            musicManager.stopMusic();
+            GameViewManager gameViewManager = new GameViewManager(musicManager);
             gameViewManager.createGame(mainStage, false);
         });
     }

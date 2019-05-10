@@ -41,10 +41,14 @@ public class GameViewManager {
     private final static String playerOneTankSprite = "Model/Resources/tankSprites/tank_red.png";
     private final static String playerTwoTankSprite = "Model/Resources/tankSprites/tankBlue.png";
 
+    private MusicManager musicManager;
+
     ///////////////////////WINDOW INITIALIZATION////////////////////////////////////
-    public GameViewManager() {
+    public GameViewManager(MusicManager musicManager) {
+        this.musicManager = musicManager;
         initializeStage();
         createBackground();
+        musicManager.playMainTheme();
     }
 
     private void initializeStage() {
