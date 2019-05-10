@@ -12,7 +12,7 @@ public class MenuPanel extends SubScene {
     private final static String PANEL_IMAGE = "Model/Resources/MenuContent/PanelImage.png";
     private boolean isHidden;
 
-    public MenuPanel() {
+    public MenuPanel(double X, double Y) {
         super(new AnchorPane(), 400, 300);
         prefWidth(400);
         prefHeight(300);
@@ -23,8 +23,8 @@ public class MenuPanel extends SubScene {
 
         root.setBackground(new Background(panelBackground));
 
-        setLayoutX(800); //creating panel outside of the scene to create appearing animation possible
-        setLayoutY(130);
+        setLayoutX(X); //creating panel outside of the scene to create appearing animation possible
+        setLayoutY(Y);
 
         isHidden = true;
     }

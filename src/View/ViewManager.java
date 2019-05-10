@@ -62,7 +62,7 @@ public class ViewManager {
         title.setFitWidth(450);
         title.setFitHeight(40);
         title.setLayoutX(WIDTH - 475);
-        title.setLayoutY(150);
+        title.setLayoutY(50);
         mainPane.getChildren().add(title);
     }
 
@@ -131,12 +131,12 @@ public class ViewManager {
     }
 
     private void createHelpPanel() {
-        helpPanel = new MenuPanel();
+        helpPanel = new MenuPanel(800, 130);
         mainPane.getChildren().add(helpPanel);
     }
 
     private void createOptionsPanel() {
-        optionsPanel = new MenuPanel();
+        optionsPanel = new MenuPanel(800, 130);
         mainPane.getChildren().add(optionsPanel);
     }
 
