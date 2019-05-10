@@ -10,7 +10,7 @@ import javafx.util.Duration;
 import java.util.*;
 
 public class Tank {
-    private AnchorPane gamePane;
+    AnchorPane gamePane;
     ImageView tankSprite;
     private static int nextID = 0;
     int lifePoints;
@@ -357,7 +357,7 @@ public class Tank {
         hitAnimation();
     }
 
-    private void hitAnimation() {
+    void hitAnimation() {
         CoulorChangerTimer timer = new CoulorChangerTimer(tankSprite);
     }
 
