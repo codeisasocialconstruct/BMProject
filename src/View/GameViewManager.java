@@ -3,6 +3,7 @@ package View;
 // TODO fix second player key listener (two listeners don`t work in the same time)
 
 import Model.InfoLabel;
+import Model.MapElements.Base;
 import Model.MenuPanel;
 import Model.NavigationButton;
 import Model.Tanks.Tank;
@@ -31,6 +32,7 @@ public class GameViewManager {
     private List<Tank> tanksList;
     private Tank playerOneTank;
     private AnimationTimer gameTimer;
+    private Base base;
 
     private boolean isGamePaused;
 
@@ -107,6 +109,7 @@ public class GameViewManager {
         positionMatrix[3][0]="Exit";
 
         //spawning test tanks
+        spawnBase(gamePane, 4, 10, positionMatrix, 5); //BASE NEED TO BE INITIALIZED BEFORE TANKS!!!
         spawnPlayerOneTank(gamePane, gameScene, 8, 11, playerOneTankSprite, tanksList, positionMatrix,
                 KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN, KeyCode.CONTROL);
         spawnNeutralTank(gamePane, 3, 2, standardTankSprite, tanksList, positionMatrix);
@@ -138,7 +141,7 @@ public class GameViewManager {
                             tanksList.remove(iterator);
                         }
                     }
-                    if (playerOneTank.getLifePoints() == 0) {
+                    if (playerOneTank.getLifePoints() == 0 || base.getLifePoints()==0) {
                         showLoseScreen();
                     }
                     if (tanksList.size()==1) {
@@ -169,7 +172,8 @@ public class GameViewManager {
     private boolean spawnNeutralTank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY,
                                      String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix) {
         if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null && spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
-            Tank spawningTank = new Tank(gamePane, spawnPosArrayX , spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 3);
+            Tank spawningTank = new Tank(gamePane, spawnPosArrayX , spawnPosArrayY, tankSpriteUrl,
+                    tankList, collisionMatrix, 3, base);
             return true;
         }
         else
@@ -180,12 +184,31 @@ public class GameViewManager {
     private boolean spawnPlayerOneTank(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix,
                                        KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey) {
         if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null && spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
-            playerOneTank = new TankPlayer(gamePane, gameScene, spawnPosArrayX , spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix,
+            playerOneTank = new TankPlayer(gamePane, gameScene, spawnPosArrayX , spawnPosArrayY,
+                    tankSpriteUrl, tankList, collisionMatrix, base,
                     moveLeftKey, moveRightKey, moveUpKey, moveDownKey, shootKey);
             return true;
         }
         else
             return false;
+    }
+
+    private boolean spawnBase(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String[][] collisionMatrix, int lifePoints) {
+
+        //TODO fix if space is empty
+        //Making sure that all 4 blocks where base will stand are empty and inside the map
+        if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null && spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
+            if (collisionMatrix[spawnPosArrayX + 1][spawnPosArrayY] == null && spawnPosArrayX + 1 < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY < GAME_HEIGHT / BLOCK_SIZE) {
+                if (collisionMatrix[spawnPosArrayX][spawnPosArrayY + 1] == null && spawnPosArrayX < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY + 1 < GAME_HEIGHT / BLOCK_SIZE) {
+                    if (collisionMatrix[spawnPosArrayX + 1][spawnPosArrayY + 1] == null && spawnPosArrayX + 1 < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY + 1 < GAME_HEIGHT / BLOCK_SIZE) {
+                        base = new Base(gamePane, spawnPosArrayX, spawnPosArrayY, lifePoints, collisionMatrix);
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
 

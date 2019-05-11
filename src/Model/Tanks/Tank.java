@@ -1,5 +1,6 @@
 package Model.Tanks;
 
+import Model.MapElements.Base;
 import Model.SpriteAnimation;
 import javafx.animation.Animation;
 import javafx.geometry.Rectangle2D;
@@ -25,6 +26,7 @@ public class Tank {
     int currentX; //current X position in positionMatrix
     int currentY; //current Y position in positionMatrix
     boolean allowedToMove; //For checking if congruent block is empty
+    Base base;
     List<Tank> tankList;
     List<Projectile> listOfActiveProjectiles;
     Projectile projectile;
@@ -43,7 +45,7 @@ public class Tank {
     final static int BLOCK_SIZE = 50;
 
     public Tank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
-                String[][] collisionMatrix, int maxLifePoints) {
+                String[][] collisionMatrix, int maxLifePoints, Base base) {
         this.gamePane = gamePane;
         positionMatrix = collisionMatrix; //passing position matrix through reference
         ID = nextID;             //generating new ID
@@ -62,12 +64,17 @@ public class Tank {
 
         gamePane.getChildren().add(tankSprite);
 
-        lifePoints = maxLifePoints;
+        if (lifePoints<1)
+            this.lifePoints = 5;
+        else
+            this.lifePoints = maxLifePoints;
+
         angle = 0; //starting angle
         moveIterator = 0;
         listOfActiveProjectiles = new ArrayList<>(); //creating arraylist to manage projectiles created by this tank
         shootDelayTimer = new ShootDelayTimer();
         shootChance = new Random();
+        this.base = base;
     }
 
     public int getID() {return ID;}
@@ -329,15 +336,19 @@ public class Tank {
     /////////////////////////////SHOOTING//////////////////////////////////////
     boolean shoot() {
         if(angle == 90)
-            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'R', listOfActiveProjectiles, tankList);
+            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix,
+                    'R', listOfActiveProjectiles, tankList, base);
         else if(angle == -90) {
-            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'L', listOfActiveProjectiles,tankList);
+            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix,
+                    'L', listOfActiveProjectiles,tankList, base);
         }
         else if(angle == 0) {
-            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'U', listOfActiveProjectiles,tankList);
+            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix,
+                    'U', listOfActiveProjectiles,tankList, base);
         }
         else if(angle == -180 || angle == 180) {
-            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'D', listOfActiveProjectiles,tankList);
+            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix,
+                    'D', listOfActiveProjectiles,tankList, base);
         }
 
         playShootSound();

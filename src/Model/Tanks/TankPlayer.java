@@ -1,5 +1,6 @@
 package Model.Tanks;
 
+import Model.MapElements.Base;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -31,9 +32,10 @@ public class TankPlayer extends Tank{
     private final static String HEART_SPRITE_EMPTY = "Model/Resources/tankSprites/heart_empty.png";
 
 
-    public TankPlayer(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix,
+    public TankPlayer(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
+                      String[][] collisionMatrix, Base base,
                       KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey) {
-        super(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 5);
+        super(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 5, base);
         this.gameScene = gameScene;
         this.moveLeftKey = moveLeftKey;
         this.moveRightKey = moveRightKey;
