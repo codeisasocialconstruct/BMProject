@@ -27,8 +27,8 @@ public class Tank {
     protected Projectile projectile;
     protected int shootDelay;
 
-    protected final static int GAME_WIDTH = 800;  //Map divided into blocks 50x50 pixels each
-    protected final static int GAME_HEIGHT = 600; //Map size is 16x12 blocks
+    protected final static int GAME_WIDTH = 250;  //Map divided into blocks 50x50 pixels each
+    protected final static int GAME_HEIGHT = 250; //Map size is 16x12 blocks
     protected final static int BLOCK_SIZE = 50;
 
     public Tank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,

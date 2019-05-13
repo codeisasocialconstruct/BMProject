@@ -30,8 +30,8 @@ public class GameViewManager {
 
     private boolean gridMode;
 
-    private final static int GAME_WIDTH = 800;  //Map divided into blocks 50x50 pixels each
-    private final static int GAME_HEIGHT = 600; //Map has size 16x12 blocks
+    private final static int GAME_WIDTH = 250;  //Map divided into blocks 50x50 pixels each
+    private final static int GAME_HEIGHT = 250; //Map has size 16x12 blocks
     private final static int BLOCK_SIZE = 50;
     private static String[][] positionMatrix;
     //array used to detect collisions. It contains strings. If string is a number
@@ -44,7 +44,6 @@ public class GameViewManager {
     ///////////////////////WINDOW INITIALIZATION////////////////////////////////////
     public GameViewManager() {
         initializeStage();
-        createBackground();
     }
 
     private void initializeStage() {
@@ -54,18 +53,13 @@ public class GameViewManager {
         gameStage.setScene(gameScene);
         gameStage.initStyle(StageStyle.UNDECORATED); //hiding system window bar
         gameStage.setTitle("Battle Metropolis");
-        gridMode = true;
+        gridMode = false; //creting grid
     }
 
-    private void createBackground() {
+    private void createBackground() //TODO object MapManager, map generating and background generating
+    {
         Image backgroundGameImage;
-        if (!gridMode) {
-           backgroundGameImage = new Image("View/resources/texture.png", BLOCK_SIZE, BLOCK_SIZE, true, true);
-        }
-        else {
-            backgroundGameImage = new Image("View/resources/texturegrid.png", BLOCK_SIZE, BLOCK_SIZE, true, true);
-        }
-
+        backgroundGameImage = new Image("Model/Resources/MapPieces/Background.png", BLOCK_SIZE, BLOCK_SIZE, true, true);
         BackgroundImage backgroundGame = new BackgroundImage(backgroundGameImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
         gamePane.setBackground(new Background(backgroundGame));
     }
@@ -89,19 +83,22 @@ public class GameViewManager {
         this.menuStage = menuStage;
         this.menuStage.hide();
 
+        /*
         createExitButton(); //adding exit button
         positionMatrix[0][0]="Exit";    //Blocking movement on exit button squares
         positionMatrix[1][0]="Exit";
         positionMatrix[2][0]="Exit";
         positionMatrix[3][0]="Exit";
+        */
 
         //spawning test tanks
-        spawnPlayerTank(gamePane, gameScene, 8, 11, playerOneTankSprite, tanksList, positionMatrix,
+        spawnPlayerTank(gamePane, gameScene, 2, 4, playerOneTankSprite, tanksList, positionMatrix,
                 KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN, KeyCode.CONTROL);
-        spawnNeutralTank(gamePane, 3, 2, standardTankSprite, tanksList, positionMatrix);
-        spawnNeutralTank(gamePane, 8, 5, standardTankSprite, tanksList, positionMatrix);
-        spawnNeutralTank(gamePane, 10, 5, standardTankSprite, tanksList, positionMatrix);
+        //spawnNeutralTank(gamePane, 3, 2, standardTankSprite, tanksList, positionMatrix);
+        //spawnNeutralTank(gamePane, 8, 5, standardTankSprite, tanksList, positionMatrix);
+        //spawnNeutralTank(gamePane, 10, 5, standardTankSprite, tanksList, positionMatrix);
         createGameLoop();
+        createBackground();
         gameStage.show();
     }
 
