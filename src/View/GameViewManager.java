@@ -34,6 +34,7 @@ public class GameViewManager {
     private final static int GAME_HEIGHT = 250; //Map has size 16x12 blocks
     private final static int BLOCK_SIZE = 50;
     private static String[][] positionMatrix;
+    private MapManager mapManager;
     //array used to detect collisions. It contains strings. If string is a number
     //that means in this position tank is present and number equals it`s. If any other string
 
@@ -54,6 +55,7 @@ public class GameViewManager {
         gameStage.initStyle(StageStyle.UNDECORATED); //hiding system window bar
         gameStage.setTitle("Battle Metropolis");
         gridMode = false; //creting grid
+        mapManager = new MapManager();
     }
 
     private void createBackground() //TODO object MapManager, map generating and background generating
@@ -79,7 +81,7 @@ public class GameViewManager {
     //showing game window
     public void createGame(Stage menuStage, boolean twoPlayersMode) {
         tanksList = new ArrayList<>();  //initializing array list that allows to manage all tanks on map
-        positionMatrix = new String[GAME_WIDTH/BLOCK_SIZE][GAME_HEIGHT/BLOCK_SIZE]; //initializing new array to represent map
+        positionMatrix = mapManager.createPositionMatrix(); //initializing new array to represent map
         this.menuStage = menuStage;
         this.menuStage.hide();
 
