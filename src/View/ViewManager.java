@@ -28,7 +28,7 @@ public class ViewManager {
 
     private List<NavigationButton> menuButtons;
     private  MenuPanel helpPanel;
-    private  MenuPanel optionsPanel;
+    private  MenuPanel creditsPanel;
     private static boolean twoPlayersMode = false;
 
     private MusicManager musicManager;
@@ -46,7 +46,7 @@ public class ViewManager {
         createButtons();
         createBackground();
         createHelpPanel();
-        createOptionsPanel();
+        createCreditsPanel();
         createTitle();
         musicManager = new MusicManager();
         musicManager.playMenuTheme();
@@ -69,7 +69,7 @@ public class ViewManager {
     private void createButtons() {
         createPlayButton();
         createHelpButton();
-        createOptionsButton();
+        createCreditsButton();
         createExitButton();
     }
 
@@ -88,6 +88,7 @@ public class ViewManager {
 
         playButton.setOnAction(event -> {
             musicManager.stopMusic();
+            musicManager.playClickSound();
             GameViewManager gameViewManager = new GameViewManager(musicManager);
             gameViewManager.createGame(mainStage, false);
         });
@@ -99,20 +100,22 @@ public class ViewManager {
 
         //action handler to call panel animation whenever button is pressed
         helpButton.setOnAction(event -> {
-            if (!optionsPanel.isHid())
-                optionsPanel.movePanel();
+            musicManager.playClickSound();
+            if (!creditsPanel.isHid())
+                creditsPanel.movePanel();
             helpPanel.movePanel();
         });
     }
 
-    private void createOptionsButton() {
-        NavigationButton optionsButton = new NavigationButton("OPTIONS");
-        addMenuButton(optionsButton);
+    private void createCreditsButton() {
+        NavigationButton creditsButton = new NavigationButton("CREDITS");
+        addMenuButton(creditsButton);
 
-        optionsButton.setOnAction(event -> {
+        creditsButton.setOnAction(event -> {
+            musicManager.playClickSound();
             if (!helpPanel.isHid())
                 helpPanel.movePanel();
-            optionsPanel.movePanel();
+            creditsPanel.movePanel();
         });
     }
 
@@ -121,7 +124,10 @@ public class ViewManager {
         addMenuButton(exitButton);
 
         //handler to exit app if button is pressed
-        exitButton.setOnAction(event -> Platform.exit());
+        exitButton.setOnAction(event -> {
+            musicManager.playClickSound();
+            Platform.exit();
+        });
     }
 
     private void createBackground() {
@@ -135,9 +141,9 @@ public class ViewManager {
         mainPane.getChildren().add(helpPanel);
     }
 
-    private void createOptionsPanel() {
-        optionsPanel = new MenuPanel(800, 130);
-        mainPane.getChildren().add(optionsPanel);
+    private void createCreditsPanel() {
+        creditsPanel = new MenuPanel(800, 130);
+        mainPane.getChildren().add(creditsPanel);
     }
 
 }

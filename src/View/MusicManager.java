@@ -5,6 +5,7 @@ import javafx.scene.media.AudioClip;
  class MusicManager {
     final static String MENU_THEME = "resources/Sounds/title_theme.mp3";
     final static String MAIN_THEME = "resources/Sounds/mecha_collection.mp3";
+    final static String CLICK_SOUND = "resources/Sounds/clickSound.mp3";
 
     private AudioClip currentlyPlaying;
 
@@ -28,5 +29,11 @@ import javafx.scene.media.AudioClip;
 
     void stopMusic() {
         currentlyPlaying.stop();
+    }
+
+    void playClickSound() {
+        AudioClip click = new AudioClip(this.getClass().getResource(CLICK_SOUND).toExternalForm());
+        click.setCycleCount(1);
+        click.play(0.4);
     }
 }

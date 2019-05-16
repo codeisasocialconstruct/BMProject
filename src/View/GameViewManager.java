@@ -91,7 +91,10 @@ public class GameViewManager {
         gamePane.getChildren().add(exitButton);
 
         //handler to exit app if button is pressed
-        exitButton.setOnAction(event -> Platform.exit());
+        exitButton.setOnAction(event -> {
+            musicManager.playClickSound();
+            Platform.exit();
+        });
     }
 
     //////////////////////////GAME ELEMENTS////////////////////////////////////////
@@ -171,38 +174,42 @@ public class GameViewManager {
     //function that checks if spawn position is empty and coordinates are correct, if they are, the Tank constructor is called
     private boolean spawnNeutralTank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY,
                                      String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix) {
-        if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null && spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
-            Tank spawningTank = new Tank(gamePane, spawnPosArrayX , spawnPosArrayY, tankSpriteUrl,
-                    tankList, collisionMatrix, 3, base);
-            return true;
+        if (spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
+            if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null) {
+                Tank spawningTank = new Tank(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl,
+                        tankList, collisionMatrix, 3, base);
+                return true;
+            }
         }
-        else
-            return false;
+        return false;
     }
 
     //function that checks if spawn position is empty and coordinates are correct, if they are, the PlayerTank constructor is called
     private boolean spawnPlayerOneTank(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix,
                                        KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey) {
-        if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null && spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
-            playerOneTank = new TankPlayer(gamePane, gameScene, spawnPosArrayX , spawnPosArrayY,
-                    tankSpriteUrl, tankList, collisionMatrix, base,
-                    moveLeftKey, moveRightKey, moveUpKey, moveDownKey, shootKey);
-            return true;
+        if (spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
+            if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null ) {
+                playerOneTank = new TankPlayer(gamePane, gameScene, spawnPosArrayX, spawnPosArrayY,
+                        tankSpriteUrl, tankList, collisionMatrix, base,
+                        moveLeftKey, moveRightKey, moveUpKey, moveDownKey, shootKey);
+                return true;
+            }
         }
-        else
-            return false;
+        return false;
     }
 
     private boolean spawnBase(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String[][] collisionMatrix, int lifePoints) {
 
-        //TODO fix if space is empty
         //Making sure that all 4 blocks where base will stand are empty and inside the map
-        if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null && spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
-            if (collisionMatrix[spawnPosArrayX + 1][spawnPosArrayY] == null && spawnPosArrayX + 1 < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY < GAME_HEIGHT / BLOCK_SIZE) {
-                if (collisionMatrix[spawnPosArrayX][spawnPosArrayY + 1] == null && spawnPosArrayX < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY + 1 < GAME_HEIGHT / BLOCK_SIZE) {
-                    if (collisionMatrix[spawnPosArrayX + 1][spawnPosArrayY + 1] == null && spawnPosArrayX + 1 < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY + 1 < GAME_HEIGHT / BLOCK_SIZE) {
-                        base = new Base(gamePane, spawnPosArrayX, spawnPosArrayY, lifePoints, collisionMatrix);
-                        return true;
+        if (spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
+            if (spawnPosArrayX + 1 < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY < GAME_HEIGHT / BLOCK_SIZE) {
+                if (spawnPosArrayX < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY + 1 < GAME_HEIGHT / BLOCK_SIZE) {
+                    if (spawnPosArrayX + 1 < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY + 1 < GAME_HEIGHT / BLOCK_SIZE) {
+                        if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null && collisionMatrix[spawnPosArrayX + 1][spawnPosArrayY] == null &&
+                                collisionMatrix[spawnPosArrayX][spawnPosArrayY + 1] == null && collisionMatrix[spawnPosArrayX + 1][spawnPosArrayY + 1] == null) {
+                            base = new Base(gamePane, spawnPosArrayX, spawnPosArrayY, lifePoints, collisionMatrix);
+                            return true;
+                        }
                     }
                 }
             }
