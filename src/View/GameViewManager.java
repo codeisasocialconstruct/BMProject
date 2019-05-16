@@ -55,15 +55,15 @@ public class GameViewManager {
         gameStage.initStyle(StageStyle.UNDECORATED); //hiding system window bar
         gameStage.setTitle("Battle Metropolis");
         gridMode = false; //creting grid
-        mapManager = new MapManager();
+        mapManager = new MapManager(gamePane,gameScene,gameStage);
     }
 
     private void createBackground() //TODO object MapManager, map generating and background generating
     {
-        Image backgroundGameImage;
-        backgroundGameImage = new Image("Model/Resources/MapPieces/Background.png", BLOCK_SIZE, BLOCK_SIZE, true, true);
-        BackgroundImage backgroundGame = new BackgroundImage(backgroundGameImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
-        gamePane.setBackground(new Background(backgroundGame));
+        mapManager.createBackground();
+        positionMatrix = mapManager.createPositionMatrix(); //initializing new array to represent map
+        mapManager.createMap();
+
     }
 
     private void createExitButton() {
@@ -81,17 +81,10 @@ public class GameViewManager {
     //showing game window
     public void createGame(Stage menuStage, boolean twoPlayersMode) {
         tanksList = new ArrayList<>();  //initializing array list that allows to manage all tanks on map
-        positionMatrix = mapManager.createPositionMatrix(); //initializing new array to represent map
+        createBackground();
         this.menuStage = menuStage;
         this.menuStage.hide();
 
-        /*
-        createExitButton(); //adding exit button
-        positionMatrix[0][0]="Exit";    //Blocking movement on exit button squares
-        positionMatrix[1][0]="Exit";
-        positionMatrix[2][0]="Exit";
-        positionMatrix[3][0]="Exit";
-        */
 
         //spawning test tanks
         spawnPlayerTank(gamePane, gameScene, 2, 4, playerOneTankSprite, tanksList, positionMatrix,
@@ -99,8 +92,9 @@ public class GameViewManager {
         //spawnNeutralTank(gamePane, 3, 2, standardTankSprite, tanksList, positionMatrix);
         //spawnNeutralTank(gamePane, 8, 5, standardTankSprite, tanksList, positionMatrix);
         //spawnNeutralTank(gamePane, 10, 5, standardTankSprite, tanksList, positionMatrix);
+
+        mapManager.bushToFront();
         createGameLoop();
-        createBackground();
         gameStage.show();
     }
 
