@@ -1,9 +1,14 @@
 package Model.Tanks;
 
+import Model.MapElements.Base;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.AudioClip;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TankPlayer extends Tank{
@@ -22,10 +27,15 @@ public class TankPlayer extends Tank{
     private KeyCode moveDownKey;
     private KeyCode shootKey;
 
+    private List<ImageView> lifePointIndicator;
+    private final static String HEART_SPRITE_FULL = "Model/Resources/tankSprites/heart_full.png";
+    private final static String HEART_SPRITE_EMPTY = "Model/Resources/tankSprites/heart_empty.png";
 
-    public TankPlayer(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix,
+
+    public TankPlayer(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
+                      String[][] collisionMatrix, Base base,
                       KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey) {
-        super(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 5);
+        super(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 5, base);
         this.gameScene = gameScene;
         this.moveLeftKey = moveLeftKey;
         this.moveRightKey = moveRightKey;
@@ -33,6 +43,9 @@ public class TankPlayer extends Tank{
         this.moveDownKey = moveDownKey;
         this.shootKey = shootKey;
         createKeyListeners();
+
+        lifePointIndicator = new ArrayList<>();
+        createLifeIndicator();
     }
 
     //Creating Listeners to inform which buttons are pressed - used to determine which animation is called
@@ -171,8 +184,10 @@ public class TankPlayer extends Tank{
 
     ///////////////////////////////////SHOOTING////////////////////////////
     public void moveProjectiles() {
-        if(isShootKeyPressed && shootDelay==0)
+        if(isShootKeyPressed && shootDelayTimer.getCanShoot()) {
             shoot();
+            shootDelayTimer.afterShootDelay(400);
+        }
 
         for (int x = 0; x<listOfActiveProjectiles.size(); x++) {
             listOfActiveProjectiles.get(x).moveProjectile();
@@ -180,11 +195,33 @@ public class TankPlayer extends Tank{
                 listOfActiveProjectiles.remove(x);  //if projectile hit anything it is deleted
         }
 
-        //delay to prevent spam shooting
-        if(shootDelay==20)      // TODO fix shooting delay (not variable, maybe timer object that count cooldown)
-            shootDelay=0;
-        else
-            shootDelay++;
+
+    }
+
+    ///////////////////////////////////DAMAGE AND LIFE POINTS////////////////////////////
+
+    private void createLifeIndicator() {
+        ImageView heart;
+        for (int iterator = 0; iterator < lifePoints; iterator++) {
+            heart = new ImageView(HEART_SPRITE_FULL);
+            heart.setLayoutX(GAME_WIDTH - (BLOCK_SIZE*(iterator+1)));
+            heart.setLayoutY(10);
+            lifePointIndicator.add(heart);
+            gamePane.getChildren().add(heart);
+        }
+    }
+
+    private void lifeIndicatorEmptyHeart() {
+        Image emptyHeart = new Image(HEART_SPRITE_EMPTY);
+        lifePointIndicator.get(lifePoints-1).setImage(emptyHeart);
+    }
+
+    void takeDamage() {
+        lifeIndicatorEmptyHeart(); //empty one heart
+        lifePoints--;
+
+        playHitSound();
+        hitAnimation();
     }
 
 }

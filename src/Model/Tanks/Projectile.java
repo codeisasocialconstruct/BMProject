@@ -1,5 +1,6 @@
 package Model.Tanks;
 
+import Model.MapElements.Base;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
@@ -15,11 +16,12 @@ public class Projectile {
     private int currentY;
     private int moveIterator;
     private boolean hitConfirmed;
+    private Base base;
 
     private final static String PROJECTILE_SPRITE = "Model/Resources/Projectiles/shotThin.png";
 
     public Projectile(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String[][] positionMatrix, char directionOfMovement,
-                      List<Projectile> projectileList, List<Tank> tankList) {
+                      List<Projectile> projectileList, List<Tank> tankList, Base base) {
         this.gamePane = gamePane;
         this.positionMatrix = positionMatrix;
         this.directionOfMovement = directionOfMovement;
@@ -49,7 +51,7 @@ public class Projectile {
         }
         projectileList.add(this);
         gamePane.getChildren().add(projectileSprite);
-
+        this.base = base;
         moveIterator=0;
         hitConfirmed = false;
     }
@@ -68,7 +70,12 @@ public class Projectile {
             try {
                 IDToFind = Integer.parseInt(positionMatrix[positionArrayX][positionArrayY]); //Checking if hit object is Tank
             } catch (NumberFormatException e) { //if not function returns false
-                return false;
+                if (positionMatrix[positionArrayX][positionArrayY]=="Base") {
+                    base.takeDamage();
+                    return true;
+                }  //TODO add destructible objects list exception
+                else
+                    return false;
             }
 
             for(Tank tank: tankList) {  //Looking hit tank in tanks list, by it`s ID

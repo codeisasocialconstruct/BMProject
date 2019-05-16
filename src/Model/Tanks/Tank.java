@@ -1,60 +1,80 @@
 package Model.Tanks;
 
+import Model.MapElements.Base;
+import Model.SpriteAnimation;
+import javafx.animation.Animation;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.AudioClip;
+import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Tank {
-    private AnchorPane gamePane;
-    private ImageView tankSprite;
+    AnchorPane gamePane;
+    ImageView tankSprite;
     private static int nextID = 0;
-    protected int lifePoints;
-    protected int ID;
+    int lifePoints;
+    int ID;
 
-    protected boolean fullSpin;
-    protected int angle;  //current angle of tank
-    protected char directionOfMovement;
-    protected int moveIterator;
-    protected static String[][] positionMatrix;
-    protected int currentX; //current X position in positionMatrix
-    protected int currentY; //current Y position in positionMatrix
-    protected boolean allowedToMove; //For checking if congruent block is empty
-    protected List<Tank> tankList;
-    protected List<Projectile> listOfActiveProjectiles;
-    protected Projectile projectile;
-    protected int shootDelay;
+    boolean fullSpin;
+    int angle;  //current angle of tank
+    char directionOfMovement;
+    int moveIterator;
+    static String[][] positionMatrix;
+    int currentX; //current X position in positionMatrix
+    int currentY; //current Y position in positionMatrix
+    boolean allowedToMove; //For checking if congruent block is empty
+    Base base;
+    List<Tank> tankList;
+    List<Projectile> listOfActiveProjectiles;
+    Projectile projectile;
+    ShootDelayTimer shootDelayTimer;
+    Random shootChance;
+    AudioClip sounds;
 
-    protected final static int GAME_WIDTH = 800;  //Map divided into blocks 50x50 pixels each
-    protected final static int GAME_HEIGHT = 600; //Map size is 16x12 blocks
-    protected final static int BLOCK_SIZE = 50;
+    ImageView tankExplosion;
+    final static String EXPLOSION_SPRITE_SHEET = "Model/Resources/tankSprites/TankExplosionSpriteSheet.png";
+    final static String SHOOT_SOUND = "../Resources/TankSounds/shoot_sound.wav";
+    final static String HIT_SOUND = "../Resources/TankSounds/get_hit_sound.wav";
+    final static String TANK_EXPLOSION_SOUND = "../Resources/TankSounds/tank_explosion_sound.wav";
+
+    final static int GAME_WIDTH = 800;  //Map divided into blocks 50x50 pixels each
+    final static int GAME_HEIGHT = 600; //Map size is 16x12 blocks
+    final static int BLOCK_SIZE = 50;
 
     public Tank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
-                String[][] collisionMatrix, int maxLifePoints) {
+                String[][] collisionMatrix, int maxLifePoints, Base base) {
         this.gamePane = gamePane;
         positionMatrix = collisionMatrix; //passing position matrix through reference
         ID = nextID;             //generating new ID
         nextID++;
         tankList.add(this);               //adding tank to tanks list
+        this.tankList = tankList;
 
         collisionMatrix[spawnPosArrayX][spawnPosArrayY] = Integer.toString(ID); //saving tank position in collision matrix
         currentX = spawnPosArrayX;
         currentY = spawnPosArrayY;
 
         tankSprite = new ImageView(tankSpriteUrl);  //loading sprite
+        tankSprite.setClip(new ImageView(tankSpriteUrl));   //deleting background from sprite
         tankSprite.setLayoutX(spawnPosArrayX*50);
         tankSprite.setLayoutY(spawnPosArrayY*50);
 
         gamePane.getChildren().add(tankSprite);
 
-        lifePoints = maxLifePoints;
+        if (lifePoints<1)
+            this.lifePoints = 5;
+        else
+            this.lifePoints = maxLifePoints;
+
         angle = 0; //starting angle
         moveIterator = 0;
-        this.tankList = tankList;
         listOfActiveProjectiles = new ArrayList<>(); //creating arraylist to manage projectiles created by this tank
-        shootDelay = 0;
+        shootDelayTimer = new ShootDelayTimer();
+        shootChance = new Random();
+        this.base = base;
     }
 
     public int getID() {return ID;}
@@ -68,7 +88,7 @@ public class Tank {
     }
 
     //////////////////////////////////COLLISION SYSTEM////////////////////////////////////
-    protected boolean checkIfDownEmpty() {
+    boolean checkIfDownEmpty() {
         if (currentY < GAME_HEIGHT/BLOCK_SIZE-1) {
             if (positionMatrix[currentX][currentY + 1] == null)
                 return true;
@@ -79,7 +99,7 @@ public class Tank {
             return false;
     }
 
-    protected boolean checkIfUpEmpty() {
+    boolean checkIfUpEmpty() {
         if (currentY > 0) {
             if (positionMatrix[currentX][currentY - 1] == null)
                 return true;
@@ -90,7 +110,7 @@ public class Tank {
             return false;
     }
 
-    protected boolean checkIfRightEmpty() {
+    boolean checkIfRightEmpty() {
         if (currentX < GAME_WIDTH/BLOCK_SIZE-1) {
             if (positionMatrix[currentX + 1][currentY] == null)
                 return true;
@@ -101,7 +121,7 @@ public class Tank {
             return false;
     }
 
-    protected boolean checkIfLeftEmpty() {
+    boolean checkIfLeftEmpty() {
         if(currentX>0) {
             if (positionMatrix[currentX - 1][currentY] == null)
                 return true;
@@ -113,7 +133,7 @@ public class Tank {
     }
 
     //////////////////////////ANIMATIONS AND TANK MOTION////////////////////////////////////
-    protected boolean moveTankDownOneIteration() {
+    boolean moveTankDownOneIteration() {
         if(angle < 180 && angle >= 0) {  //checking angle of tank do select rotation direction - 3rd & 4th quarter
             if(fullSpin)
                 angle +=18;
@@ -138,7 +158,7 @@ public class Tank {
             return false;
     }
 
-    protected boolean moveTankUpOneIteration() {
+    boolean moveTankUpOneIteration() {
         if(angle >=-180 && angle < 0) {  //checking angle of tank do select rotation direction - 3rd & 4th quarter
             if(fullSpin)
                 angle +=18;             //changing angle rotation due to fullSpin, makes sure that spin will be complete after 10 frames
@@ -162,7 +182,7 @@ public class Tank {
             return false;
     }
 
-    protected boolean moveTankRightOneIteration() {
+    boolean moveTankRightOneIteration() {
         if(angle >=-90 && angle < 90) { //checking angle of tank do select rotation direction - 1st & 4th quarter
             if(fullSpin)
                 angle +=18;             //changing angle rotation due to fullSpin, makes sure that spin will be complete after 10 frames
@@ -190,7 +210,7 @@ public class Tank {
             return false;
     }
 
-    protected boolean moveTankLeftOneIteration() {
+    boolean moveTankLeftOneIteration() {
         if (angle > -90 && angle <= 90) {     //checking angle of tank do select rotation direction - 1st & 4th quarter of circle
             if(fullSpin)
                 angle -= 18;
@@ -314,43 +334,55 @@ public class Tank {
 
 
     /////////////////////////////SHOOTING//////////////////////////////////////
-    public boolean shoot() {
+    boolean shoot() {
         if(angle == 90)
-                projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'R', listOfActiveProjectiles, tankList);
+            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix,
+                    'R', listOfActiveProjectiles, tankList, base);
         else if(angle == -90) {
-            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'L', listOfActiveProjectiles,tankList);
+            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix,
+                    'L', listOfActiveProjectiles,tankList, base);
         }
         else if(angle == 0) {
-            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'U', listOfActiveProjectiles,tankList);
+            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix,
+                    'U', listOfActiveProjectiles,tankList, base);
         }
         else if(angle == -180 || angle == 180) {
-            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix, 'D', listOfActiveProjectiles,tankList);
+            projectile = new Projectile(gamePane, currentX, currentY, positionMatrix,
+                    'D', listOfActiveProjectiles,tankList, base);
         }
+
+        playShootSound();
 
         return false;
     }
 
     public void moveProjectiles() {
-        if(shootDelay==0)
-            shoot();
+
+        if(shootDelayTimer.getCanShoot()) {
+            if(shootChance.nextInt(100) > 90) {     //randomize shoot chance
+                shoot();
+                shootDelayTimer.afterShootDelay(600);   //calling timer to prevent non stop shooting
+            }
+        }
 
         for (int x = 0; x<listOfActiveProjectiles.size(); x++) {
             listOfActiveProjectiles.get(x).moveProjectile();
             if( listOfActiveProjectiles.get(x).getHitConfirmed())
                 listOfActiveProjectiles.remove(x);
         }
-
-        if(shootDelay==30)
-            shootDelay=0;
-        else
-            shootDelay++;
     }
 
     ///////////////////////////LIFE POINTS AND TANK DESTRUCTION/////////////////////
     public int getLifePoints() {return lifePoints;}
 
-    public void takeDamage() {
+    void takeDamage() {
         lifePoints--;
+        playHitSound();
+        hitAnimation();
+    }
+
+    void hitAnimation() {
+        CoulorChangerTimer timer = new CoulorChangerTimer(tankSprite);
     }
 
     public void tankDestruction() {
@@ -358,9 +390,52 @@ public class Tank {
         for (Projectile projectile: listOfActiveProjectiles) {
             projectile.hideProjectile();
         }
+        playTankExplosionSound();
+
+        destructionAnimation();
         listOfActiveProjectiles.clear();
         gamePane.getChildren().remove(tankSprite);
     }
 
-    private void destructionAnimation() {}//TODO destruction animation
+    private void destructionAnimation() {
+        tankExplosion = new ImageView(EXPLOSION_SPRITE_SHEET);
+        tankExplosion.setFitWidth(2*BLOCK_SIZE);
+        tankExplosion.setFitHeight(2*BLOCK_SIZE);
+        tankExplosion.setLayoutX(tankSprite.getLayoutX() - BLOCK_SIZE/2); //placing animation
+        tankExplosion.setLayoutY(tankSprite.getLayoutY()-BLOCK_SIZE/2);
+        tankExplosion.setViewport(new Rectangle2D(0, 0, 128, 128)); //preventing from showing whole sprite sheet
+
+        final Animation explosionAnimation = new SpriteAnimation(
+                tankExplosion,
+                Duration.millis(1000),
+                12, 12,
+                0, 0,
+                128, 128
+        );
+        explosionAnimation.setCycleCount(1);
+        explosionAnimation.setOnFinished(event -> gamePane.getChildren().remove(tankExplosion));    //removing sprite after animation is done
+        gamePane.getChildren().add(tankExplosion);
+        explosionAnimation.play();
+    }
+
+
+    ////////////////////////////////SOUNDS//////////////////////////////////////
+
+    void playShootSound() {
+        sounds = new AudioClip(this.getClass().getResource(SHOOT_SOUND).toExternalForm());
+        sounds.setCycleCount(1);
+        sounds.play(0.4);
+    }
+
+    void playHitSound() {
+        sounds = new AudioClip(this.getClass().getResource(HIT_SOUND).toExternalForm());
+        sounds.setCycleCount(1);
+        sounds.play(0.4);
+    }
+
+    void playTankExplosionSound() {
+        sounds = new AudioClip(this.getClass().getResource(TANK_EXPLOSION_SOUND).toExternalForm());
+        sounds.setCycleCount(1);
+        sounds.play(0.5);
+    }
 }

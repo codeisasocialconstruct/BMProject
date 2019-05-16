@@ -4,6 +4,7 @@ import Model.MenuPanel;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import Model.NavigationButton;
@@ -23,11 +24,14 @@ public class ViewManager {
     private final int WIDTH = 800;
     private final int MENU_BUTTON_START_X = 100;
     private final int MENU_BUTTON_START_Y = 100;
+    private final String TITLE = "View/resources/Title.png";
 
     private List<NavigationButton> menuButtons;
     private  MenuPanel helpPanel;
-    private  MenuPanel optionsPanel;
+    private  MenuPanel creditsPanel;
     private static boolean twoPlayersMode = false;
+
+    private MusicManager musicManager;
 
     public ViewManager() {
         //creating list to manage buttons
@@ -42,7 +46,10 @@ public class ViewManager {
         createButtons();
         createBackground();
         createHelpPanel();
-        createOptionsPanel();
+        createCreditsPanel();
+        createTitle();
+        musicManager = new MusicManager();
+        musicManager.playMenuTheme();
     }
 
     public Stage getMainStage() {
@@ -50,10 +57,19 @@ public class ViewManager {
     }
 
     ///////////////////////MENU METHODS//////////////////////////////
+    private void createTitle() {
+        ImageView title = new ImageView(TITLE);
+        title.setFitWidth(450);
+        title.setFitHeight(40);
+        title.setLayoutX(WIDTH - 475);
+        title.setLayoutY(50);
+        mainPane.getChildren().add(title);
+    }
+
     private void createButtons() {
         createPlayButton();
         createHelpButton();
-        createOptionsButton();
+        createCreditsButton();
         createExitButton();
     }
 
@@ -71,7 +87,9 @@ public class ViewManager {
         addMenuButton(playButton);
 
         playButton.setOnAction(event -> {
-            GameViewManager gameViewManager = new GameViewManager();
+            musicManager.stopMusic();
+            musicManager.playClickSound();
+            GameViewManager gameViewManager = new GameViewManager(musicManager);
             gameViewManager.createGame(mainStage, false);
         });
     }
@@ -82,20 +100,22 @@ public class ViewManager {
 
         //action handler to call panel animation whenever button is pressed
         helpButton.setOnAction(event -> {
-            if (!optionsPanel.isHid())
-                optionsPanel.movePanel();
+            musicManager.playClickSound();
+            if (!creditsPanel.isHid())
+                creditsPanel.movePanel();
             helpPanel.movePanel();
         });
     }
 
-    private void createOptionsButton() {
-        NavigationButton optionsButton = new NavigationButton("OPTIONS");
-        addMenuButton(optionsButton);
+    private void createCreditsButton() {
+        NavigationButton creditsButton = new NavigationButton("CREDITS");
+        addMenuButton(creditsButton);
 
-        optionsButton.setOnAction(event -> {
+        creditsButton.setOnAction(event -> {
+            musicManager.playClickSound();
             if (!helpPanel.isHid())
                 helpPanel.movePanel();
-            optionsPanel.movePanel();
+            creditsPanel.movePanel();
         });
     }
 
@@ -104,7 +124,10 @@ public class ViewManager {
         addMenuButton(exitButton);
 
         //handler to exit app if button is pressed
-        exitButton.setOnAction(event -> Platform.exit());
+        exitButton.setOnAction(event -> {
+            musicManager.playClickSound();
+            Platform.exit();
+        });
     }
 
     private void createBackground() {
@@ -114,13 +137,13 @@ public class ViewManager {
     }
 
     private void createHelpPanel() {
-        helpPanel = new MenuPanel();
+        helpPanel = new MenuPanel(800, 130);
         mainPane.getChildren().add(helpPanel);
     }
 
-    private void createOptionsPanel() {
-        optionsPanel = new MenuPanel();
-        mainPane.getChildren().add(optionsPanel);
+    private void createCreditsPanel() {
+        creditsPanel = new MenuPanel(800, 130);
+        mainPane.getChildren().add(creditsPanel);
     }
 
 }
