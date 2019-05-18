@@ -93,7 +93,6 @@ public class GameViewManager {
         //spawnNeutralTank(gamePane, 8, 5, standardTankSprite, tanksList, positionMatrix);
         //spawnNeutralTank(gamePane, 10, 5, standardTankSprite, tanksList, positionMatrix);
 
-        mapManager.bushToFront();
         createGameLoop();
         gameStage.show();
     }
@@ -119,6 +118,7 @@ public class GameViewManager {
                         tanksList.remove(iterator);
                     }
                 }
+                mapManager.bushToFront();
             }
         };
         gameTimer.start();

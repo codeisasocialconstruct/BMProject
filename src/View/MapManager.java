@@ -4,10 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
 import java.util.ArrayList;
 
 public class MapManager
@@ -26,6 +23,7 @@ public class MapManager
     private final static int GAME_WIDTH = 250;
     private final static int GAME_HEIGHT = 250;
     private final static int BLOCK_SIZE = 50;
+    private DataBaseConnector dbConnector;
 
     private static final String BRICK1 = "Model/Resources/MapPieces/Brick1.png";
     private static final String BRICK2 = "Model/Resources/MapPieces/Brick2.png";
@@ -35,7 +33,7 @@ public class MapManager
     private static final String BACKGROUND = "Model/Resources/MapPieces/Background.png";
 
     private static String[][] positionMatrix;
-    private static String stream = "5555555555555550000000000";
+    private static String map_stream = "";
 
     public MapManager(AnchorPane gamePane, Scene gameScene, Stage gameStage)
     {
@@ -44,6 +42,9 @@ public class MapManager
         this.gameStage = gameStage;
         positionMatrix = new String[GAME_WIDTH/BLOCK_SIZE][GAME_HEIGHT/BLOCK_SIZE];
         bushList = new ArrayList<>();
+        dbConnector = new DataBaseConnector("SELECT * FROM map WHERE name = 'TEST';");
+        dbConnector.getData();
+        map_stream = dbConnector.getMap_stream();
     }
 
     public void createBackground()
@@ -57,7 +58,7 @@ public class MapManager
     public String[][] createPositionMatrix()
     {
         int counter = 0;
-        char[] tmp = stream.toCharArray();
+        char[] tmp = map_stream.toCharArray();
 
         for(int i=0; i<GAME_WIDTH/BLOCK_SIZE; i++ )
             for (int j=0; j<GAME_HEIGHT/BLOCK_SIZE; j++ )
@@ -94,7 +95,7 @@ public class MapManager
     public void createMap()
     {
         int counter = 0;
-        char[] tmp = stream.toCharArray();
+        char[] tmp = map_stream.toCharArray();
         String picture;
 
         for(int i=0; i<GAME_WIDTH/BLOCK_SIZE; i++ )
@@ -139,7 +140,8 @@ public class MapManager
                     ImageView imageView = new ImageView(new Image(picture, BLOCK_SIZE, BLOCK_SIZE, false, true));
                     imageView.setLayoutX(j * BLOCK_SIZE);
                     imageView.setLayoutY(i * BLOCK_SIZE);
-                    bushList.add(imageView);
+                    if(tmp[counter] == '5')
+                        bushList.add(imageView);
                     gamePane.getChildren().add(imageView);
                 }
                 counter++;
