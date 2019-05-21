@@ -12,6 +12,7 @@ public class DataBaseConnector
     private int block_size;
     private int game_width;
     private int game_height;
+
     public DataBaseConnector(String question)
     {
         this.question = question;
@@ -51,6 +52,7 @@ public class DataBaseConnector
         }
         catch(Exception e)
         {
+            System.out.println("No connection to the database");
             e.printStackTrace();
         }
     }
