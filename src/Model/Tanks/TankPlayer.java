@@ -1,5 +1,6 @@
 package Model.Tanks;
 
+import View.DataBaseConnector;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
@@ -24,8 +25,8 @@ public class TankPlayer extends Tank{
 
 
     public TankPlayer(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix,
-                      KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey) {
-        super(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 5);
+                      KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey, DataBaseConnector dbConnector) {
+        super(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 5,dbConnector);
         this.gameScene = gameScene;
         this.moveLeftKey = moveLeftKey;
         this.moveRightKey = moveRightKey;

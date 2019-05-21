@@ -8,7 +8,6 @@ import Model.Tanks.TankPlayer;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -30,17 +29,19 @@ public class GameViewManager {
 
     private boolean gridMode;
 
-    private final static int GAME_WIDTH = 250;  //Map divided into blocks 50x50 pixels each
-    private final static int GAME_HEIGHT = 250; //Map has size 16x12 blocks
-    private final static int BLOCK_SIZE = 50;
-    private static String[][] positionMatrix;
+    private int GAME_WIDTH = 250;  //Map divided into blocks 50x50 pixels each
+    private int GAME_HEIGHT = 250; //Map has size 16x12 blocks
+    private int BLOCK_SIZE = 50;
+    private String[][] positionMatrix;
     private MapManager mapManager;
+    private DataBaseConnector dbConnector;
     //array used to detect collisions. It contains strings. If string is a number
     //that means in this position tank is present and number equals it`s. If any other string
 
     private final static String standardTankSprite = "Model/Resources/tankSprites/tank_dark.png";
     private final static String playerOneTankSprite = "Model/Resources/tankSprites/tank_red.png";
     private final static String playerTwoTankSprite = "Model/Resources/tankSprites/tankBlue.png";
+    private String boardName = "TESTTT";
 
     ///////////////////////WINDOW INITIALIZATION////////////////////////////////////
     public GameViewManager() {
@@ -48,6 +49,11 @@ public class GameViewManager {
     }
 
     private void initializeStage() {
+        dbConnector = new DataBaseConnector("SELECT * FROM map WHERE name = '" + boardName + "';");
+        dbConnector.getData();
+        GAME_HEIGHT = dbConnector.getGame_height();
+        GAME_WIDTH = dbConnector.getGame_width();
+        BLOCK_SIZE = dbConnector.getBlock_size();
         gamePane = new AnchorPane();
         gameScene = new Scene(gamePane, GAME_WIDTH, GAME_HEIGHT);
         gameStage = new Stage();
@@ -55,7 +61,7 @@ public class GameViewManager {
         gameStage.initStyle(StageStyle.UNDECORATED); //hiding system window bar
         gameStage.setTitle("Battle Metropolis");
         gridMode = false; //creting grid
-        mapManager = new MapManager(gamePane,gameScene,gameStage);
+        mapManager = new MapManager(gamePane,gameScene,gameStage,dbConnector);
     }
 
     private void createBackground() //TODO object MapManager, map generating and background generating
@@ -88,7 +94,7 @@ public class GameViewManager {
 
         //spawning test tanks
         spawnPlayerTank(gamePane, gameScene, 2, 4, playerOneTankSprite, tanksList, positionMatrix,
-                KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN, KeyCode.CONTROL);
+                KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN, KeyCode.CONTROL,dbConnector);
         //spawnNeutralTank(gamePane, 3, 2, standardTankSprite, tanksList, positionMatrix);
         //spawnNeutralTank(gamePane, 8, 5, standardTankSprite, tanksList, positionMatrix);
         //spawnNeutralTank(gamePane, 10, 5, standardTankSprite, tanksList, positionMatrix);
@@ -130,7 +136,7 @@ public class GameViewManager {
     private boolean spawnNeutralTank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY,
                                      String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix) {
         if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null && spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
-            Tank spawningTank = new Tank(gamePane, spawnPosArrayX , spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 3);
+            Tank spawningTank = new Tank(gamePane, spawnPosArrayX , spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 3,dbConnector);
             return true;
         }
         else
@@ -139,10 +145,10 @@ public class GameViewManager {
 
     //function that checks if spawn position is empty and coordinates are correct, if they are, the PlayerTank constructor is called
     private boolean spawnPlayerTank(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix,
-                                    KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey) {
+                                    KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey, DataBaseConnector dbConnector) {
         if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null && spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
             TankPlayer spawningTank = new TankPlayer(gamePane, gameScene, spawnPosArrayX , spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix,
-                    moveLeftKey, moveRightKey, moveUpKey, moveDownKey, shootKey);
+                    moveLeftKey, moveRightKey, moveUpKey, moveDownKey, shootKey,dbConnector);
             return true;
         }
         else

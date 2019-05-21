@@ -1,5 +1,6 @@
 package Model.Tanks;
 
+import View.DataBaseConnector;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
@@ -27,12 +28,13 @@ public class Tank {
     protected Projectile projectile;
     protected int shootDelay;
 
-    protected final static int GAME_WIDTH = 250;  //Map divided into blocks 50x50 pixels each
-    protected final static int GAME_HEIGHT = 250; //Map size is 16x12 blocks
-    protected final static int BLOCK_SIZE = 50;
+    protected static int GAME_WIDTH;  //Map divided into blocks 50x50 pixels each
+    protected static int GAME_HEIGHT; //Map size is 16x12 blocks
+    protected static int BLOCK_SIZE;
+    protected DataBaseConnector dbConnector;
 
     public Tank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
-                String[][] collisionMatrix, int maxLifePoints) {
+                String[][] collisionMatrix, int maxLifePoints, DataBaseConnector dbConnector) {
         this.gamePane = gamePane;
         positionMatrix = collisionMatrix; //passing position matrix through reference
         ID = nextID;             //generating new ID
@@ -55,6 +57,10 @@ public class Tank {
         this.tankList = tankList;
         listOfActiveProjectiles = new ArrayList<>(); //creating arraylist to manage projectiles created by this tank
         shootDelay = 0;
+        this.dbConnector = dbConnector;
+        GAME_HEIGHT = dbConnector.getGame_height();
+        GAME_WIDTH = dbConnector.getGame_width();
+        BLOCK_SIZE = dbConnector.getBlock_size();
     }
 
     public int getID() {return ID;}

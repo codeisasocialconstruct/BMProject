@@ -20,9 +20,9 @@ public class MapManager
     private Scene gameScene;
     private Stage gameStage;
     private ArrayList<ImageView> bushList;
-    private final static int GAME_WIDTH = 250;
-    private final static int GAME_HEIGHT = 250;
-    private final static int BLOCK_SIZE = 50;
+    private int GAME_WIDTH;
+    private int GAME_HEIGHT;
+    private int BLOCK_SIZE;
     private DataBaseConnector dbConnector;
 
     private static final String BRICK1 = "Model/Resources/MapPieces/Brick1.png";
@@ -35,16 +35,18 @@ public class MapManager
     private static String[][] positionMatrix;
     private static String map_stream = "";
 
-    public MapManager(AnchorPane gamePane, Scene gameScene, Stage gameStage)
+    public MapManager(AnchorPane gamePane, Scene gameScene, Stage gameStage , DataBaseConnector dbConnector)
     {
         this.gamePane = gamePane;
         this.gameScene = gameScene;
         this.gameStage = gameStage;
-        positionMatrix = new String[GAME_WIDTH/BLOCK_SIZE][GAME_HEIGHT/BLOCK_SIZE];
         bushList = new ArrayList<>();
-        dbConnector = new DataBaseConnector("SELECT * FROM map WHERE name = 'TEST';");
-        dbConnector.getData();
+        this.dbConnector = dbConnector;
+        GAME_HEIGHT = dbConnector.getGame_height();
+        GAME_WIDTH = dbConnector.getGame_width();
+        BLOCK_SIZE = dbConnector.getBlock_size();
         map_stream = dbConnector.getMap_stream();
+        positionMatrix = new String[GAME_WIDTH/BLOCK_SIZE][GAME_HEIGHT/BLOCK_SIZE];
     }
 
     public void createBackground()
@@ -59,6 +61,10 @@ public class MapManager
     {
         int counter = 0;
         char[] tmp = map_stream.toCharArray();
+        System.out.println(tmp);
+        System.out.println(GAME_HEIGHT);
+        System.out.println(GAME_WIDTH);
+        System.out.println(BLOCK_SIZE);
 
         for(int i=0; i<GAME_WIDTH/BLOCK_SIZE; i++ )
             for (int j=0; j<GAME_HEIGHT/BLOCK_SIZE; j++ )
@@ -83,6 +89,10 @@ public class MapManager
                     case '4':
                     {
                         positionMatrix[j][i] = "Wall";
+                        break;
+                    }
+                    case '0':
+                    {
                         break;
                     }
 
@@ -154,5 +164,10 @@ public class MapManager
         {
             i.toFront();
         }
+    }
+
+    public DataBaseConnector getDbConnector()
+    {
+        return dbConnector;
     }
 }
