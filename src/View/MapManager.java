@@ -5,6 +5,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+
+import java.awt.*;
 import java.util.ArrayList;
 
 public class MapManager
@@ -28,6 +30,13 @@ public class MapManager
     private int GAME_HEIGHT;
     private int BLOCK_SIZE;
     private DataBaseConnector dbConnector;
+    private int playerOneX;
+    private int playerOneY;
+    private int baseX;
+    private int baseY;
+    private boolean baseCondition = true;
+    private boolean neutralCounter = false;
+    private ArrayList<Point> neutralList;
 
     private static final String BRICK1 = "Model/Resources/MapPieces/Brick1.png";
     private static final String BRICK2 = "Model/Resources/MapPieces/Brick2.png";
@@ -51,6 +60,7 @@ public class MapManager
         BLOCK_SIZE = 50;
         map_stream = dbConnector.getMap_stream();
         positionMatrix = new String[GAME_WIDTH/BLOCK_SIZE][GAME_HEIGHT/BLOCK_SIZE];
+        neutralList = new ArrayList<>();
     }
 
     public void createBackground()
@@ -92,6 +102,28 @@ public class MapManager
                     case '4':
                     {
                         positionMatrix[j][i] = "Wall";
+                        break;
+                    }
+                    case 'F':
+                    {
+                        playerOneX = j;
+                        playerOneY = i;
+                        break;
+                    }
+                    case 'B':
+                    {
+                        if (baseCondition)
+                        {
+                            baseX = j;
+                            baseY = i;
+                            baseCondition = false;
+                        }
+                        break;
+                    }
+                    case 'N':
+                    {
+                        neutralCounter = true;
+                        neutralList.add(new Point(j,i));
                         break;
                     }
                     case '0':
@@ -145,7 +177,7 @@ public class MapManager
                         }
                         default:
                         {
-                            picture = BUSH;
+                            picture = BACKGROUND;
                             break;
                         }
                     }
@@ -169,8 +201,38 @@ public class MapManager
         }
     }
 
+    public ArrayList<Point> getNeutralList()
+    {
+        return neutralList;
+    }
+
     public DataBaseConnector getDbConnector()
     {
         return dbConnector;
+    }
+
+    public int getPlayerOneX()
+    {
+        return playerOneX;
+    }
+
+    public int getPlayerOneY()
+    {
+        return playerOneY;
+    }
+
+    public int getBaseX()
+    {
+        return baseX;
+    }
+
+    public int getBaseY()
+    {
+        return baseY;
+    }
+
+    public boolean getNeutralCounter()
+    {
+        return neutralCounter;
     }
 }

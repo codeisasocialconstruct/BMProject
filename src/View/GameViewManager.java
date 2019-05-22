@@ -5,24 +5,23 @@ package View;
 import Model.InfoLabel;
 import Model.MapElements.Base;
 import Model.MenuPanel;
-import Model.NavigationButton;
 import Model.Tanks.Tank;
 import Model.Tanks.TankPlayer;
 import javafx.animation.AnimationTimer;
-import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class GameViewManager {
+public class GameViewManager
+{
     private AnchorPane gamePane;
     private Scene gameScene;
     private Stage gameStage;
@@ -34,7 +33,7 @@ public class GameViewManager {
     private AnimationTimer gameTimer;
     private Base base;
     private DataBaseConnector dataBaseConnector;
-    private String boardName = "TESTTT";
+    private String boardName = "Desert skirmish";
     private MapManager mapManager;
 
     private boolean isGamePaused;
@@ -55,14 +54,16 @@ public class GameViewManager {
     private MusicManager musicManager;
 
     ///////////////////////WINDOW INITIALIZATION////////////////////////////////////
-    public GameViewManager(MusicManager musicManager) {
+    public GameViewManager(MusicManager musicManager)
+    {
         this.musicManager = musicManager;
         initializeStage();
         createBackground();
         musicManager.playMainTheme();
     }
 
-    private void initializeStage() {
+    private void initializeStage()
+    {
         dataBaseConnector = new DataBaseConnector("SELECT * FROM map WHERE name = '" + boardName + "';");
         dataBaseConnector.getData();
         GAME_WIDTH = dataBaseConnector.getGame_width();
@@ -75,17 +76,20 @@ public class GameViewManager {
         gameStage.initStyle(StageStyle.UNDECORATED); //hiding system window bar
         gameStage.setTitle("Battle Metropolis");
         gridMode = false;
-        isGamePaused=false;
-        mapManager = new MapManager(gamePane,gameScene,gameStage,dataBaseConnector);
+        isGamePaused = false;
+        mapManager = new MapManager(gamePane, gameScene, gameStage, dataBaseConnector);
     }
 
-    private void createBackground() {
+    private void createBackground()
+    {
         mapManager.createBackground();
         positionMatrix = mapManager.createPositionMatrix();
         mapManager.createMap();
     }
 
-    private void createExitButton(double X, double Y) {
+
+/*    private void createExitButton(double X, double Y)
+    {
         NavigationButton exitButton = new NavigationButton("EXIT");
         exitButton.setLayoutX(X);
         exitButton.setLayoutY(Y);
@@ -93,37 +97,29 @@ public class GameViewManager {
         gamePane.getChildren().add(exitButton);
 
         //handler to exit app if button is pressed
-        exitButton.setOnAction(event -> {
+        exitButton.setOnAction(event ->
+        {
             musicManager.playClickSound();
             Platform.exit();
         });
-    }
+    }*/
 
     //////////////////////////GAME ELEMENTS////////////////////////////////////////
     //showing game window
-    public void createGame(Stage menuStage, boolean twoPlayersMode) {
+    public void createGame(Stage menuStage, boolean twoPlayersMode)
+    {
         tanksList = new ArrayList<>();  //initializing array list that allows to manage all tanks on map
-        positionMatrix = new String[GAME_WIDTH/BLOCK_SIZE][GAME_HEIGHT/BLOCK_SIZE]; //initializing new array to represent map
         this.menuStage = menuStage;
         this.menuStage.hide();
 
-        /*
-        createExitButton(0,0); //adding exit button
-        positionMatrix[0][0]="Exit";    //Blocking movement on exit button squares
-        positionMatrix[1][0]="Exit";
-        positionMatrix[2][0]="Exit";
-        positionMatrix[3][0]="Exit";
-        */
+        spawnBase(gamePane, mapManager.getBaseX(), mapManager.getBaseY(), positionMatrix, 5); //BASE NEED TO BE INITIALIZED BEFORE TANKS!!!
+        spawnPlayerOneTank(gamePane, gameScene, mapManager.getPlayerOneX(), mapManager.getPlayerOneY(), playerOneTankSprite, tanksList, positionMatrix,
+                KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN, KeyCode.CONTROL, dataBaseConnector);
 
-        //spawning test tanks
-        spawnBase(gamePane, 5, 5, positionMatrix, 5); //BASE NEED TO BE INITIALIZED BEFORE TANKS!!!
-        spawnPlayerOneTank(gamePane, gameScene, 1, 1, playerOneTankSprite, tanksList, positionMatrix,
-                KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN, KeyCode.CONTROL,dataBaseConnector);
-        /*
-        spawnNeutralTank(gamePane, 3, 2, standardTankSprite, tanksList, positionMatrix);
-        spawnNeutralTank(gamePane, 8, 5, standardTankSprite, tanksList, positionMatrix);
-        spawnNeutralTank(gamePane, 10, 5, standardTankSprite, tanksList, positionMatrix);
-         */
+        for(Point i : mapManager.getNeutralList())
+        {
+            spawnNeutralTank(gamePane, (int)i.getX(), (int)i.getY(), standardTankSprite, tanksList, positionMatrix,dataBaseConnector);
+        }
         createGameLoop();
         gameStage.show();
     }
@@ -135,28 +131,40 @@ public class GameViewManager {
     This makes sure, user input won`t interrupt animation, because continueTankMovement does not depends on user input.
     Thanks to that, we make sure that tank is moving only by 50, which is map block size and animation will be smooth.
     */
-    private void createGameLoop() {
-        gameTimer = new AnimationTimer() {
+    private void createGameLoop()
+    {
+        gameTimer = new AnimationTimer()
+        {
 
             @Override
-            public void handle(long now) {
-                if (!isGamePaused) {
-                    for (int iterator = 0; iterator < tanksList.size(); iterator++) {
-                        if (tanksList.get(iterator).getLifePoints() > 0) { //checking if tank is alive
+            public void handle(long now)
+            {
+                if (!isGamePaused)
+                {
+                    for (int iterator = 0; iterator < tanksList.size(); iterator++)
+                    {
+                        if (tanksList.get(iterator).getLifePoints() > 0)
+                        { //checking if tank is alive
                             tanksList.get(iterator).moveTank();   //moving every tank on the map every frame
                             tanksList.get(iterator).moveProjectiles();
-                        } else {
+                        } else
+                        {
                             tanksList.get(iterator).tankDestruction();
                             tanksList.remove(iterator);
                         }
                     }
-                    if (playerOneTank.getLifePoints() == 0 || base.getLifePoints()==0) {
+                    if (playerOneTank.getLifePoints() == 0 || base.getLifePoints() == 0)
+                    {
                         showLoseScreen();
                     }
-                    /*if (tanksList.size()==1) {
-                        if (tanksList.get(0) instanceof TankPlayer)
-                            showWinScreen();
-                    }*/
+                    if (mapManager.getNeutralCounter())
+                    {
+                        if (tanksList.size() == 1)
+                        {
+                            if (tanksList.get(0) instanceof TankPlayer)
+                                showWinScreen();
+                        }
+                    }
                     mapManager.bushToFront();
                 }
             }
@@ -164,27 +172,32 @@ public class GameViewManager {
         gameTimer.start();
     }
 
-    private void createShadowOverlay() {
-        Rectangle overlay = new Rectangle(0,0,GAME_WIDTH, GAME_HEIGHT);
+    private void createShadowOverlay()
+    {
+        Rectangle overlay = new Rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT);
         overlay.setOpacity(0.7);
         gamePane.getChildren().add(overlay);
     }
 
-    private void createGamePanel() {
-        MenuPanel winPanel = new MenuPanel(GAME_WIDTH/2 - 200, GAME_HEIGHT/2 - 150);
+    private void createGamePanel()
+    {
+        MenuPanel winPanel = new MenuPanel(GAME_WIDTH / 2 - 200, GAME_HEIGHT / 2 - 150);
         gamePane.getChildren().add(winPanel);
-        createExitButton(GAME_WIDTH/2-99,GAME_HEIGHT/2 + 70);
+        //createExitButton(GAME_WIDTH / 2 - 99, GAME_HEIGHT / 2 + 70);
     }
 
     /////////////////////////////////SPAWN METHODS////////////////////////////////////////////////////////////
 
     //function that checks if spawn position is empty and coordinates are correct, if they are, the Tank constructor is called
     private boolean spawnNeutralTank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY,
-                                     String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix, DataBaseConnector dataBaseConnector) {
-        if (spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
-            if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null) {
+                                     String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix, DataBaseConnector dataBaseConnector)
+    {
+        if (spawnPosArrayX < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY < GAME_HEIGHT / BLOCK_SIZE)
+        {
+            if (collisionMatrix[spawnPosArrayX][spawnPosArrayY] == null)
+            {
                 Tank spawningTank = new Tank(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl,
-                        tankList, collisionMatrix, 3, base,dataBaseConnector);
+                        tankList, collisionMatrix, 3, base, dataBaseConnector);
                 return true;
             }
         }
@@ -193,26 +206,35 @@ public class GameViewManager {
 
     //function that checks if spawn position is empty and coordinates are correct, if they are, the PlayerTank constructor is called
     private boolean spawnPlayerOneTank(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix,
-                                       KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey,DataBaseConnector dataBaseConnector) {
-        if (spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
-            if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null ) {
+                                       KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey, DataBaseConnector dataBaseConnector)
+    {
+        if (spawnPosArrayX < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY < GAME_HEIGHT / BLOCK_SIZE)
+        {
+            if (collisionMatrix[spawnPosArrayX][spawnPosArrayY] == null)
+            {
                 playerOneTank = new TankPlayer(gamePane, gameScene, spawnPosArrayX, spawnPosArrayY,
                         tankSpriteUrl, tankList, collisionMatrix, base,
-                        moveLeftKey, moveRightKey, moveUpKey, moveDownKey, shootKey,dataBaseConnector);
+                        moveLeftKey, moveRightKey, moveUpKey, moveDownKey, shootKey, dataBaseConnector);
                 return true;
             }
         }
         return false;
     }
 
-    private boolean spawnBase(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String[][] collisionMatrix, int lifePoints) {
+    private boolean spawnBase(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String[][] collisionMatrix, int lifePoints)
+    {
         //Making sure that all 4 blocks where base will stand are empty and inside the map
-        if (spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
-            if (spawnPosArrayX + 1 < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY < GAME_HEIGHT / BLOCK_SIZE) {
-                if (spawnPosArrayX < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY + 1 < GAME_HEIGHT / BLOCK_SIZE) {
-                    if (spawnPosArrayX + 1 < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY + 1 < GAME_HEIGHT / BLOCK_SIZE) {
-                        if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null && collisionMatrix[spawnPosArrayX + 1][spawnPosArrayY] == null &&
-                                collisionMatrix[spawnPosArrayX][spawnPosArrayY + 1] == null && collisionMatrix[spawnPosArrayX + 1][spawnPosArrayY + 1] == null) {
+        if (spawnPosArrayX < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY < GAME_HEIGHT / BLOCK_SIZE)
+        {
+            if (spawnPosArrayX + 1 < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY < GAME_HEIGHT / BLOCK_SIZE)
+            {
+                if (spawnPosArrayX < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY + 1 < GAME_HEIGHT / BLOCK_SIZE)
+                {
+                    if (spawnPosArrayX + 1 < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY + 1 < GAME_HEIGHT / BLOCK_SIZE)
+                    {
+                        if (collisionMatrix[spawnPosArrayX][spawnPosArrayY] == null && collisionMatrix[spawnPosArrayX + 1][spawnPosArrayY] == null &&
+                                collisionMatrix[spawnPosArrayX][spawnPosArrayY + 1] == null && collisionMatrix[spawnPosArrayX + 1][spawnPosArrayY + 1] == null)
+                        {
                             base = new Base(gamePane, spawnPosArrayX, spawnPosArrayY, lifePoints, collisionMatrix);
                             return true;
                         }
@@ -226,20 +248,22 @@ public class GameViewManager {
 
 
     //////////////////////////////SCREENS////////////////////////////////////////
-    private void showLoseScreen() {
+    private void showLoseScreen()
+    {
         isGamePaused = true;
         createShadowOverlay();
         createGamePanel();
 
-        InfoLabel youLoseLabel = new InfoLabel("YOU LOSE!", ((double)GAME_WIDTH/2 - 100), GAME_HEIGHT/2-180, 40);
+        InfoLabel youLoseLabel = new InfoLabel("YOU LOSE!", ((double) GAME_WIDTH / 2 - 100), GAME_HEIGHT / 2 - 180, 40);
         gamePane.getChildren().add(youLoseLabel);
     }
 
-    private void showWinScreen() {
+    private void showWinScreen()
+    {
         isGamePaused = true;
         createShadowOverlay();
         createGamePanel();
-        InfoLabel youLoseLabel = new InfoLabel("YOU WON!", ((double)GAME_WIDTH/2 - 100), GAME_HEIGHT/2-180, 40);
+        InfoLabel youLoseLabel = new InfoLabel("YOU WON!", ((double) GAME_WIDTH / 2 - 100), GAME_HEIGHT / 2 - 180, 40);
         gamePane.getChildren().add(youLoseLabel);
     }
 }

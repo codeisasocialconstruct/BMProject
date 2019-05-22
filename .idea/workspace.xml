@@ -3,13 +3,18 @@
   <component name="ChangeListManager">
     <list default="true" id="e9d2c1ce-d844-423e-9c8c-2e58fb481880" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/MapElements/Base.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/MapElements/Base.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Tanks/Tank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Tanks/Tank.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Tanks/TankPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Tanks/TankPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/DataBaseConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/DataBaseConnector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/MapElements/Base.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/MapElements/Base.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/Projectile.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/Projectile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/Tank.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/Tank.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/TankPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/TankPlayer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/DataBaseConnector.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/DataBaseConnector.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/MapManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/MapManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/MusicManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/MusicManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/resources/Sounds/mecha_collection.mp3" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/GameViewManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/GameViewManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/MapManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MapManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/MusicManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MusicManager.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,10 +30,14 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/DataBaseConnector.java">
+        <entry file="file://$PROJECT_DIR$/src/Model/MapElements/Base.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="46" column="50" selection-start-line="46" selection-start-column="50" selection-end-line="46" selection-end-column="50" />
+            <state relative-caret-position="518">
+              <caret line="109" lean-forward="true" selection-start-line="109" selection-end-line="109" />
+              <folding>
+                <element signature="e#3452#3453#0" expanded="true" />
+                <element signature="e#3529#3530#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -36,34 +45,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/GameViewManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="120" column="104" selection-start-line="120" selection-start-column="104" selection-end-line="120" selection-end-column="104" />
+            <state relative-caret-position="456">
+              <caret line="106" column="5" lean-forward="true" selection-start-line="92" selection-end-line="106" selection-end-column="5" />
               <folding>
-                <element signature="e#5500#6629#0" expanded="true" />
-                <element signature="e#6628#6629#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/MapManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="66" selection-start-line="66" selection-end-line="66" />
-              <folding>
-                <element signature="e#5495#5496#0" expanded="true" />
-                <element signature="e#5529#5530#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/MapElements/Base.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="438">
-              <caret line="33" column="32" lean-forward="true" selection-start-line="33" selection-start-column="32" selection-end-line="33" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -73,24 +59,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1853">
               <caret line="115" selection-start-line="115" selection-end-line="115" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/Tanks/Tank.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="223">
-              <caret line="53" column="55" lean-forward="true" selection-start-line="53" selection-start-column="55" selection-end-line="53" selection-end-column="55" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/Tanks/TankPlayer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="359">
-              <caret line="38" column="123" selection-start-line="38" selection-start-column="123" selection-end-line="38" selection-end-column="123" />
             </state>
           </provider>
         </entry>
@@ -110,10 +78,10 @@
       <list>
         <option value="$PROJECT_DIR$/src/View/MusicManager.java" />
         <option value="$PROJECT_DIR$/src/Model/MapElements/Base.java" />
-        <option value="$PROJECT_DIR$/src/View/MapManager.java" />
         <option value="$PROJECT_DIR$/src/View/DataBaseConnector.java" />
         <option value="$PROJECT_DIR$/src/Model/Tanks/Tank.java" />
         <option value="$PROJECT_DIR$/src/Model/Tanks/TankPlayer.java" />
+        <option value="$PROJECT_DIR$/src/View/MapManager.java" />
         <option value="$PROJECT_DIR$/src/View/GameViewManager.java" />
       </list>
     </option>
@@ -152,6 +120,21 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="Model" type="462c0819:PsiDirectoryNode" />
               <item name="MapElements" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Battle_Metropolis" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Battle_Metropolis" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Model" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Battle_Metropolis" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Battle_Metropolis" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Model" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+              <item name="MapPieces" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Battle_Metropolis" type="b2602c69:ProjectViewProjectNode" />
@@ -231,7 +214,8 @@
       <workItem from="1558537937262" duration="16000" />
       <workItem from="1558537970057" duration="31000" />
       <workItem from="1558538019068" duration="889000" />
-      <workItem from="1558542690465" duration="2252000" />
+      <workItem from="1558542690465" duration="4014000" />
+      <workItem from="1558551062645" duration="3868000" />
     </task>
     <task id="LOCAL-00001" summary="Commit after rebase">
       <created>1558538138935</created>
@@ -254,17 +238,24 @@
       <option name="project" value="LOCAL" />
       <updated>1558538869448</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Generating map from map_stream from data base">
+      <created>1558545007360</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1558545007360</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3188000" />
+    <option name="totallyTimeSpent" value="8818000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21428572" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21641791" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -273,7 +264,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49840087" visible="true" weight="0.33152762" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.7436034" visible="true" weight="0.33152762" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -282,8 +273,8 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Terminal" order="10" />
-      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50159913" side_tool="true" visible="true" weight="0.33152762" />
-      <window_info anchor="bottom" id="Messages" order="12" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.2563966" side_tool="true" visible="true" weight="0.33152762" />
+      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.49946696" weight="0.32936078" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -301,7 +292,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Commit after rebase" />
     <MESSAGE value="Changed in-game music" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed in-game music" />
+    <MESSAGE value="Generating map from map_stream from data base" />
+    <option name="LAST_COMMIT_MESSAGE" value="Generating map from map_stream from data base" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/View/resources/Title.png">
@@ -347,13 +339,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/MapElements/Base.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="438">
-          <caret line="33" column="32" lean-forward="true" selection-start-line="33" selection-start-column="32" selection-end-line="33" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Model/Tanks/ShootDelayTimer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -361,13 +346,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/Resources/MapPieces/Background.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/Tanks/Tank.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="53" column="55" selection-start-line="53" selection-start-column="55" selection-end-line="53" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/Tanks/TankPlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="359">
+          <caret line="38" column="123" selection-start-line="38" selection-start-column="123" selection-end-line="38" selection-end-column="123" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/MapManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="66" selection-start-line="66" selection-end-line="66" />
+        <state relative-caret-position="382">
+          <caret line="233" column="18" selection-start-line="233" selection-start-column="18" selection-end-line="233" selection-end-column="18" />
           <folding>
-            <element signature="e#5495#5496#0" expanded="true" />
-            <element signature="e#5529#5530#0" expanded="true" />
+            <element signature="e#6516#6517#0" expanded="true" />
+            <element signature="e#6550#6551#0" expanded="true" />
+            <element signature="e#6650#6651#0" expanded="true" />
+            <element signature="e#6438#6439#0" expanded="true" />
+            <element signature="e#6471#6472#0" expanded="true" />
+            <element signature="e#6509#6510#0" expanded="true" />
+            <element signature="e#6542#6543#0" expanded="true" />
+            <element signature="e#6575#6576#0" expanded="true" />
+            <element signature="e#6603#6604#0" expanded="true" />
+            <element signature="e#6636#6637#0" expanded="true" />
+            <element signature="e#6664#6665#0" expanded="true" />
+            <element signature="e#6706#6707#0" expanded="true" />
+            <element signature="e#6743#6744#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -386,27 +399,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/Tanks/Tank.java">
+    <entry file="file://$PROJECT_DIR$/src/Model/MapElements/Base.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="223">
-          <caret line="53" column="55" lean-forward="true" selection-start-line="53" selection-start-column="55" selection-end-line="53" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/Tanks/TankPlayer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="38" column="123" selection-start-line="38" selection-start-column="123" selection-end-line="38" selection-end-column="123" />
+        <state relative-caret-position="518">
+          <caret line="109" lean-forward="true" selection-start-line="109" selection-end-line="109" />
+          <folding>
+            <element signature="e#3452#3453#0" expanded="true" />
+            <element signature="e#3529#3530#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/GameViewManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="120" column="104" selection-start-line="120" selection-start-column="104" selection-end-line="120" selection-end-column="104" />
+        <state relative-caret-position="456">
+          <caret line="106" column="5" lean-forward="true" selection-start-line="92" selection-end-line="106" selection-end-column="5" />
           <folding>
-            <element signature="e#5500#6629#0" expanded="true" />
-            <element signature="e#6628#6629#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
