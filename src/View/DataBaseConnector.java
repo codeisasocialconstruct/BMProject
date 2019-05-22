@@ -13,6 +13,8 @@ public class DataBaseConnector
     private int game_width;
     private int game_height;
 
+    //============================
+
     public DataBaseConnector(String question)
     {
         this.question = question;
