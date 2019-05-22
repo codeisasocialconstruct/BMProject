@@ -9,7 +9,6 @@ public class DataBaseConnector
     private ResultSet resultSet;
     private String name;
     private String map_stream;
-    private int block_size;
     private int game_width;
     private int game_height;
 
@@ -45,9 +44,7 @@ public class DataBaseConnector
                 System.out.print(game_width + " ");
                 game_height = resultSet.getInt(4);
                 System.out.print(game_height + " ");
-                block_size = resultSet.getInt(5);
-                System.out.print(block_size + " ");
-                map_stream = resultSet.getString(6);
+                map_stream = resultSet.getString(5);
                 System.out.println(map_stream + " ");
             }
             connection.close();
@@ -67,11 +64,6 @@ public class DataBaseConnector
     public String getMap_stream()
     {
         return map_stream;
-    }
-
-    public int getBlock_size()
-    {
-        return block_size;
     }
 
     public int getGame_width()

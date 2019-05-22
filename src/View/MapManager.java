@@ -16,6 +16,10 @@ public class MapManager
     //1 = brick1
     //4 = wall
     //5 = bush
+    //F = player one
+    //S = player two
+    //N = neutral tank
+    //B = base
     private AnchorPane gamePane;
     private Scene gameScene;
     private Stage gameStage;
@@ -44,7 +48,7 @@ public class MapManager
         this.dbConnector = dbConnector;
         GAME_HEIGHT = dbConnector.getGame_height();
         GAME_WIDTH = dbConnector.getGame_width();
-        BLOCK_SIZE = dbConnector.getBlock_size();
+        BLOCK_SIZE = 50;
         map_stream = dbConnector.getMap_stream();
         positionMatrix = new String[GAME_WIDTH/BLOCK_SIZE][GAME_HEIGHT/BLOCK_SIZE];
     }
@@ -64,7 +68,6 @@ public class MapManager
         System.out.println(tmp);
         System.out.println(GAME_HEIGHT);
         System.out.println(GAME_WIDTH);
-        System.out.println(BLOCK_SIZE);
 
         for(int i=0; i<GAME_WIDTH/BLOCK_SIZE; i++ )
             for (int j=0; j<GAME_HEIGHT/BLOCK_SIZE; j++ )

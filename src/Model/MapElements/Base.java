@@ -24,7 +24,8 @@ public class Base {
     final static String BASE_EXPLOSION_SOUND = "../Resources/TankSounds/tank_explosion_sound.wav";
     private final static int BLOCK_SIZE = 50;
 
-    public Base(AnchorPane gamePane, int spawnX, int spawnY, int lifePoints, String[][] collisionMatrix) {
+    public Base(AnchorPane gamePane, int spawnX, int spawnY, int lifePoints, String[][] collisionMatrix)
+    {
         this.gamePane = gamePane;
         currentX = spawnX;
         currentY = spawnY;

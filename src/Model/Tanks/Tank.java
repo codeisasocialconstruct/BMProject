@@ -2,6 +2,7 @@ package Model.Tanks;
 
 import Model.MapElements.Base;
 import Model.SpriteAnimation;
+import View.DataBaseConnector;
 import javafx.animation.Animation;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
@@ -40,12 +41,17 @@ public class Tank {
     final static String HIT_SOUND = "../Resources/TankSounds/get_hit_sound.wav";
     final static String TANK_EXPLOSION_SOUND = "../Resources/TankSounds/tank_explosion_sound.wav";
 
-    final static int GAME_WIDTH = 800;  //Map divided into blocks 50x50 pixels each
-    final static int GAME_HEIGHT = 600; //Map size is 16x12 blocks
+    private DataBaseConnector dataBaseConnector;
+
+    static int GAME_WIDTH ;  //Map divided into blocks 50x50 pixels each
+    static int GAME_HEIGHT; //Map size is 16x12 blocks
     final static int BLOCK_SIZE = 50;
 
     public Tank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
-                String[][] collisionMatrix, int maxLifePoints, Base base) {
+                String[][] collisionMatrix, int maxLifePoints, Base base, DataBaseConnector dataBaseConnector) {
+        this.dataBaseConnector = dataBaseConnector;
+        GAME_HEIGHT = dataBaseConnector.getGame_height();
+        GAME_WIDTH = dataBaseConnector.getGame_width();
         this.gamePane = gamePane;
         positionMatrix = collisionMatrix; //passing position matrix through reference
         ID = nextID;             //generating new ID

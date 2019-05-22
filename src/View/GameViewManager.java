@@ -33,14 +33,17 @@ public class GameViewManager {
     private Tank playerOneTank;
     private AnimationTimer gameTimer;
     private Base base;
+    private DataBaseConnector dataBaseConnector;
+    private String boardName = "TESTTT";
+    private MapManager mapManager;
 
     private boolean isGamePaused;
 
     private boolean gridMode;
 
-    private final static int GAME_WIDTH = 800;  //Map divided into blocks 50x50 pixels each
-    private final static int GAME_HEIGHT = 600; //Map has size 16x12 blocks
-    private final static int BLOCK_SIZE = 50;
+    private static int GAME_WIDTH;  //Map divided into blocks 50x50 pixels each
+    private static int GAME_HEIGHT; //Map has size 16x12 blocks
+    private static int BLOCK_SIZE;
     private static String[][] positionMatrix;
     //array used to detect collisions. It contains strings. If string is a number
     //that means in this position tank is present and number equals it`s. If any other string
@@ -60,6 +63,11 @@ public class GameViewManager {
     }
 
     private void initializeStage() {
+        dataBaseConnector = new DataBaseConnector("SELECT * FROM map WHERE name = '" + boardName + "';");
+        dataBaseConnector.getData();
+        GAME_WIDTH = dataBaseConnector.getGame_width();
+        GAME_HEIGHT = dataBaseConnector.getGame_height();
+        BLOCK_SIZE = 50;
         gamePane = new AnchorPane();
         gameScene = new Scene(gamePane, GAME_WIDTH, GAME_HEIGHT);
         gameStage = new Stage();
@@ -68,19 +76,13 @@ public class GameViewManager {
         gameStage.setTitle("Battle Metropolis");
         gridMode = false;
         isGamePaused=false;
+        mapManager = new MapManager(gamePane,gameScene,gameStage,dataBaseConnector);
     }
 
     private void createBackground() {
-        Image backgroundGameImage;
-        if (!gridMode) {
-           backgroundGameImage = new Image("View/resources/texture.png", BLOCK_SIZE, BLOCK_SIZE, true, true);
-        }
-        else {
-            backgroundGameImage = new Image("View/resources/texturegrid.png", BLOCK_SIZE, BLOCK_SIZE, true, true);
-        }
-
-        BackgroundImage backgroundGame = new BackgroundImage(backgroundGameImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
-        gamePane.setBackground(new Background(backgroundGame));
+        mapManager.createBackground();
+        positionMatrix = mapManager.createPositionMatrix();
+        mapManager.createMap();
     }
 
     private void createExitButton(double X, double Y) {
@@ -105,19 +107,23 @@ public class GameViewManager {
         this.menuStage = menuStage;
         this.menuStage.hide();
 
+        /*
         createExitButton(0,0); //adding exit button
         positionMatrix[0][0]="Exit";    //Blocking movement on exit button squares
         positionMatrix[1][0]="Exit";
         positionMatrix[2][0]="Exit";
         positionMatrix[3][0]="Exit";
+        */
 
         //spawning test tanks
-        spawnBase(gamePane, 4, 10, positionMatrix, 5); //BASE NEED TO BE INITIALIZED BEFORE TANKS!!!
-        spawnPlayerOneTank(gamePane, gameScene, 8, 11, playerOneTankSprite, tanksList, positionMatrix,
-                KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN, KeyCode.CONTROL);
+        spawnBase(gamePane, 5, 5, positionMatrix, 5); //BASE NEED TO BE INITIALIZED BEFORE TANKS!!!
+        spawnPlayerOneTank(gamePane, gameScene, 1, 1, playerOneTankSprite, tanksList, positionMatrix,
+                KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN, KeyCode.CONTROL,dataBaseConnector);
+        /*
         spawnNeutralTank(gamePane, 3, 2, standardTankSprite, tanksList, positionMatrix);
         spawnNeutralTank(gamePane, 8, 5, standardTankSprite, tanksList, positionMatrix);
         spawnNeutralTank(gamePane, 10, 5, standardTankSprite, tanksList, positionMatrix);
+         */
         createGameLoop();
         gameStage.show();
     }
@@ -147,10 +153,11 @@ public class GameViewManager {
                     if (playerOneTank.getLifePoints() == 0 || base.getLifePoints()==0) {
                         showLoseScreen();
                     }
-                    if (tanksList.size()==1) {
+                    /*if (tanksList.size()==1) {
                         if (tanksList.get(0) instanceof TankPlayer)
                             showWinScreen();
-                    }
+                    }*/
+                    mapManager.bushToFront();
                 }
             }
         };
@@ -173,11 +180,11 @@ public class GameViewManager {
 
     //function that checks if spawn position is empty and coordinates are correct, if they are, the Tank constructor is called
     private boolean spawnNeutralTank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY,
-                                     String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix) {
+                                     String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix, DataBaseConnector dataBaseConnector) {
         if (spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
             if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null) {
                 Tank spawningTank = new Tank(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl,
-                        tankList, collisionMatrix, 3, base);
+                        tankList, collisionMatrix, 3, base,dataBaseConnector);
                 return true;
             }
         }
@@ -186,12 +193,12 @@ public class GameViewManager {
 
     //function that checks if spawn position is empty and coordinates are correct, if they are, the PlayerTank constructor is called
     private boolean spawnPlayerOneTank(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix,
-                                       KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey) {
+                                       KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey,DataBaseConnector dataBaseConnector) {
         if (spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
             if (collisionMatrix[spawnPosArrayX][spawnPosArrayY]==null ) {
                 playerOneTank = new TankPlayer(gamePane, gameScene, spawnPosArrayX, spawnPosArrayY,
                         tankSpriteUrl, tankList, collisionMatrix, base,
-                        moveLeftKey, moveRightKey, moveUpKey, moveDownKey, shootKey);
+                        moveLeftKey, moveRightKey, moveUpKey, moveDownKey, shootKey,dataBaseConnector);
                 return true;
             }
         }
@@ -199,7 +206,6 @@ public class GameViewManager {
     }
 
     private boolean spawnBase(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String[][] collisionMatrix, int lifePoints) {
-
         //Making sure that all 4 blocks where base will stand are empty and inside the map
         if (spawnPosArrayX<GAME_WIDTH/BLOCK_SIZE && spawnPosArrayY<GAME_HEIGHT/BLOCK_SIZE) {
             if (spawnPosArrayX + 1 < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY < GAME_HEIGHT / BLOCK_SIZE) {

@@ -17,7 +17,7 @@ import javafx.scene.media.AudioClip;
         currentlyPlaying.stop();
         currentlyPlaying = new AudioClip(this.getClass().getResource(MAIN_THEME).toExternalForm());
         currentlyPlaying.setCycleCount(AudioClip.INDEFINITE);
-        currentlyPlaying.play(0.3);
+        currentlyPlaying.play(0.2);
     }
 
     void playMenuTheme() {
