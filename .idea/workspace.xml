@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9afeb1b0-9b4e-4239-92c0-0d710352a2b1" name="Default Changelist" comment="" />
+    <list default="true" id="9afeb1b0-9b4e-4239-92c0-0d710352a2b1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/TankPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/TankPlayer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager.class" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,7 +37,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/MapManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
+            <state relative-caret-position="-289">
               <caret line="43" column="39" selection-start-line="43" selection-start-column="39" selection-end-line="43" selection-end-column="39" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -46,8 +49,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/GameViewManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="43" column="38" selection-start-line="43" selection-start-column="38" selection-end-line="43" selection-end-column="38" />
+            <state relative-caret-position="314">
+              <caret line="132" column="110" lean-forward="true" selection-start-line="132" selection-start-column="110" selection-end-line="132" selection-end-column="110" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -102,7 +105,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -146,6 +148,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -230,6 +233,7 @@
       <workItem from="1558421154913" duration="2357000" />
       <workItem from="1558454082791" duration="126000" />
       <workItem from="1558516839278" duration="78000" />
+      <workItem from="1558536873295" duration="79000" />
     </task>
     <task id="LOCAL-00001" summary="Added MapManager Class">
       <created>1557084905749</created>
@@ -284,7 +288,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34791000" />
+    <option name="totallyTimeSpent" value="34870000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -298,7 +302,7 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49945828" visible="true" weight="0.19829424" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49945828" visible="true" weight="0.20042644" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -493,7 +497,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/MapManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
+        <state relative-caret-position="-289">
           <caret line="43" column="39" selection-start-line="43" selection-start-column="39" selection-end-line="43" selection-end-column="39" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -503,8 +507,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/GameViewManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="43" column="38" selection-start-line="43" selection-start-column="38" selection-end-line="43" selection-end-column="38" />
+        <state relative-caret-position="314">
+          <caret line="132" column="110" lean-forward="true" selection-start-line="132" selection-start-column="110" selection-end-line="132" selection-end-column="110" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
