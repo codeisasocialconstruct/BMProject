@@ -1,6 +1,7 @@
 package Model.Tanks;
 
 import Model.MapElements.Base;
+import Model.MapElements.BrickBlock;
 import View.DataBaseConnector;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -35,8 +36,8 @@ public class TankPlayer extends Tank{
 
     public TankPlayer(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
                       String[][] collisionMatrix, Base base,
-                      KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey, DataBaseConnector dataBaseConnector) {
-        super(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 5, base,dataBaseConnector);
+                      KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey, DataBaseConnector dataBaseConnector, ArrayList<BrickBlock> brickList) {
+        super(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 5, base,dataBaseConnector, brickList);
         this.gameScene = gameScene;
         this.moveLeftKey = moveLeftKey;
         this.moveRightKey = moveRightKey;

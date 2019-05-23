@@ -1,5 +1,6 @@
 package View;
 
+import Model.MapElements.BrickBlock;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,6 +27,7 @@ public class MapManager
     private Scene gameScene;
     private Stage gameStage;
     private ArrayList<ImageView> bushList;
+    private ArrayList<BrickBlock> brickList;
     private int GAME_WIDTH;
     private int GAME_HEIGHT;
     private int BLOCK_SIZE;
@@ -60,6 +62,7 @@ public class MapManager
         BLOCK_SIZE = 50;
         map_stream = dbConnector.getMap_stream();
         positionMatrix = new String[GAME_WIDTH/BLOCK_SIZE][GAME_HEIGHT/BLOCK_SIZE];
+        brickList = new ArrayList<>();
         neutralList = new ArrayList<>();
     }
 
@@ -84,21 +87,6 @@ public class MapManager
             {
                 switch (tmp[counter])
                 {
-                    case '3':
-                    {
-                        positionMatrix[j][i] = "Brick3";
-                        break;
-                    }
-                    case '2':
-                    {
-                        positionMatrix[j][i] = "Brick2";
-                        break;
-                    }
-                    case '1':
-                    {
-                        positionMatrix[j][i] = "Brick1";
-                        break;
-                    }
                     case '4':
                     {
                         positionMatrix[j][i] = "Wall";
@@ -124,6 +112,7 @@ public class MapManager
                     {
                         neutralCounter = true;
                         neutralList.add(new Point(j,i));
+
                         break;
                     }
                     case '0':
@@ -141,28 +130,35 @@ public class MapManager
     {
         int counter = 0;
         char[] tmp = map_stream.toCharArray();
-        String picture;
+        String picture = BUSH;
 
         for(int i=0; i<GAME_WIDTH/BLOCK_SIZE; i++ )
             for (int j=0; j<GAME_HEIGHT/BLOCK_SIZE; j++ )
             {
+                boolean flag = true;
                 if(tmp[counter] != '0')
                 {
                     switch (tmp[counter])
                     {
                         case '3':
                         {
-                            picture = BRICK3;
+                            BrickBlock brickBlock = new BrickBlock(gamePane,j,i,3,positionMatrix);
+                            brickList.add(brickBlock);
+                            flag = false;
                             break;
                         }
                         case '2':
                         {
-                            picture = BRICK2;
+                            BrickBlock brickBlock = new BrickBlock(gamePane,j,i,2,positionMatrix);
+                            brickList.add(brickBlock);
+                            flag = false;
                             break;
                         }
                         case '1':
                         {
-                            picture = BRICK1;
+                            BrickBlock brickBlock = new BrickBlock(gamePane,j,i,1,positionMatrix);
+                            brickList.add(brickBlock);
+                            flag = false;
                             break;
                         }
                         case '4':
@@ -182,12 +178,15 @@ public class MapManager
                         }
                     }
 
-                    ImageView imageView = new ImageView(new Image(picture, BLOCK_SIZE, BLOCK_SIZE, false, true));
-                    imageView.setLayoutX(j * BLOCK_SIZE);
-                    imageView.setLayoutY(i * BLOCK_SIZE);
-                    if(tmp[counter] == '5')
-                        bushList.add(imageView);
-                    gamePane.getChildren().add(imageView);
+                    if(flag)
+                    {
+                        ImageView imageView = new ImageView(new Image(picture, BLOCK_SIZE, BLOCK_SIZE, false, true));
+                        imageView.setLayoutX(j * BLOCK_SIZE);
+                        imageView.setLayoutY(i * BLOCK_SIZE);
+                        if (tmp[counter] == '5')
+                            bushList.add(imageView);
+                        gamePane.getChildren().add(imageView);
+                    }
                 }
                 counter++;
             }
@@ -234,5 +233,10 @@ public class MapManager
     public boolean getNeutralCounter()
     {
         return neutralCounter;
+    }
+
+    public ArrayList<BrickBlock> getBrickList()
+    {
+        return brickList;
     }
 }

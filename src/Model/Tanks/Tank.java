@@ -1,6 +1,7 @@
 package Model.Tanks;
 
 import Model.MapElements.Base;
+import Model.MapElements.BrickBlock;
 import Model.SpriteAnimation;
 import View.DataBaseConnector;
 import javafx.animation.Animation;
@@ -42,16 +43,20 @@ public class Tank {
     final static String TANK_EXPLOSION_SOUND = "../Resources/TankSounds/tank_explosion_sound.wav";
 
     private DataBaseConnector dataBaseConnector;
+    private ArrayList<BrickBlock> brickList;
 
     static int GAME_WIDTH ;  //Map divided into blocks 50x50 pixels each
     static int GAME_HEIGHT; //Map size is 16x12 blocks
     final static int BLOCK_SIZE = 50;
 
     public Tank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
-                String[][] collisionMatrix, int maxLifePoints, Base base, DataBaseConnector dataBaseConnector) {
+                String[][] collisionMatrix, int maxLifePoints, Base base, DataBaseConnector dataBaseConnector,ArrayList<BrickBlock> brickList) {
         this.dataBaseConnector = dataBaseConnector;
         GAME_HEIGHT = dataBaseConnector.getGame_height();
         GAME_WIDTH = dataBaseConnector.getGame_width();
+
+        this.brickList = brickList;
+
         this.gamePane = gamePane;
         positionMatrix = collisionMatrix; //passing position matrix through reference
         ID = nextID;             //generating new ID
@@ -343,18 +348,18 @@ public class Tank {
     boolean shoot() {
         if(angle == 90)
             projectile = new Projectile(gamePane, currentX, currentY, positionMatrix,
-                    'R', listOfActiveProjectiles, tankList, base);
+                    'R', listOfActiveProjectiles, tankList, base,brickList);
         else if(angle == -90) {
             projectile = new Projectile(gamePane, currentX, currentY, positionMatrix,
-                    'L', listOfActiveProjectiles,tankList, base);
+                    'L', listOfActiveProjectiles,tankList, base,brickList);
         }
         else if(angle == 0) {
             projectile = new Projectile(gamePane, currentX, currentY, positionMatrix,
-                    'U', listOfActiveProjectiles,tankList, base);
+                    'U', listOfActiveProjectiles,tankList, base,brickList);
         }
         else if(angle == -180 || angle == 180) {
             projectile = new Projectile(gamePane, currentX, currentY, positionMatrix,
-                    'D', listOfActiveProjectiles,tankList, base);
+                    'D', listOfActiveProjectiles,tankList, base,brickList);
         }
 
         playShootSound();
