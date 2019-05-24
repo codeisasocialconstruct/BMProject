@@ -27,7 +27,7 @@ public class DataBaseConnector
 
         } catch (Exception e)
         {
-            e.printStackTrace();
+            System.out.println("No database connection");
         }
     }
 
@@ -51,8 +51,7 @@ public class DataBaseConnector
         }
         catch(Exception e)
         {
-            System.out.println("No connection to the database");
-            e.printStackTrace();
+
         }
     }
 

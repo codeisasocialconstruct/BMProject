@@ -78,6 +78,7 @@ public class MapManager
     {
         int counter = 0;
         char[] tmp = map_stream.toCharArray();
+        String picture = BUSH;
         System.out.println(tmp);
         System.out.println(GAME_HEIGHT);
         System.out.println(GAME_WIDTH);
@@ -85,10 +86,33 @@ public class MapManager
         for(int i=0; i<GAME_WIDTH/BLOCK_SIZE; i++ )
             for (int j=0; j<GAME_HEIGHT/BLOCK_SIZE; j++ )
             {
+                boolean flag = true;
                 switch (tmp[counter])
                 {
+                    case '3':
+                    {
+                        BrickBlock brickBlock = new BrickBlock(gamePane,j,i,3,positionMatrix);
+                        brickList.add(brickBlock);
+                        flag = false;
+                        break;
+                    }
+                    case '2':
+                    {
+                        BrickBlock brickBlock = new BrickBlock(gamePane,j,i,2,positionMatrix);
+                        brickList.add(brickBlock);
+                        flag = false;
+                        break;
+                    }
+                    case '1':
+                    {
+                        BrickBlock brickBlock = new BrickBlock(gamePane,j,i,1,positionMatrix);
+                        brickList.add(brickBlock);
+                        flag = false;
+                        break;
+                    }
                     case '4':
                     {
+                        picture = WALL;
                         positionMatrix[j][i] = "Wall";
                         break;
                     }
@@ -96,6 +120,7 @@ public class MapManager
                     {
                         playerOneX = j;
                         playerOneY = i;
+                        flag = false;
                         break;
                     }
                     case 'B':
@@ -106,90 +131,40 @@ public class MapManager
                             baseY = i;
                             baseCondition = false;
                         }
+                        flag = false;
                         break;
                     }
                     case 'N':
                     {
                         neutralCounter = true;
                         neutralList.add(new Point(j,i));
-
+                        flag = false;
                         break;
                     }
                     case '0':
                     {
+                        flag = false;
                         break;
                     }
-
+                    case '5':
+                    {
+                        picture = BUSH;
+                        break;
+                    }
                 }
+                if(flag)
+                {
+                    ImageView imageView = new ImageView(new Image(picture, BLOCK_SIZE, BLOCK_SIZE, false, true));
+                    imageView.setLayoutX(j * BLOCK_SIZE);
+                    imageView.setLayoutY(i * BLOCK_SIZE);
+                    if (tmp[counter] == '5')
+                        bushList.add(imageView);
+                    gamePane.getChildren().add(imageView);
+                }
+
                 counter++;
             }
         return positionMatrix;
-    }
-
-    public void createMap()
-    {
-        int counter = 0;
-        char[] tmp = map_stream.toCharArray();
-        String picture = BUSH;
-
-        for(int i=0; i<GAME_WIDTH/BLOCK_SIZE; i++ )
-            for (int j=0; j<GAME_HEIGHT/BLOCK_SIZE; j++ )
-            {
-                boolean flag = true;
-                if(tmp[counter] != '0')
-                {
-                    switch (tmp[counter])
-                    {
-                        case '3':
-                        {
-                            BrickBlock brickBlock = new BrickBlock(gamePane,j,i,3,positionMatrix);
-                            brickList.add(brickBlock);
-                            flag = false;
-                            break;
-                        }
-                        case '2':
-                        {
-                            BrickBlock brickBlock = new BrickBlock(gamePane,j,i,2,positionMatrix);
-                            brickList.add(brickBlock);
-                            flag = false;
-                            break;
-                        }
-                        case '1':
-                        {
-                            BrickBlock brickBlock = new BrickBlock(gamePane,j,i,1,positionMatrix);
-                            brickList.add(brickBlock);
-                            flag = false;
-                            break;
-                        }
-                        case '4':
-                        {
-                            picture = WALL;
-                            break;
-                        }
-                        case '5':
-                        {
-                            picture = BUSH;
-                            break;
-                        }
-                        default:
-                        {
-                            picture = BACKGROUND;
-                            break;
-                        }
-                    }
-
-                    if(flag)
-                    {
-                        ImageView imageView = new ImageView(new Image(picture, BLOCK_SIZE, BLOCK_SIZE, false, true));
-                        imageView.setLayoutX(j * BLOCK_SIZE);
-                        imageView.setLayoutY(i * BLOCK_SIZE);
-                        if (tmp[counter] == '5')
-                            bushList.add(imageView);
-                        gamePane.getChildren().add(imageView);
-                    }
-                }
-                counter++;
-            }
     }
 
     public void bushToFront()

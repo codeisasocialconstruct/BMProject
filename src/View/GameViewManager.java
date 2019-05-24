@@ -89,7 +89,6 @@ public class GameViewManager
         mapManager.createBackground();
         positionMatrix = mapManager.createPositionMatrix();
         brickList = mapManager.getBrickList();
-        mapManager.createMap();
     }
 
 

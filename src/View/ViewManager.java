@@ -1,6 +1,7 @@
 package View;
 
 import Model.MenuPanel;
+import com.mysql.jdbc.exceptions.MySQLDataException;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -87,10 +88,10 @@ public class ViewManager {
         addMenuButton(playButton);
 
         playButton.setOnAction(event -> {
-            musicManager.stopMusic();
-            musicManager.playClickSound();
-            GameViewManager gameViewManager = new GameViewManager(musicManager);
-            gameViewManager.createGame(mainStage, false);
+                musicManager.stopMusic();
+                musicManager.playClickSound();
+                GameViewManager gameViewManager = new GameViewManager(musicManager);
+                gameViewManager.createGame(mainStage, false);
         });
     }
 
