@@ -218,6 +218,14 @@ public class TankPlayer extends Tank{
         lifePointIndicator.get(lifePoints-1).setImage(emptyHeart);
     }
 
+    public void heartsToFront()
+    {
+        for(ImageView heart: lifePointIndicator)
+        {
+            heart.toFront();
+        }
+    }
+
     void takeDamage() {
         lifeIndicatorEmptyHeart(); //empty one heart
         lifePoints--;

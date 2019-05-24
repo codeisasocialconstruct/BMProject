@@ -170,6 +170,7 @@ public class GameViewManager
                         }
                     }
                     mapManager.bushToFront();
+                    playerOneTank.heartsToFront();
                 }
             }
         };

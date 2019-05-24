@@ -449,4 +449,9 @@ public class Tank {
         sounds.setCycleCount(1);
         sounds.play(0.5);
     }
+
+    public void heartsToFront()
+    {
+
+    }
 }
