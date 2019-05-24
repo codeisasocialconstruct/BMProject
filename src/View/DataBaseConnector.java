@@ -11,6 +11,7 @@ public class DataBaseConnector
     private String map_stream;
     private int game_width;
     private int game_height;
+    private int background_type;
 
     //============================
 
@@ -46,6 +47,8 @@ public class DataBaseConnector
                 System.out.print(game_height + " ");
                 map_stream = resultSet.getString(5);
                 System.out.println(map_stream + " ");
+                background_type = resultSet.getInt(6);
+                System.out.println(background_type);
             }
             connection.close();
         }
@@ -73,5 +76,10 @@ public class DataBaseConnector
     public int getGame_height()
     {
         return game_height;
+    }
+
+    public int getBackground_type()
+    {
+        return background_type;
     }
 }

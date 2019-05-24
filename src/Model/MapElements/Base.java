@@ -19,7 +19,7 @@ public class Base {
     private ImageView baseExplosion;
     private AudioClip sounds;
 
-    private final static String BASE_SPRITE = "Model/Resources/MapContent/base_sprite.png";
+    private final static String BASE_SPRITE = "Model/MapElements/MapContent/base_sprite.png";
     final static String EXPLOSION_SPRITE_SHEET = "Model/Resources/tankSprites/TankExplosionSpriteSheet.png";
     final static String BASE_EXPLOSION_SOUND = "../Resources/TankSounds/tank_explosion_sound.wav";
     private final static int BLOCK_SIZE = 50;

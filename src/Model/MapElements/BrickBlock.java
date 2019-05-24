@@ -13,9 +13,9 @@ public class BrickBlock
     private ImageView currentSprite;
     private String[][] collisionMatrix;
 
-    private static final String BRICK1 = "Model/Resources/MapPieces/Brick1.png";
-    private static final String BRICK2 = "Model/Resources/MapPieces/Brick2.png";
-    private static final String BRICK3 = "Model/Resources/MapPieces/Brick3.png";
+    private static final String BRICK1 = "Model/MapElements/MapPieces/Brick1.png";
+    private static final String BRICK2 = "Model/MapElements/MapPieces/Brick2.png";
+    private static final String BRICK3 = "Model/MapElements/MapPieces/Brick3.png";
 
     public BrickBlock(AnchorPane gamePane, int spawnX, int spawnY, int lifePoints, String[][] collisionMatrix)
     {

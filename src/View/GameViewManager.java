@@ -36,7 +36,7 @@ public class GameViewManager
     private AnimationTimer gameTimer;
     private Base base;
     private DataBaseConnector dataBaseConnector;
-    private String boardName = "Desert skirmish";
+    private String boardName = "Forest fight";
     private MapManager mapManager;
 
     private boolean isGamePaused;

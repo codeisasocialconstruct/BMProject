@@ -19,6 +19,7 @@ public class MapManager
     //1 = brick1
     //4 = wall
     //5 = bush
+    //6 = meadow
     //F = player one
     //S = player two
     //N = neutral tank
@@ -31,6 +32,7 @@ public class MapManager
     private int GAME_WIDTH;
     private int GAME_HEIGHT;
     private int BLOCK_SIZE;
+    private int BACKGROUND_TYPE;
     private DataBaseConnector dbConnector;
     private int playerOneX;
     private int playerOneY;
@@ -40,12 +42,13 @@ public class MapManager
     private boolean neutralCounter = false;
     private ArrayList<Point> neutralList;
 
-    private static final String BRICK1 = "Model/Resources/MapPieces/Brick1.png";
-    private static final String BRICK2 = "Model/Resources/MapPieces/Brick2.png";
-    private static final String BRICK3 = "Model/Resources/MapPieces/Brick3.png";
-    private static final String BUSH = "Model/Resources/MapPieces/Bush.png";
-    private static final String WALL = "Model/Resources/MapPieces/Wall.png";
-    private static final String BACKGROUND = "Model/Resources/MapPieces/Background.png";
+    private static final String BRICK1 = "Model/MapElements/MapPieces/Brick1.png";
+    private static final String BRICK2 = "Model/MapElements/MapPieces/Brick2.png";
+    private static final String BRICK3 = "Model/MapElements/MapPieces/Brick3.png";
+    private static final String BUSH = "Model/MapElements/MapPieces/Bush.png";
+    private static final String WALL = "Model/MapElements/MapPieces/Wall.png";
+    private static final String DESSERT = "Model/MapElements/MapPieces/Background.png";
+    private static final String MEADOW = "Model/MapElements/MapPieces/Meadow.png";
 
     private static String[][] positionMatrix;
     private static String map_stream = "";
@@ -61,6 +64,7 @@ public class MapManager
         GAME_WIDTH = dbConnector.getGame_width();
         BLOCK_SIZE = 50;
         map_stream = dbConnector.getMap_stream();
+        BACKGROUND_TYPE = dbConnector.getBackground_type();
         positionMatrix = new String[GAME_WIDTH/BLOCK_SIZE][GAME_HEIGHT/BLOCK_SIZE];
         brickList = new ArrayList<>();
         neutralList = new ArrayList<>();
@@ -69,7 +73,21 @@ public class MapManager
     public void createBackground()
     {
         Image backgroundGameImage;
-        backgroundGameImage = new Image(BACKGROUND, BLOCK_SIZE, BLOCK_SIZE, false, true);
+        String backgroundSprite = null;
+        switch (BACKGROUND_TYPE)
+        {
+            case 0:
+            {
+                backgroundSprite = DESSERT;
+                break;
+            }
+            case 6:
+            {
+                backgroundSprite = MEADOW;
+                break;
+            }
+        }
+        backgroundGameImage = new Image(backgroundSprite, BLOCK_SIZE, BLOCK_SIZE, false, true);
         BackgroundImage backgroundGame = new BackgroundImage(backgroundGameImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
         gamePane.setBackground(new Background(backgroundGame));
     }
@@ -142,6 +160,11 @@ public class MapManager
                         break;
                     }
                     case '0':
+                    {
+                        flag = false;
+                        break;
+                    }
+                    case '6':
                     {
                         flag = false;
                         break;
