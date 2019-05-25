@@ -198,6 +198,14 @@ public class MapManager
         }
     }
 
+    public void bushDissapear()
+    {
+        for(ImageView i : bushList)
+        {
+            i.setVisible(false);
+        }
+    }
+
     public ArrayList<Point> getNeutralList()
     {
         return neutralList;

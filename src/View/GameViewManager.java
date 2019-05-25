@@ -124,6 +124,8 @@ public class GameViewManager
         {
             spawnNeutralTank(gamePane, (int)i.getX(), (int)i.getY(), standardTankSprite, tanksList, positionMatrix,dataBaseConnector, brickList);
         }
+        mapManager.bushToFront();
+        playerOneTank.heartsToFront();
         createGameLoop();
         gameStage.show();
     }
@@ -169,8 +171,6 @@ public class GameViewManager
                                 showWinScreen();
                         }
                     }
-                    mapManager.bushToFront();
-                    playerOneTank.heartsToFront();
                 }
             }
         };
@@ -269,6 +269,7 @@ public class GameViewManager
         isGamePaused = true;
         createShadowOverlay();
         createGamePanel();
+
         InfoLabel youLoseLabel = new InfoLabel("YOU WON!", ((double) GAME_WIDTH / 2 - 100), GAME_HEIGHT / 2 - 180, 40);
         gamePane.getChildren().add(youLoseLabel);
     }

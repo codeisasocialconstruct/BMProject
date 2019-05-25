@@ -58,6 +58,7 @@ public class Projectile
         }
         projectileList.add(this);
         gamePane.getChildren().add(projectileSprite);
+        projectileSprite.toBack();
         this.base = base;
         moveIterator = 0;
         hitConfirmed = false;
