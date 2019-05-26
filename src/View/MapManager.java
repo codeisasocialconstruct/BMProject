@@ -13,13 +13,14 @@ import java.util.ArrayList;
 public class MapManager
 {
     //Legend:
-    //0 = null;
+    //0 = desert;
     //3 = brick3
     //2 = brick2
     //1 = brick1
     //4 = wall
     //5 = bush
     //6 = meadow
+    //7 = water
     //F = player one
     //S = player two
     //N = neutral tank
@@ -29,6 +30,7 @@ public class MapManager
     private Stage gameStage;
     private ArrayList<ImageView> bushList;
     private ArrayList<BrickBlock> brickList;
+    private ArrayList<ImageView> waterList;
     private int GAME_WIDTH;
     private int GAME_HEIGHT;
     private int BLOCK_SIZE;
@@ -49,6 +51,8 @@ public class MapManager
     private static final String WALL = "Model/MapElements/MapPieces/Wall.png";
     private static final String DESSERT = "Model/MapElements/MapPieces/Background.png";
     private static final String MEADOW = "Model/MapElements/MapPieces/Meadow.png";
+    private static final String WATER1 = "Model/MapElements/MapPieces/Water1.png";
+    private static final String WATER2 = "Model/MapElements/MapPieces/Water2.png";
 
     private static String[][] positionMatrix;
     private static String map_stream = "";
@@ -68,6 +72,7 @@ public class MapManager
         positionMatrix = new String[GAME_WIDTH/BLOCK_SIZE][GAME_HEIGHT/BLOCK_SIZE];
         brickList = new ArrayList<>();
         neutralList = new ArrayList<>();
+        waterList = new ArrayList<>();
     }
 
     public void createBackground()
@@ -174,14 +179,24 @@ public class MapManager
                         picture = BUSH;
                         break;
                     }
+                    case '7':
+                    {
+                        picture = WATER1;
+                        break;
+                    }
                 }
                 if(flag)
                 {
                     ImageView imageView = new ImageView(new Image(picture, BLOCK_SIZE, BLOCK_SIZE, false, true));
                     imageView.setLayoutX(j * BLOCK_SIZE);
                     imageView.setLayoutY(i * BLOCK_SIZE);
+
                     if (tmp[counter] == '5')
                         bushList.add(imageView);
+
+                    if(tmp[counter] == '7')
+                        waterList.add(imageView);
+
                     gamePane.getChildren().add(imageView);
                 }
 
@@ -198,13 +213,6 @@ public class MapManager
         }
     }
 
-    public void bushDissapear()
-    {
-        for(ImageView i : bushList)
-        {
-            i.setVisible(false);
-        }
-    }
 
     public ArrayList<Point> getNeutralList()
     {
@@ -244,5 +252,10 @@ public class MapManager
     public ArrayList<BrickBlock> getBrickList()
     {
         return brickList;
+    }
+
+    public ArrayList<ImageView> getWaterList()
+    {
+        return waterList;
     }
 }

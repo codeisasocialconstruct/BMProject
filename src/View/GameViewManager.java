@@ -5,6 +5,7 @@ package View;
 import Model.InfoLabel;
 import Model.MapElements.Base;
 import Model.MapElements.BrickBlock;
+import Model.MapElements.WaterChangeTimer;
 import Model.MenuPanel;
 import Model.NavigationButton;
 import Model.Tanks.Tank;
@@ -12,6 +13,7 @@ import Model.Tanks.TankPlayer;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
@@ -36,7 +38,7 @@ public class GameViewManager
     private AnimationTimer gameTimer;
     private Base base;
     private DataBaseConnector dataBaseConnector;
-    private String boardName = "Forest fight";
+    private String boardName = "Swim training";
     private MapManager mapManager;
 
     private boolean isGamePaused;
@@ -48,6 +50,8 @@ public class GameViewManager
     private static int BLOCK_SIZE;
     private static String[][] positionMatrix;
     private ArrayList<BrickBlock> brickList;
+    private ArrayList<ImageView> waterList;
+    WaterChangeTimer waterChangeTimer;
     //array used to detect collisions. It contains strings. If string is a number
     //that means in this position tank is present and number equals it`s. If any other string
 
@@ -82,6 +86,7 @@ public class GameViewManager
         gridMode = false;
         isGamePaused = false;
         mapManager = new MapManager(gamePane, gameScene, gameStage, dataBaseConnector);
+        waterList = mapManager.getWaterList();
     }
 
     private void createBackground()
@@ -118,14 +123,15 @@ public class GameViewManager
 
         spawnBase(gamePane, mapManager.getBaseX(), mapManager.getBaseY(), positionMatrix, 5); //BASE NEED TO BE INITIALIZED BEFORE TANKS!!!
         spawnPlayerOneTank(gamePane, gameScene, mapManager.getPlayerOneX(), mapManager.getPlayerOneY(), playerOneTankSprite, tanksList, positionMatrix,
-                KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN, KeyCode.CONTROL, dataBaseConnector,  brickList);
+                KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN, KeyCode.CONTROL, dataBaseConnector,  brickList, waterList);
 
         for(Point i : mapManager.getNeutralList())
         {
-            spawnNeutralTank(gamePane, (int)i.getX(), (int)i.getY(), standardTankSprite, tanksList, positionMatrix,dataBaseConnector, brickList);
+            spawnNeutralTank(gamePane, (int)i.getX(), (int)i.getY(), standardTankSprite, tanksList, positionMatrix,dataBaseConnector, brickList, waterList);
         }
         mapManager.bushToFront();
         playerOneTank.heartsToFront();
+        waterChangeTimer = new WaterChangeTimer(waterList);
         createGameLoop();
         gameStage.show();
     }
@@ -171,6 +177,7 @@ public class GameViewManager
                                 showWinScreen();
                         }
                     }
+                    waterChangeTimer.moveWater();
                 }
             }
         };
@@ -195,14 +202,14 @@ public class GameViewManager
 
     //function that checks if spawn position is empty and coordinates are correct, if they are, the Tank constructor is called
     private boolean spawnNeutralTank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY,
-                                     String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix, DataBaseConnector dataBaseConnector, ArrayList<BrickBlock> brickList)
+                                     String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix, DataBaseConnector dataBaseConnector, ArrayList<BrickBlock> brickList, ArrayList<ImageView> waterList)
     {
         if (spawnPosArrayX < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY < GAME_HEIGHT / BLOCK_SIZE)
         {
             if (collisionMatrix[spawnPosArrayX][spawnPosArrayY] == null)
             {
                 Tank spawningTank = new Tank(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl,
-                        tankList, collisionMatrix, 3, base, dataBaseConnector, brickList);
+                        tankList, collisionMatrix, 3, base, dataBaseConnector, brickList, waterList);
                 return true;
             }
         }
@@ -212,7 +219,7 @@ public class GameViewManager
     //function that checks if spawn position is empty and coordinates are correct, if they are, the PlayerTank constructor is called
     private boolean spawnPlayerOneTank(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList, String[][] collisionMatrix,
                                        KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey, DataBaseConnector dataBaseConnector,
-                                       ArrayList<BrickBlock> brickList)
+                                       ArrayList<BrickBlock> brickList, ArrayList<ImageView> waterList)
     {
         if (spawnPosArrayX < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY < GAME_HEIGHT / BLOCK_SIZE)
         {
@@ -220,7 +227,7 @@ public class GameViewManager
             {
                 playerOneTank = new TankPlayer(gamePane, gameScene, spawnPosArrayX, spawnPosArrayY,
                         tankSpriteUrl, tankList, collisionMatrix, base,
-                        moveLeftKey, moveRightKey, moveUpKey, moveDownKey, shootKey, dataBaseConnector,brickList);
+                        moveLeftKey, moveRightKey, moveUpKey, moveDownKey, shootKey, dataBaseConnector,brickList, waterList);
                 return true;
             }
         }

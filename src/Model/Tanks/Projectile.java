@@ -21,11 +21,12 @@ public class Projectile
     private boolean hitConfirmed;
     private Base base;
     private ArrayList<BrickBlock> brickList;
+    private ArrayList<ImageView> waterList;
 
     private final static String PROJECTILE_SPRITE = "Model/Resources/Projectiles/shotThin.png";
 
     public Projectile(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String[][] positionMatrix, char directionOfMovement,
-                      List<Projectile> projectileList, List<Tank> tankList, Base base, ArrayList<BrickBlock> brickList)
+                      List<Projectile> projectileList, List<Tank> tankList, Base base, ArrayList<BrickBlock> brickList,ArrayList<ImageView> waterList)
     {
         this.gamePane = gamePane;
         this.positionMatrix = positionMatrix;
@@ -34,6 +35,7 @@ public class Projectile
         currentX = spawnPosArrayX;
         currentY = spawnPosArrayY;
         this.brickList = brickList;
+        this.waterList = waterList;
 
         projectileSprite = new ImageView(PROJECTILE_SPRITE);  //loading sprite
         if (directionOfMovement == 'L')
@@ -59,6 +61,7 @@ public class Projectile
         projectileList.add(this);
         gamePane.getChildren().add(projectileSprite);
         projectileSprite.toBack();
+        waterToBack();
         this.base = base;
         moveIterator = 0;
         hitConfirmed = false;
@@ -242,5 +245,11 @@ public class Projectile
             projectileSprite.setLayoutY(projectileSprite.getLayoutY() + 10);
         }
 
+    }
+
+    private void waterToBack()
+    {
+        for(ImageView i : waterList)
+            i.toBack();
     }
 }
