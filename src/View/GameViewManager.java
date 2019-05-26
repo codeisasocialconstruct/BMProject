@@ -38,7 +38,7 @@ public class GameViewManager
     private AnimationTimer gameTimer;
     private Base base;
     private DataBaseConnector dataBaseConnector;
-    private String boardName = "Swim training";
+    private String boardName = "Chains of war";
     private MapManager mapManager;
 
     private boolean isGamePaused;
@@ -109,6 +109,7 @@ public class GameViewManager
         exitButton.setOnAction(event ->
         {
             musicManager.playClickSound();
+            waterChangeTimer.stopMove();
             Platform.exit();
         });
     }

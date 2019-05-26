@@ -26,6 +26,12 @@ public class WaterChangeTimer
         timer.schedule(new waterChanger(),500);
     }
 
+    public void stopMove()
+    {
+        timer.cancel();
+    }
+
+
     private class waterChanger extends TimerTask
     {
         public void run()
