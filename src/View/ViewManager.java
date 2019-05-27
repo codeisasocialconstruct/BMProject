@@ -88,10 +88,8 @@ public class ViewManager {
         addMenuButton(playButton);
 
         playButton.setOnAction(event -> {
-                musicManager.stopMusic();
-                musicManager.playClickSound();
-                GameViewManager gameViewManager = new GameViewManager(musicManager);
-                gameViewManager.createGame(mainStage, false);
+                MapChooseManager mapChooseManager = new MapChooseManager(mainStage,musicManager);
+                mapChooseManager.createChooseMenu();
         });
     }
 

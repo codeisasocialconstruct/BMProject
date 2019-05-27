@@ -38,7 +38,7 @@ public class GameViewManager
     private AnimationTimer gameTimer;
     private Base base;
     private DataBaseConnector dataBaseConnector;
-    private String boardName = "Chains of war";
+    private String mapName;
     private MapManager mapManager;
 
     private boolean isGamePaused;
@@ -62,9 +62,10 @@ public class GameViewManager
     private MusicManager musicManager;
 
     ///////////////////////WINDOW INITIALIZATION////////////////////////////////////
-    public GameViewManager(MusicManager musicManager)
+    public GameViewManager(MusicManager musicManager, String mapName)
     {
         this.musicManager = musicManager;
+        this.mapName = mapName;
         initializeStage();
         createBackground();
         musicManager.playMainTheme();
@@ -72,7 +73,7 @@ public class GameViewManager
 
     private void initializeStage()
     {
-        dataBaseConnector = new DataBaseConnector("SELECT * FROM map WHERE name = '" + boardName + "';");
+        dataBaseConnector = new DataBaseConnector("SELECT * FROM map WHERE name = '" + mapName + "';");
         dataBaseConnector.getData();
         GAME_WIDTH = dataBaseConnector.getGame_width();
         GAME_HEIGHT = dataBaseConnector.getGame_height();
