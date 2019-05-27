@@ -1,6 +1,8 @@
 package Model.Tanks;
 
 import Model.MapElements.Base;
+import Model.MapElements.BrickBlock;
+import View.DataBaseConnector;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,8 +36,9 @@ public class TankPlayer extends Tank{
 
     public TankPlayer(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
                       String[][] collisionMatrix, Base base,
-                      KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey) {
-        super(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 5, base);
+                      KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey, DataBaseConnector dataBaseConnector, ArrayList<BrickBlock> brickList,ArrayList<ImageView> waterList) {
+        super(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 5, base,dataBaseConnector, brickList, waterList);
+
         this.gameScene = gameScene;
         this.moveLeftKey = moveLeftKey;
         this.moveRightKey = moveRightKey;
@@ -214,6 +217,14 @@ public class TankPlayer extends Tank{
     private void lifeIndicatorEmptyHeart() {
         Image emptyHeart = new Image(HEART_SPRITE_EMPTY);
         lifePointIndicator.get(lifePoints-1).setImage(emptyHeart);
+    }
+
+    public void heartsToFront()
+    {
+        for(ImageView heart: lifePointIndicator)
+        {
+            heart.toFront();
+        }
     }
 
     void takeDamage() {
