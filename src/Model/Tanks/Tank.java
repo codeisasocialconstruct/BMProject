@@ -79,7 +79,7 @@ public class Tank
 
         gamePane.getChildren().add(tankSprite);
 
-        if (lifePoints < 1)
+        if (maxLifePoints < 1)
             this.lifePoints = 5;
         else
             this.lifePoints = maxLifePoints;
