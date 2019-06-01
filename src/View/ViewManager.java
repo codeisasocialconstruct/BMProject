@@ -1,5 +1,6 @@
 package View;
 
+import Model.InfoLabel;
 import Model.MenuPanel;
 import com.mysql.jdbc.exceptions.MySQLDataException;
 import javafx.application.Platform;
@@ -30,6 +31,7 @@ public class ViewManager {
     private List<NavigationButton> menuButtons;
     private  MenuPanel helpPanel;
     private  MenuPanel creditsPanel;
+    private MenuPanel gameModePanel;
     private static boolean twoPlayersMode = false;
 
     private MusicManager musicManager;
@@ -46,8 +48,7 @@ public class ViewManager {
         mainStage.setScene(mainScene);
         createButtons();
         createBackground();
-        createHelpPanel();
-        createCreditsPanel();
+        createPanels();
         createTitle();
         musicManager = new MusicManager();
         musicManager.playMenuTheme();
@@ -74,6 +75,12 @@ public class ViewManager {
         createExitButton();
     }
 
+    private void createPanels() {
+        createHelpPanel();
+        createCreditsPanel();
+        createGameModePanel();
+    }
+
     private void addMenuButton(NavigationButton button) {
         button.setLayoutX(MENU_BUTTON_START_X);
         button.setLayoutY(MENU_BUTTON_START_Y + menuButtons.size()*100);
@@ -88,8 +95,11 @@ public class ViewManager {
         addMenuButton(playButton);
 
         playButton.setOnAction(event -> {
-                MapChooseManager mapChooseManager = new MapChooseManager(mainStage,musicManager);
-                mapChooseManager.createChooseMenu();
+            if (!creditsPanel.isHid())
+                creditsPanel.movePanel();
+            if (!helpPanel.isHid())
+                helpPanel.movePanel();
+            gameModePanel.movePanel();
         });
     }
 
@@ -102,6 +112,8 @@ public class ViewManager {
             musicManager.playClickSound();
             if (!creditsPanel.isHid())
                 creditsPanel.movePanel();
+            if (!gameModePanel.isHid())
+                gameModePanel.movePanel();
             helpPanel.movePanel();
         });
     }
@@ -114,6 +126,8 @@ public class ViewManager {
             musicManager.playClickSound();
             if (!helpPanel.isHid())
                 helpPanel.movePanel();
+            if (!gameModePanel.isHid())
+                gameModePanel.movePanel();
             creditsPanel.movePanel();
         });
     }
@@ -144,5 +158,36 @@ public class ViewManager {
         creditsPanel = new MenuPanel(800, 130);
         mainPane.getChildren().add(creditsPanel);
     }
+
+    private void createGameModePanel() {
+        gameModePanel = new MenuPanel(800, 130);
+        mainPane.getChildren().add(gameModePanel);
+
+        InfoLabel gameModeLabel = new InfoLabel("CHOOSE GAME MODE", 55, -30, 35);
+        gameModePanel.getPane().getChildren().add(gameModeLabel);
+
+        NavigationButton onePlayerMode = new NavigationButton("One Player");
+        onePlayerMode.setLayoutX(100);
+        onePlayerMode.setLayoutY(125);
+        gameModePanel.getPane().getChildren().add(onePlayerMode);
+
+        onePlayerMode.setOnAction(event -> {
+            musicManager.playClickSound();
+            MapChooseManager mapChooseManager = new MapChooseManager(mainStage,musicManager,false);
+            mapChooseManager.createChooseMenu();
+        });
+
+        NavigationButton twoPlayersMode = new NavigationButton("Two Players");
+        twoPlayersMode.setLayoutX(100);
+        twoPlayersMode.setLayoutY(200);
+        gameModePanel.getPane().getChildren().add(twoPlayersMode);
+
+        twoPlayersMode.setOnAction(event -> {
+            musicManager.playClickSound();
+            MapChooseManager mapChooseManager = new MapChooseManager(mainStage,musicManager,true);
+            mapChooseManager.createChooseMenu();
+        });
+    }
+
 
 }

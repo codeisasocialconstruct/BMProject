@@ -42,7 +42,7 @@ public class GameViewManager
     private MapManager mapManager;
 
     private boolean isGamePaused;
-
+    private boolean twoPlayersMode;
     private boolean gridMode;
 
     private static int GAME_WIDTH;  //Map divided into blocks 50x50 pixels each
@@ -62,13 +62,14 @@ public class GameViewManager
     private MusicManager musicManager;
 
     ///////////////////////WINDOW INITIALIZATION////////////////////////////////////
-    public GameViewManager(MusicManager musicManager, String mapName)
+    public GameViewManager(MusicManager musicManager, String mapName, boolean twoPlayersMode)
     {
         this.musicManager = musicManager;
         this.mapName = mapName;
         initializeStage();
         createBackground();
         musicManager.playMainTheme();
+        this.twoPlayersMode = twoPlayersMode;
     }
 
     private void initializeStage()
@@ -112,6 +113,22 @@ public class GameViewManager
             musicManager.playClickSound();
             waterChangeTimer.stopMove();
             Platform.exit();
+        });
+    }
+
+    private void createRetryButton(double X, double Y) {
+        NavigationButton retryButton = new NavigationButton("RETRY");
+        retryButton.setLayoutX(X);
+        retryButton.setLayoutY(Y);
+        //showing button on screen
+        gamePane.getChildren().add(retryButton);
+
+        //handler to reset game if button is pressed
+        retryButton.setOnAction(event -> {
+            musicManager.stopMusic();
+            musicManager.playClickSound();
+            GameViewManager gameViewManager = new GameViewManager(musicManager, mapName, twoPlayersMode);
+            gameViewManager.createGame(gameStage, false);
         });
     }
 
@@ -268,7 +285,7 @@ public class GameViewManager
         isGamePaused = true;
         createShadowOverlay();
         createGamePanel();
-
+        //TODO Add retry button
         InfoLabel youLoseLabel = new InfoLabel("YOU LOSE!", ((double) GAME_WIDTH / 2 - 100), GAME_HEIGHT / 2 - 180, 40);
         gamePane.getChildren().add(youLoseLabel);
     }
@@ -278,7 +295,7 @@ public class GameViewManager
         isGamePaused = true;
         createShadowOverlay();
         createGamePanel();
-
+        //TODO Add go to menu button
         InfoLabel youLoseLabel = new InfoLabel("YOU WON!", ((double) GAME_WIDTH / 2 - 100), GAME_HEIGHT / 2 - 180, 40);
         gamePane.getChildren().add(youLoseLabel);
     }

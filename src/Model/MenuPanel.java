@@ -46,4 +46,6 @@ public class MenuPanel extends SubScene {
     }
 
     public boolean isHid() {return isHidden;}
+
+    public AnchorPane getPane() { return (AnchorPane) this.getRoot(); }
 }
