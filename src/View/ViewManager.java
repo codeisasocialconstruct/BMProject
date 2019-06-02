@@ -167,11 +167,38 @@ public class ViewManager {
     private void createHelpPanel() {
         helpPanel = new MenuPanel(800, 130);
         mainPane.getChildren().add(helpPanel);
+        InfoLabel helpLabel = new InfoLabel("CONTROLS", 120, -30, 35);
+        helpPanel.getPane().getChildren().add(helpLabel);
+
+        InfoLabel controlsLabel = new InfoLabel("FIRST PLAYER:", 0, 30, 30);
+        helpPanel.getPane().getChildren().add(controlsLabel);
+        InfoLabel firstPlayerControls = new InfoLabel("UP, DOWN, LEFT, RIGHT", 0, 60, 25);
+        helpPanel.getPane().getChildren().add(firstPlayerControls);
+        InfoLabel firstPlayerControlsContinue = new InfoLabel(" - MOVEMENT", 170, 60, 25);
+        helpPanel.getPane().getChildren().add(firstPlayerControlsContinue);
+        InfoLabel firstPlayerControls2 = new InfoLabel("CTRL - SHOOT", 0, 90, 25);
+        helpPanel.getPane().getChildren().add(firstPlayerControls2);
+        InfoLabel controlsLabel2 = new InfoLabel("SECOND PLAYER:", 0, 120, 30);
+        helpPanel.getPane().getChildren().add(controlsLabel2);
+        InfoLabel secondPlayerControls = new InfoLabel("W,A,S,D - MOVEMENT", 0, 150, 25);
+        helpPanel.getPane().getChildren().add(secondPlayerControls);
+        InfoLabel secondPlayerControls2 = new InfoLabel("SHIFT - SHOOT", 0, 180, 25);
+        helpPanel.getPane().getChildren().add(secondPlayerControls2);
+
     }
 
     private void createCreditsPanel() {
         creditsPanel = new MenuPanel(800, 130);
         mainPane.getChildren().add(creditsPanel);
+
+        InfoLabel creatorsLabel = new InfoLabel("CREATORS", 110, -30, 35);
+        InfoLabel creator1Label = new InfoLabel("JAN KIES", 60, 50, 30);
+        InfoLabel creator2Label = new InfoLabel("BARTOSZ SOBIESKI", 60, 100, 30);
+        InfoLabel creator3Label = new InfoLabel("MARCIN PIOTROWSKI ", 60, 150, 30);
+        creditsPanel.getPane().getChildren().add(creatorsLabel);
+        creditsPanel.getPane().getChildren().add(creator1Label);
+        creditsPanel.getPane().getChildren().add(creator2Label);
+        creditsPanel.getPane().getChildren().add(creator3Label);
     }
 
     private void createGameModePanel() {

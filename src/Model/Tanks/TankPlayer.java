@@ -86,7 +86,7 @@ public class TankPlayer extends Tank{
             this.moveRightSecondPlayerKey = KeyCode.D;
             this.moveUpSecondPlayerKey = KeyCode.W;
             this.moveDownSecondPlayerKey = KeyCode.S;
-            this.shootSecondPlayerKey = KeyCode.F;
+            this.shootSecondPlayerKey = KeyCode.SHIFT;
         }
 
         createKeyListeners();
