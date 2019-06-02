@@ -2,6 +2,7 @@ package View;
 
 import Model.InfoLabel;
 import Model.MenuPanel;
+import Model.SecretButton;
 import com.mysql.jdbc.exceptions.MySQLDataException;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -73,6 +74,7 @@ public class ViewManager {
         createHelpButton();
         createCreditsButton();
         createExitButton();
+        createSecretButton();
     }
 
     private void createPanels() {
@@ -140,6 +142,18 @@ public class ViewManager {
         exitButton.setOnAction(event -> {
             musicManager.playClickSound();
             Platform.exit();
+        });
+    }
+
+    private void createSecretButton() {
+        SecretButton secretButton = new SecretButton();
+        secretButton.setLayoutX(0);
+        secretButton.setLayoutY(0);
+        mainPane.getChildren().add(secretButton);
+
+        secretButton.setOnAction(event -> {
+            musicManager.playClickSound();
+            musicManager.enableSecretTheme();
         });
     }
 

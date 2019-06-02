@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4334352d-b2aa-4155-9297-561cdef2706e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/Model/SecretButton.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/TankPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/TankPlayer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Tanks/TankPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Tanks/TankPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/GameViewManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/GameViewManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/MapChooseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MapChooseManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/MusicManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/MusicManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/MusicManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MusicManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/ViewManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ViewManager.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,25 +23,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/View/GameViewManager.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Model/SecretButton.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="155">
-              <caret line="328" column="36" selection-start-line="328" selection-start-column="36" selection-end-line="328" selection-end-column="36" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#5250#6814#0" expanded="true" />
-                <element signature="e#6813#6814#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="238">
+              <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/Tanks/TankPlayer.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/View/ViewManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="298">
-              <caret line="104" column="19" lean-forward="true" selection-start-line="104" selection-start-column="19" selection-end-line="104" selection-end-column="32" />
+            <state relative-caret-position="240">
+              <caret line="76" column="29" selection-start-line="76" selection-start-column="29" selection-end-line="76" selection-end-column="29" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -62,8 +58,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -89,7 +85,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/View/MusicManager.java" />
         <option value="$PROJECT_DIR$/src/Model/MapElements/Base.java" />
         <option value="$PROJECT_DIR$/src/Model/MapElements/BrickBlock.java" />
         <option value="$PROJECT_DIR$/src/View/DataBaseConnector.java" />
@@ -100,10 +95,12 @@
         <option value="$PROJECT_DIR$/src/Model/CustomCheckBox.java" />
         <option value="$PROJECT_DIR$/src/Model/Tanks/Tank.java" />
         <option value="$PROJECT_DIR$/src/Model/MenuPanel.java" />
-        <option value="$PROJECT_DIR$/src/View/ViewManager.java" />
         <option value="$PROJECT_DIR$/src/View/MapChooseManager.java" />
         <option value="$PROJECT_DIR$/src/Model/Tanks/TankPlayer.java" />
         <option value="$PROJECT_DIR$/src/View/GameViewManager.java" />
+        <option value="$PROJECT_DIR$/src/View/MusicManager.java" />
+        <option value="$PROJECT_DIR$/src/Model/SecretButton.java" />
+        <option value="$PROJECT_DIR$/src/View/ViewManager.java" />
       </list>
     </option>
   </component>
@@ -162,6 +159,21 @@
               <item name="Battle Metropolis" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="View" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Battle Metropolis" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Battle Metropolis" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="View" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Battle Metropolis" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Battle Metropolis" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="View" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="Sounds" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -251,7 +263,7 @@
       <workItem from="1558895928852" duration="59000" />
       <workItem from="1558901767526" duration="599000" />
       <workItem from="1558968155592" duration="10247000" />
-      <workItem from="1559467414593" duration="1914000" />
+      <workItem from="1559467414593" duration="2916000" />
     </task>
     <task id="LOCAL-00001" summary="Commit after rebase">
       <created>1558538138935</created>
@@ -351,11 +363,18 @@
       <option name="project" value="LOCAL" />
       <updated>1559401590982</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Added pause panel showed after pressing Esc.">
+      <created>1559469598291</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1559469598291</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="53673000" />
+    <option name="totallyTimeSpent" value="54675000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -370,7 +389,7 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49918962" visible="true" weight="0.2785235" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49918962" visible="true" weight="0.2785235" />
       <window_info id="Structure" order="1" sideWeight="0.5008104" side_tool="true" weight="0.26385927" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -379,7 +398,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.4989339" weight="0.32936078" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.7241611" visible="true" weight="0.33144477" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.7241611" visible="true" weight="0.33144477" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.77651006" weight="0.39943343" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -419,7 +438,8 @@
     <MESSAGE value="Added forth map" />
     <MESSAGE value="Fixed bug with maxLifePoints" />
     <MESSAGE value="Added panel with two players mode selection. Added variable twoPlayersMode&#10;passed to MapManager and GameViewManager." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added panel with two players mode selection. Added variable twoPlayersMode&#10;passed to MapManager and GameViewManager." />
+    <MESSAGE value="Added pause panel showed after pressing Esc." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added pause panel showed after pressing Esc." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Battle_Metropolis$Main.ic" NAME="Main Coverage Results" MODIFIED="1559402246223" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
@@ -578,13 +598,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/NavigationButton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Model/Tanks/Tank.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7412">
@@ -599,17 +612,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/MusicManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
-          <folding>
-            <element signature="e#1008#1009#0" expanded="true" />
-            <element signature="e#1047#1048#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/MapChooseManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1360">
@@ -617,12 +619,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ViewManager.java">
+    <entry file="file://$PROJECT_DIR$/src/View/GameViewManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1005">
-          <caret line="173" column="44" selection-start-line="173" selection-start-column="44" selection-end-line="173" selection-end-column="44" />
+        <state relative-caret-position="308">
+          <caret line="350" column="80" selection-start-line="350" selection-start-column="80" selection-end-line="350" selection-end-column="80" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#5250#6814#0" expanded="true" />
+            <element signature="e#6813#6814#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -630,18 +634,43 @@
     <entry file="file://$PROJECT_DIR$/src/Model/Tanks/TankPlayer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="298">
-          <caret line="104" column="19" lean-forward="true" selection-start-line="104" selection-start-column="19" selection-end-line="104" selection-end-column="32" />
+          <caret line="104" column="19" selection-start-line="104" selection-start-column="19" selection-end-line="104" selection-end-column="32" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/GameViewManager.java">
+    <entry file="file://$PROJECT_DIR$/src/View/MusicManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
-          <caret line="328" column="36" selection-start-line="328" selection-start-column="36" selection-end-line="328" selection-end-column="36" />
+        <state relative-caret-position="203">
+          <caret line="20" column="78" selection-start-line="20" selection-start-column="78" selection-end-line="20" selection-end-column="78" />
+          <folding>
+            <element signature="e#1008#1009#0" expanded="true" />
+            <element signature="e#1047#1048#0" expanded="true" />
+            <element signature="e#1424#1425#0" expanded="true" />
+            <element signature="e#1463#1464#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/NavigationButton.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="26" column="5" lean-forward="true" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/SecretButton.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ViewManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="76" column="29" selection-start-line="76" selection-start-column="29" selection-end-line="76" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5250#6814#0" expanded="true" />
-            <element signature="e#6813#6814#0" expanded="true" />
           </folding>
         </state>
       </provider>
