@@ -32,7 +32,7 @@ public class MapChooseManager
     public MapChooseManager(Stage menuStage, MusicManager musicManager, boolean twoPlayersMode)
     {
         this.menuStage = menuStage;
-        menuStage.hide();
+        menuStage.close();
         choosePane = new AnchorPane();
         chooseScene = new Scene(choosePane,WIDTH,HEIGHT);
         chooseStage = new Stage();

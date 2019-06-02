@@ -31,6 +31,11 @@ public class GameViewManager
     private Scene gameScene;
     private Stage gameStage;
     private Stage menuStage;
+    private Rectangle overlay;
+    private MenuPanel pausePanel;
+    private InfoLabel pauseLabel;
+    private NavigationButton resumeButton;
+    private NavigationButton exitButton;
 
     //variables for animation
     private List<Tank> tanksList;
@@ -69,6 +74,8 @@ public class GameViewManager
         initializeStage();
         createBackground();
         musicManager.playMainTheme();
+        createShadowOverlay();
+        createPausePanel();
         this.twoPlayersMode = twoPlayersMode;
     }
 
@@ -91,54 +98,13 @@ public class GameViewManager
         waterList = mapManager.getWaterList();
     }
 
-    private void createBackground()
-    {
-        mapManager.createBackground();
-        positionMatrix = mapManager.createPositionMatrix();
-        brickList = mapManager.getBrickList();
-    }
-
-
-    private void createExitButton(double X, double Y)
-    {
-        NavigationButton exitButton = new NavigationButton("EXIT");
-        exitButton.setLayoutX(X);
-        exitButton.setLayoutY(Y);
-        //showing button on screen
-        gamePane.getChildren().add(exitButton);
-
-        //handler to exit app if button is pressed
-        exitButton.setOnAction(event ->
-        {
-            musicManager.playClickSound();
-            waterChangeTimer.stopMove();
-            Platform.exit();
-        });
-    }
-
-    private void createRetryButton(double X, double Y) {
-        NavigationButton retryButton = new NavigationButton("RETRY");
-        retryButton.setLayoutX(X);
-        retryButton.setLayoutY(Y);
-        //showing button on screen
-        gamePane.getChildren().add(retryButton);
-
-        //handler to reset game if button is pressed
-        retryButton.setOnAction(event -> {
-            musicManager.stopMusic();
-            musicManager.playClickSound();
-            GameViewManager gameViewManager = new GameViewManager(musicManager, mapName, twoPlayersMode);
-            gameViewManager.createGame(gameStage, false);
-        });
-    }
-
     //////////////////////////GAME ELEMENTS////////////////////////////////////////
     //showing game window
     public void createGame(Stage menuStage, boolean twoPlayersMode)
     {
         tanksList = new ArrayList<>();  //initializing array list that allows to manage all tanks on map
         this.menuStage = menuStage;
-        this.menuStage.hide();
+        this.menuStage.close();
 
         spawnBase(gamePane, mapManager.getBaseX(), mapManager.getBaseY(), positionMatrix, 5); //BASE NEED TO BE INITIALIZED BEFORE TANKS!!!
         spawnPlayerOneTank(gamePane, gameScene, mapManager.getPlayerOneX(), mapManager.getPlayerOneY(), playerOneTankSprite, tanksList, positionMatrix,
@@ -170,7 +136,7 @@ public class GameViewManager
             @Override
             public void handle(long now)
             {
-                if (!isGamePaused)
+                if (!isGamePaused && !((TankPlayer)playerOneTank).getIsPaused())
                 {
                     for (int iterator = 0; iterator < tanksList.size(); iterator++)
                     {
@@ -198,24 +164,98 @@ public class GameViewManager
                     }
                     waterChangeTimer.moveWater();
                 }
+                if (!isGamePaused && ((TankPlayer)playerOneTank).getIsPaused()) {
+                    isGamePaused = true;
+                    showPausePanel();
+                }
             }
         };
         gameTimer.start();
     }
 
+    private void createBackground()
+    {
+        mapManager.createBackground();
+        positionMatrix = mapManager.createPositionMatrix();
+        brickList = mapManager.getBrickList();
+    }
+
+    private void createExitButton(double X, double Y)
+    {
+        exitButton = new NavigationButton("EXIT");
+        exitButton.setVisible(false);
+        exitButton.setLayoutX(X);
+        exitButton.setLayoutY(Y);
+        //showing button on screen
+        gamePane.getChildren().add(exitButton);
+
+        //handler to exit app if button is pressed
+        exitButton.setOnAction(event ->
+        {
+            musicManager.playClickSound();
+            musicManager.stopMusic();
+            waterChangeTimer.stopMove();
+            Platform.exit();
+        });
+    }
+
+    private void createResumeButton(double X, double Y) {
+        resumeButton = new NavigationButton("RESUME");
+        resumeButton.setLayoutX(X);
+        resumeButton.setLayoutY(Y);
+        resumeButton.setVisible(false);
+        //showing button on screen
+        gamePane.getChildren().add(resumeButton);
+
+        //handler to exit app if button is pressed
+        resumeButton.setOnAction(event ->
+        {
+            musicManager.playClickSound();
+            hidePausePanel();
+            waterChangeTimer.moveWater();
+            isGamePaused = false;
+            ((TankPlayer)playerOneTank).setIsPaused(false);
+        });
+    }
+
+    private void createRetryButton(double X, double Y) {
+        NavigationButton retryButton = new NavigationButton("RETRY");
+        retryButton.setLayoutX(X);
+        retryButton.setLayoutY(Y);
+        //showing button on screen
+        gamePane.getChildren().add(retryButton);
+
+        //handler to reset game if button is pressed
+        retryButton.setOnAction(event -> {
+            musicManager.stopMusic();
+            musicManager.playClickSound();
+            GameViewManager gameViewManager = new GameViewManager(new MusicManager(), mapName, twoPlayersMode);
+            gameViewManager.createGame(gameStage, false);
+            gameTimer.stop();
+            musicManager.stopMusic();
+            waterChangeTimer.stopMove();
+
+            //TODO fix retry (Zombie threads prevents closing app)
+        });
+    }
+
     private void createShadowOverlay()
     {
-        Rectangle overlay = new Rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        overlay = new Rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT);
         overlay.setOpacity(0.7);
+        overlay.setVisible(false);
         gamePane.getChildren().add(overlay);
     }
 
-    private void createGamePanel()
+    private MenuPanel createGamePanel()
     {
-        MenuPanel winPanel = new MenuPanel(GAME_WIDTH / 2 - 200, GAME_HEIGHT / 2 - 150);
-        gamePane.getChildren().add(winPanel);
+        MenuPanel gamePanel = new MenuPanel(GAME_WIDTH / 2 - 200, GAME_HEIGHT / 2 - 150);
+        gamePane.getChildren().add(gamePanel);
         createExitButton(GAME_WIDTH / 2 - 99, GAME_HEIGHT / 2 + 70);
+        return gamePanel;
     }
+
+
 
     /////////////////////////////////SPAWN METHODS////////////////////////////////////////////////////////////
 
@@ -283,9 +323,11 @@ public class GameViewManager
     private void showLoseScreen()
     {
         isGamePaused = true;
-        createShadowOverlay();
+        overlay.setVisible(true);
         createGamePanel();
-        //TODO Add retry button
+        exitButton.toFront();
+        exitButton.setVisible(true);
+        //createRetryButton(GAME_WIDTH/2-99,GAME_HEIGHT/2 - 40);
         InfoLabel youLoseLabel = new InfoLabel("YOU LOSE!", ((double) GAME_WIDTH / 2 - 100), GAME_HEIGHT / 2 - 180, 40);
         gamePane.getChildren().add(youLoseLabel);
     }
@@ -293,10 +335,43 @@ public class GameViewManager
     private void showWinScreen()
     {
         isGamePaused = true;
-        createShadowOverlay();
+        overlay.setVisible(true);
         createGamePanel();
+        exitButton.toFront();
+        exitButton.setVisible(true);
         //TODO Add go to menu button
-        InfoLabel youLoseLabel = new InfoLabel("YOU WON!", ((double) GAME_WIDTH / 2 - 100), GAME_HEIGHT / 2 - 180, 40);
-        gamePane.getChildren().add(youLoseLabel);
+        InfoLabel youWonLabel = new InfoLabel("YOU WON!", ((double) GAME_WIDTH / 2 - 100), GAME_HEIGHT / 2 - 180, 40);
+        gamePane.getChildren().add(youWonLabel);
+    }
+
+    private void createPausePanel() {
+        overlay.setVisible(false);
+        pausePanel = createGamePanel();
+        pausePanel.setVisible(false);
+        pauseLabel = new InfoLabel("GAME PAUSED", ((double) GAME_WIDTH / 2 - 125), GAME_HEIGHT / 2 - 180, 40);
+        pauseLabel.setVisible(false);
+        gamePane.getChildren().add(pauseLabel);
+        createResumeButton(GAME_WIDTH/2-99,GAME_HEIGHT/2 - 40);
+    }
+
+    private void showPausePanel() {
+        overlay.toFront();
+        overlay.setVisible(true);
+        pausePanel.toFront();
+        pausePanel.setVisible(true);
+        pauseLabel.toFront();
+        pauseLabel.setVisible(true);
+        resumeButton.toFront();
+        resumeButton.setVisible(true);
+        exitButton.toFront();
+        exitButton.setVisible(true);
+    }
+
+    private void hidePausePanel() {
+        overlay.setVisible(false);
+        pausePanel.setVisible(false);
+        pauseLabel.setVisible(false);
+        resumeButton.setVisible(false);
+        exitButton.setVisible(false);
     }
 }

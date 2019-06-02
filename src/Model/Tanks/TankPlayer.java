@@ -22,6 +22,7 @@ public class TankPlayer extends Tank{
     private boolean isUpKeyPressed;
     private boolean isDownKeyPressed;
     private boolean isShootKeyPressed;  //shoot key
+    private boolean isPaused;
 
     private KeyCode moveLeftKey;
     private KeyCode moveRightKey;
@@ -49,6 +50,8 @@ public class TankPlayer extends Tank{
 
         lifePointIndicator = new ArrayList<>();
         createLifeIndicator();
+
+        isPaused = false;
     }
 
     //Creating Listeners to inform which buttons are pressed - used to determine which animation is called
@@ -72,6 +75,11 @@ public class TankPlayer extends Tank{
             else if (event.getCode() == shootKey) {
                 isShootKeyPressed = true;
             }
+            else if (event.getCode() == KeyCode.ESCAPE) {
+                isPaused = true;
+            }
+
+            //TODO Add pausing game after pressing Esc
         });
 
         gameScene.setOnKeyReleased( event -> {
@@ -92,6 +100,11 @@ public class TankPlayer extends Tank{
             }
         });
     }
+
+    //////////////////////////PAUSING GAME/////////////////////////////////////////////
+    public boolean getIsPaused() {return isPaused;}
+
+    public void setIsPaused(boolean isPaused) {this.isPaused = isPaused;}
 
     //////////////////////////ANIMATIONS AND TANK MOTION////////////////////////////////////
 
