@@ -335,7 +335,7 @@ public class Tank
             moveIterator = BLOCK_SIZE / 5 - 1;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
         }
 
-        if (n == 3)
+        if (n == 3 || n==90)
         {
             if (angle == 0)
                 fullSpin = true;
@@ -448,6 +448,7 @@ public class Tank
     public void tankDestruction()
     {
         positionMatrix[currentX][currentY] = null;
+        lifePoints--;
         for (Projectile projectile : listOfActiveProjectiles)
         {
             projectile.hideProjectile();
@@ -503,10 +504,5 @@ public class Tank
         sounds = new AudioClip(this.getClass().getResource(TANK_EXPLOSION_SOUND).toExternalForm());
         sounds.setCycleCount(1);
         sounds.play(0.5);
-    }
-
-    public void heartsToFront()
-    {
-
     }
 }

@@ -22,7 +22,16 @@ public class TankPlayer extends Tank{
     private boolean isUpKeyPressed;
     private boolean isDownKeyPressed;
     private boolean isShootKeyPressed;  //shoot key
+
+    private boolean isLeftSecondPlayerKeyPressed;
+    private boolean isRightSecondPlayerKeyPressed;
+    private boolean isUpSecondPlayerKeyPressed;
+    private boolean isDownSecondPlayerKeyPressed;
+    private boolean isShootSecondPlayerKeyPressed;  //shoot key
+
+
     private boolean isPaused;
+    private boolean twoPlayersMode;
 
     private KeyCode moveLeftKey;
     private KeyCode moveRightKey;
@@ -30,22 +39,56 @@ public class TankPlayer extends Tank{
     private KeyCode moveDownKey;
     private KeyCode shootKey;
 
+    private KeyCode moveLeftSecondPlayerKey;
+    private KeyCode moveRightSecondPlayerKey;
+    private KeyCode moveUpSecondPlayerKey;
+    private KeyCode moveDownSecondPlayerKey;
+    private KeyCode shootSecondPlayerKey;
+
     private List<ImageView> lifePointIndicator;
     private final static String HEART_SPRITE_FULL = "Model/Resources/tankSprites/heart_full.png";
     private final static String HEART_SPRITE_EMPTY = "Model/Resources/tankSprites/heart_empty.png";
 
+    TankSecondPlayer secondPlayer;
+
 
     public TankPlayer(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
-                      String[][] collisionMatrix, Base base,
-                      KeyCode moveLeftKey, KeyCode moveRightKey, KeyCode moveUpKey, KeyCode moveDownKey, KeyCode shootKey, DataBaseConnector dataBaseConnector, ArrayList<BrickBlock> brickList,ArrayList<ImageView> waterList) {
+                      String[][] collisionMatrix, Base base, DataBaseConnector dataBaseConnector,
+                      ArrayList<BrickBlock> brickList,ArrayList<ImageView> waterList, boolean twoPlayersMode) {
         super(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 5, base,dataBaseConnector, brickList, waterList);
 
         this.gameScene = gameScene;
-        this.moveLeftKey = moveLeftKey;
-        this.moveRightKey = moveRightKey;
-        this.moveUpKey = moveUpKey;
-        this.moveDownKey = moveDownKey;
-        this.shootKey = shootKey;
+        this.twoPlayersMode = twoPlayersMode;
+        this.moveLeftKey = KeyCode.LEFT;
+        this.moveRightKey = KeyCode.RIGHT;
+        this.moveUpKey = KeyCode.UP;
+        this.moveDownKey = KeyCode.DOWN;
+        this.shootKey = KeyCode.CONTROL;
+
+        if(twoPlayersMode) {
+            if(checkIfLeftEmpty())
+                secondPlayer = new TankSecondPlayer(gamePane, spawnPosArrayX-1, spawnPosArrayY, tankList, collisionMatrix,
+                        base, dataBaseConnector, brickList, waterList);
+            else if(checkIfRightEmpty())
+                secondPlayer = new TankSecondPlayer(gamePane, spawnPosArrayX+1, spawnPosArrayY, tankList, collisionMatrix,
+                        base, dataBaseConnector, brickList, waterList);
+            else if(checkIfUpEmpty())
+                secondPlayer = new TankSecondPlayer(gamePane, spawnPosArrayX, spawnPosArrayY-1, tankList, collisionMatrix,
+                        base, dataBaseConnector, brickList, waterList);
+            else if(checkIfDownEmpty())
+                secondPlayer = new TankSecondPlayer(gamePane, spawnPosArrayX+1, spawnPosArrayY, tankList, collisionMatrix,
+                        base, dataBaseConnector, brickList, waterList);
+            else
+                secondPlayer = new TankSecondPlayer(gamePane, spawnPosArrayX, spawnPosArrayY, tankList, collisionMatrix,
+                        base, dataBaseConnector, brickList, waterList);
+
+            this.moveLeftSecondPlayerKey = KeyCode.A;
+            this.moveRightSecondPlayerKey = KeyCode.D;
+            this.moveUpSecondPlayerKey = KeyCode.W;
+            this.moveDownSecondPlayerKey = KeyCode.S;
+            this.shootSecondPlayerKey = KeyCode.F;
+        }
+
         createKeyListeners();
 
         lifePointIndicator = new ArrayList<>();
@@ -70,16 +113,28 @@ public class TankPlayer extends Tank{
             }
             else if (event.getCode() == moveDownKey) {
                 isDownKeyPressed = true;
-
             }
-            else if (event.getCode() == shootKey) {
+
+            if (event.getCode() == shootKey) {
                 isShootKeyPressed = true;
             }
-            else if (event.getCode() == KeyCode.ESCAPE) {
+            if (event.getCode() == KeyCode.ESCAPE) {
                 isPaused = true;
             }
 
-            //TODO Add pausing game after pressing Esc
+            if (twoPlayersMode) {
+                if (event.getCode() == moveLeftSecondPlayerKey)
+                    isLeftSecondPlayerKeyPressed = true;
+                else if (event.getCode() == moveRightSecondPlayerKey)
+                    isRightSecondPlayerKeyPressed = true;
+                else if (event.getCode() == moveUpSecondPlayerKey)
+                    isUpSecondPlayerKeyPressed = true;
+                else if(event.getCode() == moveDownSecondPlayerKey)
+                    isDownSecondPlayerKeyPressed = true;
+
+                if (event.getCode() == shootSecondPlayerKey)
+                    isShootSecondPlayerKeyPressed = true;
+            }
         });
 
         gameScene.setOnKeyReleased( event -> {
@@ -95,8 +150,22 @@ public class TankPlayer extends Tank{
             else if (event.getCode() == moveDownKey) {
                 isDownKeyPressed = false;
             }
-            else if (event.getCode() == shootKey) {
+            if (event.getCode() == shootKey) {
                 isShootKeyPressed = false;
+            }
+
+            if (twoPlayersMode) {
+                if (event.getCode() == moveLeftSecondPlayerKey)
+                    isLeftSecondPlayerKeyPressed = false;
+                else if (event.getCode() == moveRightSecondPlayerKey)
+                    isRightSecondPlayerKeyPressed = false;
+                else if (event.getCode() == moveUpSecondPlayerKey)
+                    isUpSecondPlayerKeyPressed = false;
+                else if(event.getCode() == moveDownSecondPlayerKey)
+                    isDownSecondPlayerKeyPressed = false;
+
+                if (event.getCode() == shootSecondPlayerKey)
+                    isShootSecondPlayerKeyPressed = false;
             }
         });
     }
@@ -192,15 +261,18 @@ public class TankPlayer extends Tank{
     }
 
     public void moveTank() {
-        if(moveIterator>0)
+        if(moveIterator>0 && lifePoints>0)
             continueTankMovement();
         else
             startTankMovement();
+
+        if (twoPlayersMode && secondPlayer.getLifePoints()>0)
+            secondPlayer.moveTank(isLeftSecondPlayerKeyPressed, isRightSecondPlayerKeyPressed, isUpSecondPlayerKeyPressed, isDownSecondPlayerKeyPressed);
     }
 
     ///////////////////////////////////SHOOTING////////////////////////////
     public void moveProjectiles() {
-        if(isShootKeyPressed && shootDelayTimer.getCanShoot()) {
+        if(isShootKeyPressed && shootDelayTimer.getCanShoot() && lifePoints>0) {
             shoot();
             shootDelayTimer.afterShootDelay(400);
         }
@@ -211,7 +283,8 @@ public class TankPlayer extends Tank{
                 listOfActiveProjectiles.remove(x);  //if projectile hit anything it is deleted
         }
 
-
+        if(twoPlayersMode && secondPlayer.getLifePoints()>0)
+            secondPlayer.moveProjectiles(isShootSecondPlayerKeyPressed);
     }
 
     ///////////////////////////////////DAMAGE AND LIFE POINTS////////////////////////////
@@ -238,6 +311,8 @@ public class TankPlayer extends Tank{
         {
             heart.toFront();
         }
+        if (twoPlayersMode)
+            secondPlayer.heartsToFront();
     }
 
     void takeDamage() {
@@ -246,6 +321,10 @@ public class TankPlayer extends Tank{
 
         playHitSound();
         hitAnimation();
+    }
+
+    public int getSecondPlayerLifePoints() {
+        return secondPlayer.getLifePoints();
     }
 
 }

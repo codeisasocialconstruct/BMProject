@@ -1,6 +1,5 @@
 package View;
 
-// TODO fix second player key listener (two listeners don`t work in the same time)
 
 import Model.InfoLabel;
 import Model.MapElements.Base;
@@ -10,6 +9,7 @@ import Model.MenuPanel;
 import Model.NavigationButton;
 import Model.Tanks.Tank;
 import Model.Tanks.TankPlayer;
+import Model.Tanks.TankSecondPlayer;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -62,7 +62,6 @@ public class GameViewManager
 
     private final static String standardTankSprite = "Model/Resources/tankSprites/tank_dark.png";
     private final static String playerOneTankSprite = "Model/Resources/tankSprites/tank_red.png";
-    private final static String playerTwoTankSprite = "Model/Resources/tankSprites/tankBlue.png";
 
     private MusicManager musicManager;
 
@@ -115,7 +114,7 @@ public class GameViewManager
             spawnNeutralTank(gamePane, (int)i.getX(), (int)i.getY(), standardTankSprite, tanksList, positionMatrix,dataBaseConnector, brickList, waterList);
         }
         mapManager.bushToFront();
-        playerOneTank.heartsToFront();
+        ((TankPlayer)playerOneTank).heartsToFront();
         waterChangeTimer = new WaterChangeTimer(waterList);
         createGameLoop();
         gameStage.show();
@@ -140,26 +139,50 @@ public class GameViewManager
                 {
                     for (int iterator = 0; iterator < tanksList.size(); iterator++)
                     {
+                        if (tanksList.get(iterator)instanceof TankPlayer) { //maintaining control of the second tank if first is destroyed
+                            if (tanksList.get(iterator).getLifePoints()<=0) {
+                                tanksList.get(iterator).moveTank();   //moving every tank on the map every frame
+                                tanksList.get(iterator).moveProjectiles();
+                            }
+                        }
+
                         if (tanksList.get(iterator).getLifePoints() > 0)
                         { //checking if tank is alive
-                            tanksList.get(iterator).moveTank();   //moving every tank on the map every frame
-                            tanksList.get(iterator).moveProjectiles();
-                        } else
+                            if(!(tanksList.get(iterator) instanceof TankSecondPlayer)) {
+                                tanksList.get(iterator).moveTank();   //moving every tank on the map every frame
+                                tanksList.get(iterator).moveProjectiles();
+                            }
+                        }
+                        else
                         {
-                            tanksList.get(iterator).tankDestruction();
-                            tanksList.remove(iterator);
+                            if (tanksList.get(iterator).getLifePoints() == 0)
+                                tanksList.get(iterator).tankDestruction();
+
+                            if (!(tanksList.get(iterator) instanceof TankPlayer))
+                                tanksList.remove(iterator);
                         }
                     }
-                    if (playerOneTank.getLifePoints() == 0 || base.getLifePoints() == 0)
-                    {
-                        showLoseScreen();
+                    if (twoPlayersMode) {
+                        if ((playerOneTank.getLifePoints() <= 0 && ((TankPlayer) playerOneTank).getSecondPlayerLifePoints() <= 0)|| base.getLifePoints() == 0) {
+                            tanksList.remove(playerOneTank);
+                            showLoseScreen();
+                        }
+                    }
+                    else {
+                        if (playerOneTank.getLifePoints() <= 0 || base.getLifePoints() == 0) {
+                            showLoseScreen();
+                        }
                     }
                     if (mapManager.getNeutralCounter())
                     {
-                        if (tanksList.size() == 1)
+                        if ((tanksList.size() == 1 && !twoPlayersMode) || tanksList.size() <= 2 && twoPlayersMode)
                         {
                             if (tanksList.get(0) instanceof TankPlayer)
                                 showWinScreen();
+                            else if (twoPlayersMode) {
+                                if (tanksList.get(0) instanceof TankSecondPlayer) ;
+                                showWinScreen();
+                            }
                         }
                     }
                     waterChangeTimer.moveWater();
@@ -286,7 +309,7 @@ public class GameViewManager
             {
                 playerOneTank = new TankPlayer(gamePane, gameScene, spawnPosArrayX, spawnPosArrayY,
                         tankSpriteUrl, tankList, collisionMatrix, base,
-                        moveLeftKey, moveRightKey, moveUpKey, moveDownKey, shootKey, dataBaseConnector,brickList, waterList);
+                        dataBaseConnector,brickList, waterList, twoPlayersMode);
                 return true;
             }
         }
@@ -324,6 +347,7 @@ public class GameViewManager
     {
         isGamePaused = true;
         overlay.setVisible(true);
+        overlay.toFront();
         createGamePanel();
         exitButton.toFront();
         exitButton.setVisible(true);
@@ -336,6 +360,7 @@ public class GameViewManager
     {
         isGamePaused = true;
         overlay.setVisible(true);
+        overlay.toFront();
         createGamePanel();
         exitButton.toFront();
         exitButton.setVisible(true);
