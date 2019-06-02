@@ -219,6 +219,7 @@ public class GameViewManager
             musicManager.stopMusic();
             waterChangeTimer.stopMove();
             Platform.exit();
+            System.exit(0);
         });
     }
 
@@ -255,10 +256,24 @@ public class GameViewManager
             GameViewManager gameViewManager = new GameViewManager(new MusicManager(), mapName, twoPlayersMode);
             gameViewManager.createGame(gameStage, false);
             gameTimer.stop();
-            musicManager.stopMusic();
             waterChangeTimer.stopMove();
+        });
+    }
 
-            //TODO fix retry (Zombie threads prevents closing app)
+    private void createGoToMenuButton(int X, int Y) {
+        NavigationButton goToMenuButton = new NavigationButton("GO TO MENU");
+        goToMenuButton.setLayoutX(X);
+        goToMenuButton.setLayoutY(Y);
+        gamePane.getChildren().add(goToMenuButton);
+
+        goToMenuButton.setOnAction(event -> {
+            musicManager.stopMusic();
+            musicManager.playClickSound();
+            gameTimer.stop();
+            waterChangeTimer.stopMove();
+            this.gameStage.close();
+            ViewManager manager = new ViewManager();
+            manager.getMainStage().show();
         });
     }
 
@@ -351,7 +366,7 @@ public class GameViewManager
         createGamePanel();
         exitButton.toFront();
         exitButton.setVisible(true);
-        //createRetryButton(GAME_WIDTH/2-99,GAME_HEIGHT/2 - 40);
+        createRetryButton(GAME_WIDTH/2-99,GAME_HEIGHT/2 - 40);
         InfoLabel youLoseLabel = new InfoLabel("YOU LOSE!", ((double) GAME_WIDTH / 2 - 100), GAME_HEIGHT / 2 - 180, 40);
         gamePane.getChildren().add(youLoseLabel);
     }
@@ -364,7 +379,7 @@ public class GameViewManager
         createGamePanel();
         exitButton.toFront();
         exitButton.setVisible(true);
-        //TODO Add go to menu button
+        createGoToMenuButton(GAME_WIDTH/2-99,GAME_HEIGHT/2 - 40);
         InfoLabel youWonLabel = new InfoLabel("YOU WON!", ((double) GAME_WIDTH / 2 - 100), GAME_HEIGHT / 2 - 180, 40);
         gamePane.getChildren().add(youWonLabel);
     }

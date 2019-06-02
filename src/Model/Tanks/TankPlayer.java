@@ -293,8 +293,8 @@ public class TankPlayer extends Tank{
         ImageView heart;
         for (int iterator = 0; iterator < lifePoints; iterator++) {
             heart = new ImageView(HEART_SPRITE_FULL);
-            heart.setLayoutX(GAME_WIDTH - (BLOCK_SIZE*(iterator+1)));
-            heart.setLayoutY(10);
+            heart.setLayoutX(GAME_WIDTH - (BLOCK_SIZE*(iterator+1))+8);
+            heart.setLayoutY(8);
             lifePointIndicator.add(heart);
             gamePane.getChildren().add(heart);
         }

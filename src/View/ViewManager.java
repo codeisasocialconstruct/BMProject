@@ -142,6 +142,7 @@ public class ViewManager {
         exitButton.setOnAction(event -> {
             musicManager.playClickSound();
             Platform.exit();
+            System.exit(0);
         });
     }
 
