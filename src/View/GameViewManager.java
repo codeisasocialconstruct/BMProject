@@ -1,6 +1,5 @@
 package View;
 
-// TODO fix second player key listener (two listeners don`t work in the same time)
 
 import Model.InfoLabel;
 import Model.MapElements.Base;
@@ -10,6 +9,7 @@ import Model.MenuPanel;
 import Model.NavigationButton;
 import Model.Tanks.Tank;
 import Model.Tanks.TankPlayer;
+import Model.Tanks.TankSecondPlayer;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -31,6 +31,11 @@ public class GameViewManager
     private Scene gameScene;
     private Stage gameStage;
     private Stage menuStage;
+    private Rectangle overlay;
+    private MenuPanel pausePanel;
+    private InfoLabel pauseLabel;
+    private NavigationButton resumeButton;
+    private NavigationButton exitButton;
 
     //variables for animation
     private List<Tank> tanksList;
@@ -42,7 +47,7 @@ public class GameViewManager
     private MapManager mapManager;
 
     private boolean isGamePaused;
-
+    private boolean twoPlayersMode;
     private boolean gridMode;
 
     private static int GAME_WIDTH;  //Map divided into blocks 50x50 pixels each
@@ -57,18 +62,20 @@ public class GameViewManager
 
     private final static String standardTankSprite = "Model/Resources/tankSprites/tank_dark.png";
     private final static String playerOneTankSprite = "Model/Resources/tankSprites/tank_red.png";
-    private final static String playerTwoTankSprite = "Model/Resources/tankSprites/tankBlue.png";
 
     private MusicManager musicManager;
 
     ///////////////////////WINDOW INITIALIZATION////////////////////////////////////
-    public GameViewManager(MusicManager musicManager, String mapName)
+    public GameViewManager(MusicManager musicManager, String mapName, boolean twoPlayersMode)
     {
         this.musicManager = musicManager;
         this.mapName = mapName;
         initializeStage();
         createBackground();
         musicManager.playMainTheme();
+        createShadowOverlay();
+        createPausePanel();
+        this.twoPlayersMode = twoPlayersMode;
     }
 
     private void initializeStage()
@@ -90,38 +97,13 @@ public class GameViewManager
         waterList = mapManager.getWaterList();
     }
 
-    private void createBackground()
-    {
-        mapManager.createBackground();
-        positionMatrix = mapManager.createPositionMatrix();
-        brickList = mapManager.getBrickList();
-    }
-
-
-    private void createExitButton(double X, double Y)
-    {
-        NavigationButton exitButton = new NavigationButton("EXIT");
-        exitButton.setLayoutX(X);
-        exitButton.setLayoutY(Y);
-        //showing button on screen
-        gamePane.getChildren().add(exitButton);
-
-        //handler to exit app if button is pressed
-        exitButton.setOnAction(event ->
-        {
-            musicManager.playClickSound();
-            waterChangeTimer.stopMove();
-            Platform.exit();
-        });
-    }
-
     //////////////////////////GAME ELEMENTS////////////////////////////////////////
     //showing game window
     public void createGame(Stage menuStage, boolean twoPlayersMode)
     {
         tanksList = new ArrayList<>();  //initializing array list that allows to manage all tanks on map
         this.menuStage = menuStage;
-        this.menuStage.hide();
+        this.menuStage.close();
 
         spawnBase(gamePane, mapManager.getBaseX(), mapManager.getBaseY(), positionMatrix, 5); //BASE NEED TO BE INITIALIZED BEFORE TANKS!!!
         spawnPlayerOneTank(gamePane, gameScene, mapManager.getPlayerOneX(), mapManager.getPlayerOneY(), playerOneTankSprite, tanksList, positionMatrix,
@@ -132,7 +114,7 @@ public class GameViewManager
             spawnNeutralTank(gamePane, (int)i.getX(), (int)i.getY(), standardTankSprite, tanksList, positionMatrix,dataBaseConnector, brickList, waterList);
         }
         mapManager.bushToFront();
-        playerOneTank.heartsToFront();
+        ((TankPlayer)playerOneTank).heartsToFront();
         waterChangeTimer = new WaterChangeTimer(waterList);
         createGameLoop();
         gameStage.show();
@@ -153,52 +135,150 @@ public class GameViewManager
             @Override
             public void handle(long now)
             {
-                if (!isGamePaused)
+                if (!isGamePaused && !((TankPlayer)playerOneTank).getIsPaused())
                 {
                     for (int iterator = 0; iterator < tanksList.size(); iterator++)
                     {
+                        if (tanksList.get(iterator)instanceof TankPlayer) { //maintaining control of the second tank if first is destroyed
+                            if (tanksList.get(iterator).getLifePoints()<=0) {
+                                tanksList.get(iterator).moveTank();   //moving every tank on the map every frame
+                                tanksList.get(iterator).moveProjectiles();
+                            }
+                        }
+
                         if (tanksList.get(iterator).getLifePoints() > 0)
                         { //checking if tank is alive
-                            tanksList.get(iterator).moveTank();   //moving every tank on the map every frame
-                            tanksList.get(iterator).moveProjectiles();
-                        } else
+                            if(!(tanksList.get(iterator) instanceof TankSecondPlayer)) {
+                                tanksList.get(iterator).moveTank();   //moving every tank on the map every frame
+                                tanksList.get(iterator).moveProjectiles();
+                            }
+                        }
+                        else
                         {
-                            tanksList.get(iterator).tankDestruction();
-                            tanksList.remove(iterator);
+                            if (tanksList.get(iterator).getLifePoints() == 0)
+                                tanksList.get(iterator).tankDestruction();
+
+                            if (!(tanksList.get(iterator) instanceof TankPlayer))
+                                tanksList.remove(iterator);
                         }
                     }
-                    if (playerOneTank.getLifePoints() == 0 || base.getLifePoints() == 0)
-                    {
-                        showLoseScreen();
+                    if (twoPlayersMode) {
+                        if ((playerOneTank.getLifePoints() <= 0 && ((TankPlayer) playerOneTank).getSecondPlayerLifePoints() <= 0)|| base.getLifePoints() == 0) {
+                            tanksList.remove(playerOneTank);
+                            showLoseScreen();
+                        }
+                    }
+                    else {
+                        if (playerOneTank.getLifePoints() <= 0 || base.getLifePoints() == 0) {
+                            showLoseScreen();
+                        }
                     }
                     if (mapManager.getNeutralCounter())
                     {
-                        if (tanksList.size() == 1)
+                        if ((tanksList.size() == 1 && !twoPlayersMode) || tanksList.size() <= 2 && twoPlayersMode)
                         {
                             if (tanksList.get(0) instanceof TankPlayer)
                                 showWinScreen();
+                            else if (twoPlayersMode) {
+                                if (tanksList.get(0) instanceof TankSecondPlayer) ;
+                                showWinScreen();
+                            }
                         }
                     }
                     waterChangeTimer.moveWater();
+                }
+                if (!isGamePaused && ((TankPlayer)playerOneTank).getIsPaused()) {
+                    isGamePaused = true;
+                    showPausePanel();
                 }
             }
         };
         gameTimer.start();
     }
 
+    private void createBackground()
+    {
+        mapManager.createBackground();
+        positionMatrix = mapManager.createPositionMatrix();
+        brickList = mapManager.getBrickList();
+    }
+
+    private void createExitButton(double X, double Y)
+    {
+        exitButton = new NavigationButton("EXIT");
+        exitButton.setVisible(false);
+        exitButton.setLayoutX(X);
+        exitButton.setLayoutY(Y);
+        //showing button on screen
+        gamePane.getChildren().add(exitButton);
+
+        //handler to exit app if button is pressed
+        exitButton.setOnAction(event ->
+        {
+            musicManager.playClickSound();
+            musicManager.stopMusic();
+            waterChangeTimer.stopMove();
+            Platform.exit();
+        });
+    }
+
+    private void createResumeButton(double X, double Y) {
+        resumeButton = new NavigationButton("RESUME");
+        resumeButton.setLayoutX(X);
+        resumeButton.setLayoutY(Y);
+        resumeButton.setVisible(false);
+        //showing button on screen
+        gamePane.getChildren().add(resumeButton);
+
+        //handler to exit app if button is pressed
+        resumeButton.setOnAction(event ->
+        {
+            musicManager.playClickSound();
+            hidePausePanel();
+            waterChangeTimer.moveWater();
+            isGamePaused = false;
+            ((TankPlayer)playerOneTank).setIsPaused(false);
+        });
+    }
+
+    private void createRetryButton(double X, double Y) {
+        NavigationButton retryButton = new NavigationButton("RETRY");
+        retryButton.setLayoutX(X);
+        retryButton.setLayoutY(Y);
+        //showing button on screen
+        gamePane.getChildren().add(retryButton);
+
+        //handler to reset game if button is pressed
+        retryButton.setOnAction(event -> {
+            musicManager.stopMusic();
+            musicManager.playClickSound();
+            GameViewManager gameViewManager = new GameViewManager(new MusicManager(), mapName, twoPlayersMode);
+            gameViewManager.createGame(gameStage, false);
+            gameTimer.stop();
+            musicManager.stopMusic();
+            waterChangeTimer.stopMove();
+
+            //TODO fix retry (Zombie threads prevents closing app)
+        });
+    }
+
     private void createShadowOverlay()
     {
-        Rectangle overlay = new Rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        overlay = new Rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT);
         overlay.setOpacity(0.7);
+        overlay.setVisible(false);
         gamePane.getChildren().add(overlay);
     }
 
-    private void createGamePanel()
+    private MenuPanel createGamePanel()
     {
-        MenuPanel winPanel = new MenuPanel(GAME_WIDTH / 2 - 200, GAME_HEIGHT / 2 - 150);
-        gamePane.getChildren().add(winPanel);
+        MenuPanel gamePanel = new MenuPanel(GAME_WIDTH / 2 - 200, GAME_HEIGHT / 2 - 150);
+        gamePane.getChildren().add(gamePanel);
         createExitButton(GAME_WIDTH / 2 - 99, GAME_HEIGHT / 2 + 70);
+        return gamePanel;
     }
+
+
 
     /////////////////////////////////SPAWN METHODS////////////////////////////////////////////////////////////
 
@@ -229,7 +309,7 @@ public class GameViewManager
             {
                 playerOneTank = new TankPlayer(gamePane, gameScene, spawnPosArrayX, spawnPosArrayY,
                         tankSpriteUrl, tankList, collisionMatrix, base,
-                        moveLeftKey, moveRightKey, moveUpKey, moveDownKey, shootKey, dataBaseConnector,brickList, waterList);
+                        dataBaseConnector,brickList, waterList, twoPlayersMode);
                 return true;
             }
         }
@@ -266,9 +346,12 @@ public class GameViewManager
     private void showLoseScreen()
     {
         isGamePaused = true;
-        createShadowOverlay();
+        overlay.setVisible(true);
+        overlay.toFront();
         createGamePanel();
-
+        exitButton.toFront();
+        exitButton.setVisible(true);
+        //createRetryButton(GAME_WIDTH/2-99,GAME_HEIGHT/2 - 40);
         InfoLabel youLoseLabel = new InfoLabel("YOU LOSE!", ((double) GAME_WIDTH / 2 - 100), GAME_HEIGHT / 2 - 180, 40);
         gamePane.getChildren().add(youLoseLabel);
     }
@@ -276,10 +359,44 @@ public class GameViewManager
     private void showWinScreen()
     {
         isGamePaused = true;
-        createShadowOverlay();
+        overlay.setVisible(true);
+        overlay.toFront();
         createGamePanel();
+        exitButton.toFront();
+        exitButton.setVisible(true);
+        //TODO Add go to menu button
+        InfoLabel youWonLabel = new InfoLabel("YOU WON!", ((double) GAME_WIDTH / 2 - 100), GAME_HEIGHT / 2 - 180, 40);
+        gamePane.getChildren().add(youWonLabel);
+    }
 
-        InfoLabel youLoseLabel = new InfoLabel("YOU WON!", ((double) GAME_WIDTH / 2 - 100), GAME_HEIGHT / 2 - 180, 40);
-        gamePane.getChildren().add(youLoseLabel);
+    private void createPausePanel() {
+        overlay.setVisible(false);
+        pausePanel = createGamePanel();
+        pausePanel.setVisible(false);
+        pauseLabel = new InfoLabel("GAME PAUSED", ((double) GAME_WIDTH / 2 - 125), GAME_HEIGHT / 2 - 180, 40);
+        pauseLabel.setVisible(false);
+        gamePane.getChildren().add(pauseLabel);
+        createResumeButton(GAME_WIDTH/2-99,GAME_HEIGHT/2 - 40);
+    }
+
+    private void showPausePanel() {
+        overlay.toFront();
+        overlay.setVisible(true);
+        pausePanel.toFront();
+        pausePanel.setVisible(true);
+        pauseLabel.toFront();
+        pauseLabel.setVisible(true);
+        resumeButton.toFront();
+        resumeButton.setVisible(true);
+        exitButton.toFront();
+        exitButton.setVisible(true);
+    }
+
+    private void hidePausePanel() {
+        overlay.setVisible(false);
+        pausePanel.setVisible(false);
+        pauseLabel.setVisible(false);
+        resumeButton.setVisible(false);
+        exitButton.setVisible(false);
     }
 }

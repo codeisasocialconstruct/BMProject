@@ -27,11 +27,12 @@ public class MapChooseManager
     private String choosenMap;
     private static final String BACKGROUND = "Model/Resources/MenuContent/Background.png";
     private MusicManager musicManager;
+    private boolean twoPlayersMode;
 
-    public MapChooseManager(Stage menuStage, MusicManager musicManager)
+    public MapChooseManager(Stage menuStage, MusicManager musicManager, boolean twoPlayersMode)
     {
         this.menuStage = menuStage;
-        menuStage.hide();
+        menuStage.close();
         choosePane = new AnchorPane();
         chooseScene = new Scene(choosePane,WIDTH,HEIGHT);
         chooseStage = new Stage();
@@ -42,6 +43,7 @@ public class MapChooseManager
         BackgroundImage backgroundImage = new BackgroundImage(background,BackgroundRepeat.REPEAT,BackgroundRepeat.REPEAT,BackgroundPosition.DEFAULT,null);
         choosePane.setBackground(new Background(backgroundImage));
         this.musicManager = musicManager;
+        this.twoPlayersMode = twoPlayersMode;
     }
 
     public void createChooseMenu()
@@ -66,18 +68,13 @@ public class MapChooseManager
             CustomCheckBox customCheckBox = new CustomCheckBox(map);
             mapList.add(customCheckBox);
             box.getChildren().add(customCheckBox);
-            customCheckBox.setOnMouseClicked(new EventHandler<MouseEvent>()
-            {
-                @Override
-                public void handle(MouseEvent event)
+            customCheckBox.setOnMouseClicked(event -> {
+                for(CustomCheckBox map1 : mapList)
                 {
-                    for(CustomCheckBox map : mapList)
-                    {
-                        map.setIsMapChoosen(false);
-                    }
-                    customCheckBox.setIsMapChoosen(true);
-                    choosenMap = customCheckBox.getMapName();
+                    map1.setIsMapChoosen(false);
                 }
+                customCheckBox.setIsMapChoosen(true);
+                choosenMap = customCheckBox.getMapName();
             });
         }
         box.setLayoutX(104);
@@ -88,18 +85,13 @@ public class MapChooseManager
     private void createStratButton()
     {
         NavigationButton playButton = new NavigationButton("PLAY");
-        playButton.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
+        playButton.setOnAction(event -> {
+            if(choosenMap != null)
             {
-                if(choosenMap != null)
-                {
-                    musicManager.stopMusic();
-                    musicManager.playClickSound();
-                    GameViewManager gameViewManager = new GameViewManager(musicManager, choosenMap);
-                    gameViewManager.createGame(chooseStage, false);
-                }
+                musicManager.stopMusic();
+                musicManager.playClickSound();
+                GameViewManager gameViewManager = new GameViewManager(musicManager, choosenMap, twoPlayersMode);
+                gameViewManager.createGame(chooseStage, false);
             }
         });
         playButton.setLayoutX(535);
@@ -110,14 +102,9 @@ public class MapChooseManager
     private void createBackButton()
     {
         NavigationButton playButton = new NavigationButton("BACK");
-        playButton.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
-            {
-                chooseStage.close();
-                menuStage.show();
-            }
+        playButton.setOnAction(event -> {
+            chooseStage.close();
+            menuStage.show();
         });
         playButton.setLayoutX(765);
         playButton.setLayoutY(700);
