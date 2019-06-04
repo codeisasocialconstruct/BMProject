@@ -3,6 +3,7 @@ package Model.Tanks;
 import Model.MapElements.Base;
 import Model.MapElements.BrickBlock;
 import View.DataBaseConnector;
+import View.GameViewManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -15,16 +16,16 @@ public class TankSecondPlayer extends Tank{
     private static final String TANK_SPRITE_URL= "Model/Resources/tankSprites/tankBlue.png";
     private final static String HEART_SPRITE_FULL = "Model/Resources/tankSprites/heart_full_blue.png";
     private final static String HEART_SPRITE_EMPTY = "Model/Resources/tankSprites/heart_empty.png";
-
+    GameViewManager gameViewManager;
     private List<ImageView> lifePointIndicator;
 
 
     public TankSecondPlayer(AnchorPane gamePane, int spawnPosX, int spawnPosY,
                             List<Tank> tankList, String[][] collisionMatrix, Base base, DataBaseConnector dataBaseConnector,
-                            ArrayList<BrickBlock> brickList, ArrayList<ImageView> waterList) {
+                            ArrayList<BrickBlock> brickList, ArrayList<ImageView> waterList, GameViewManager gameViewManager) {
 
         super(gamePane, spawnPosX, spawnPosY, TANK_SPRITE_URL, tankList, collisionMatrix,
-                5, base,dataBaseConnector, brickList, waterList);
+                5, base,dataBaseConnector, brickList, waterList, gameViewManager);
 
         lifePointIndicator = new ArrayList<>();
         createLifeIndicator();

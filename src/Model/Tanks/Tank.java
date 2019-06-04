@@ -4,6 +4,7 @@ import Model.MapElements.Base;
 import Model.MapElements.BrickBlock;
 import Model.SpriteAnimation;
 import View.DataBaseConnector;
+import View.GameViewManager;
 import javafx.animation.Animation;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
@@ -36,6 +37,7 @@ public class Tank
     ShootDelayTimer shootDelayTimer;
     Random shootChance;
     AudioClip sounds;
+    GameViewManager gameViewManager;
 
     ImageView tankExplosion;
     final static String EXPLOSION_SPRITE_SHEET = "Model/Resources/tankSprites/TankExplosionSpriteSheet.png";
@@ -52,12 +54,12 @@ public class Tank
     final static int BLOCK_SIZE = 50;
 
     public Tank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
-                String[][] collisionMatrix, int maxLifePoints, Base base, DataBaseConnector dataBaseConnector, ArrayList<BrickBlock> brickList, ArrayList<ImageView> waterList)
+                String[][] collisionMatrix, int maxLifePoints, Base base, DataBaseConnector dataBaseConnector, ArrayList<BrickBlock> brickList, ArrayList<ImageView> waterList, GameViewManager gameViewManager)
     {
         this.dataBaseConnector = dataBaseConnector;
         GAME_HEIGHT = dataBaseConnector.getGame_height();
         GAME_WIDTH = dataBaseConnector.getGame_width();
-
+        this.gameViewManager = gameViewManager;
         this.brickList = brickList;
         this.waterList = waterList;
 
@@ -350,24 +352,35 @@ public class Tank
         int baseX = base.getCurrentX();
         int baseY = base.getCurrentY();
 
+        int playerX = gameViewManager.getPlayerOneTank().currentX;
+        int playerY = gameViewManager.getPlayerOneTank().currentY;
+
         if(baseX>getCurrentX()){
-            if(!checkIfRightEmpty()){
+            if(checkIfDownEmpty()){
                 enemyGoDown();
             }
-            else{
+            else if(checkIfRightEmpty()){
                 enemyGoRight();
             }
 
         }
         else if(baseX<getCurrentX()){
-            if(!checkIfLeftEmpty()){
+            if(checkIfDownEmpty()){
                 enemyGoDown();
             }
-            else {
+            else if(checkIfLeftEmpty()){
                 enemyGoLeft();
             }
         }
-        
+
+        if(!checkIfRightEmpty() && !checkIfDownEmpty()){
+            //
+        }
+        if(!checkIfLeftEmpty() && !checkIfDownEmpty()){
+            //
+        }
+
+
 
 
         /*

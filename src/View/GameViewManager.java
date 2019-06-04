@@ -39,6 +39,8 @@ public class GameViewManager
 
     //variables for animation
     private List<Tank> tanksList;
+
+
     private Tank playerOneTank;
     private AnimationTimer gameTimer;
     private Base base;
@@ -306,7 +308,7 @@ public class GameViewManager
             if (collisionMatrix[spawnPosArrayX][spawnPosArrayY] == null)
             {
                 Tank spawningTank = new Tank(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl,
-                        tankList, collisionMatrix, 3, base, dataBaseConnector, brickList, waterList);
+                        tankList, collisionMatrix, 3, base, dataBaseConnector, brickList, waterList, this);
                 return true;
             }
         }
@@ -324,7 +326,7 @@ public class GameViewManager
             {
                 playerOneTank = new TankPlayer(gamePane, gameScene, spawnPosArrayX, spawnPosArrayY,
                         tankSpriteUrl, tankList, collisionMatrix, base,
-                        dataBaseConnector,brickList, waterList, twoPlayersMode);
+                        dataBaseConnector,brickList, waterList, twoPlayersMode, this);
                 return true;
             }
         }
@@ -413,5 +415,9 @@ public class GameViewManager
         pauseLabel.setVisible(false);
         resumeButton.setVisible(false);
         exitButton.setVisible(false);
+    }
+
+    public Tank getPlayerOneTank() {
+        return playerOneTank;
     }
 }
