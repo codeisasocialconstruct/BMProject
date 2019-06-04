@@ -97,6 +97,7 @@ public class ViewManager {
         addMenuButton(playButton);
 
         playButton.setOnAction(event -> {
+            musicManager.playClickSound();
             if (!creditsPanel.isHid())
                 creditsPanel.movePanel();
             if (!helpPanel.isHid())
