@@ -275,10 +275,102 @@ public class Tank
             return false;
     }
 
+    private void enemyGoLeft(){
+        if (angle == 90)
+            fullSpin = true;
+        else
+            fullSpin = false;
+
+        directionOfMovement = 'L';  //giving direction to continue movement
+        allowedToMove = checkIfLeftEmpty();
+        if (moveTankLeftOneIteration())
+        {
+            positionMatrix[currentX - 1][currentY] = Integer.toString(ID);
+            positionMatrix[currentX][currentY] = null;
+            currentX--;
+        }
+        moveIterator = BLOCK_SIZE / 5 - 1;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
+    }
+
+    private void enemyGoRight(){
+        if (angle == -90)
+            fullSpin = true;
+        else
+            fullSpin = false;
+
+        directionOfMovement = 'R';  //giving direction to continue movement
+        allowedToMove = checkIfRightEmpty();
+        if (moveTankRightOneIteration())
+        {
+            positionMatrix[currentX + 1][currentY] = Integer.toString(ID);
+            positionMatrix[currentX][currentY] = null;
+            currentX++;
+        }
+        moveIterator = BLOCK_SIZE / 5 - 1;            //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
+    }
+
+    private void enemyGoUp(){
+        if (angle == -180 || angle == 180)
+            fullSpin = true;
+        else
+            fullSpin = false;
+
+        directionOfMovement = 'U';  //giving direction to continue movement
+        allowedToMove = checkIfUpEmpty();
+        if (moveTankUpOneIteration())
+        {
+            positionMatrix[currentX][currentY - 1] = Integer.toString(ID);
+            positionMatrix[currentX][currentY] = null;
+            currentY--;
+        }
+        moveIterator = BLOCK_SIZE / 5 - 1;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
+    }
+
+    private void enemyGoDown(){
+        if (angle == 0)
+            fullSpin = true;
+        else
+            fullSpin = false;
+
+        directionOfMovement = 'D';  //giving direction to continue movement
+        allowedToMove = checkIfDownEmpty();
+        if (moveTankDownOneIteration())
+        {
+            positionMatrix[currentX][currentY + 1] = Integer.toString(ID);
+            positionMatrix[currentX][currentY] = null;
+            currentY++;
+        }
+        moveIterator = BLOCK_SIZE / 5 - 1;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
+    }
+
     private void startTankMovement()
     {
         Random rand = new Random();
 
+        int baseX = base.getCurrentX();
+        int baseY = base.getCurrentY();
+
+        if(baseX>getCurrentX()){
+            if(!checkIfRightEmpty()){
+                enemyGoDown();
+            }
+            else{
+                enemyGoRight();
+            }
+
+        }
+        else if(baseX<getCurrentX()){
+            if(!checkIfLeftEmpty()){
+                enemyGoDown();
+            }
+            else {
+                enemyGoLeft();
+            }
+        }
+        
+
+
+        /*
         // Obtain a random number
         int n = rand.nextInt(100);
         if (n == 0)
@@ -352,6 +444,8 @@ public class Tank
             }
             moveIterator = BLOCK_SIZE / 5 - 1;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
         }
+
+         */
     }
 
     private void continueTankMovement()
