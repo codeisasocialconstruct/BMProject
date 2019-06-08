@@ -57,7 +57,7 @@ public class TankPlayer extends Tank{
     public TankPlayer(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
                       String[][] collisionMatrix, Base base, DataBaseConnector dataBaseConnector,
                       ArrayList<BrickBlock> brickList, ArrayList<ImageView> waterList, boolean twoPlayersMode, GameViewManager gameViewManager) {
-        super(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 5, base,dataBaseConnector, brickList, waterList, gameViewManager);
+        super("PLAYER",gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 5, base,dataBaseConnector, brickList, waterList, gameViewManager);
 
         this.gameScene = gameScene;
         this.twoPlayersMode = twoPlayersMode;

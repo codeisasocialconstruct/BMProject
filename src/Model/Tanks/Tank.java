@@ -7,6 +7,10 @@ import View.DataBaseConnector;
 import View.GameViewManager;
 import javafx.animation.Animation;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.ColorInput;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.AudioClip;
@@ -21,7 +25,7 @@ public class Tank
     private static int nextID = 0;
     int lifePoints;
     int ID;
-
+    String tankType;
     boolean fullSpin;
     int angle;  //current angle of tank
     char directionOfMovement;
@@ -38,7 +42,7 @@ public class Tank
     Random shootChance;
     AudioClip sounds;
     GameViewManager gameViewManager;
-
+    ColorAdjust colorAdjust;
     ImageView tankExplosion;
     final static String EXPLOSION_SPRITE_SHEET = "Model/Resources/tankSprites/TankExplosionSpriteSheet.png";
     final static String SHOOT_SOUND = "../Resources/TankSounds/shoot_sound.wav";
@@ -53,9 +57,10 @@ public class Tank
     static int GAME_HEIGHT; //Map size is 16x12 blocks
     final static int BLOCK_SIZE = 50;
 
-    public Tank(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
+    public Tank(String tankType, AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
                 String[][] collisionMatrix, int maxLifePoints, Base base, DataBaseConnector dataBaseConnector, ArrayList<BrickBlock> brickList, ArrayList<ImageView> waterList, GameViewManager gameViewManager)
     {
+        this.tankType=tankType;
         this.dataBaseConnector = dataBaseConnector;
         GAME_HEIGHT = dataBaseConnector.getGame_height();
         GAME_WIDTH = dataBaseConnector.getGame_width();
@@ -74,10 +79,17 @@ public class Tank
         currentX = spawnPosArrayX;
         currentY = spawnPosArrayY;
 
+        if(tankType=="RUSH") {
+
+        }
+        else if(tankType=="HUNT"){
+
+        }
         tankSprite = new ImageView(tankSpriteUrl);  //loading sprite
         tankSprite.setClip(new ImageView(tankSpriteUrl));   //deleting background from sprite
         tankSprite.setLayoutX(spawnPosArrayX * 50);
         tankSprite.setLayoutY(spawnPosArrayY * 50);
+
 
         gamePane.getChildren().add(tankSprite);
 
@@ -345,46 +357,136 @@ public class Tank
         moveIterator = BLOCK_SIZE / 5 - 1;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
     }
 
-    private void startTankMovement()
+    private void startBaserushTankMovement()
     {
         Random rand = new Random();
 
         int baseX = base.getCurrentX();
         int baseY = base.getCurrentY();
 
-        int playerX = gameViewManager.getPlayerOneTank().currentX;
-        int playerY = gameViewManager.getPlayerOneTank().currentY;
+        if(!checkIfRightEmpty() && !checkIfDownEmpty() && checkIfDownEmpty())
+            enemyGoDown();
 
-        if(baseX>getCurrentX()){
-            if(checkIfDownEmpty()){
-                enemyGoDown();
+        if(baseY==getCurrentY()&&baseX<getCurrentX()){
+
+            if (angle > -90 && angle <= 90)
+            {     //checking angle of tank do select rotation direction - 1st & 4th quarter of circle
+                if (fullSpin)
+                    angle -= 18;
+                else
+                    angle -= 10;
             }
-            else if(checkIfRightEmpty()){
-                enemyGoRight();
+            if (angle < -90 || angle >= 90)
+            {     //3rd & 4th quarter
+                if (fullSpin)        //if tank is spinning 180 degrees for each frame it needs to spin by 18 degrees
+                    angle += 18;
+                else
+                    angle += 10;
             }
+            if (angle > 180)                    //if passed 180 degrees point, change to minus half
+                angle -= 360;
+            else if (angle < -180)              //if passed -180 degrees point, change to plus half
+                angle += 360;
+
+            tankSprite.setRotate(angle);
+            directionOfMovement='L';
 
         }
-        else if(baseX<getCurrentX()){
-            if(checkIfDownEmpty()){
-                enemyGoDown();
+        else if(baseY==getCurrentY()&&baseX>getCurrentX()){
+
+            if (angle >= -90 && angle < 90)
+            { //checking angle of tank do select rotation direction - 1st & 4th quarter
+                if (fullSpin)
+                    angle += 18;             //changing angle rotation due to fullSpin, makes sure that spin will be complete after 10 frames
+                else
+                    angle += 10;
             }
-            else if(checkIfLeftEmpty()){
+            if (angle <= -90 || angle > 90)
+            { //3rd & 4th quarter
+                if (fullSpin)
+                    angle -= 18;
+                else
+                    angle -= 10;
+            }
+            if (angle > 180)                //if passed 180 degrees point, change to minus half
+                angle -= 360;
+            else if (angle < -180)          //if passed -180 degrees point, change to plus half
+                angle += 360;
+
+            //movement if tank is still in game area and congruent block is empty
+            tankSprite.setRotate(angle);
+            directionOfMovement='R';
+
+        }
+        if(baseY>getCurrentY() && checkIfDownEmpty() ){
+            enemyGoDown();
+        }
+
+        else if(!checkIfDownEmpty() && baseX<getCurrentX()){
+            if(checkIfLeftEmpty()){
                 enemyGoLeft();
             }
+            else{
+                enemyGoUp();
+            }
+        }
+        else if(!checkIfDownEmpty() && baseX>getCurrentX()){
+            if(checkIfRightEmpty()){
+                enemyGoRight();
+            }
+            else{
+                enemyGoUp();
+            }
+        }
+        else if(checkIfUpEmpty() && !checkIfDownEmpty() && !checkIfRightEmpty() && !checkIfDownEmpty())    enemyGoUp();
+        else if(baseY<getCurrentY() && checkIfUpEmpty()){
+            enemyGoUp();
         }
 
-        if(!checkIfRightEmpty() && !checkIfDownEmpty()){
-            //
+
+    }
+    private void startHunterTankMovement()
+    {
+        Random rand = new Random();
+
+        int playerX = gameViewManager.getPlayerOneTank().getCurrentX();
+        int playerY = gameViewManager.getPlayerOneTank().getCurrentY();
+
+        if(playerY>getCurrentY() && checkIfDownEmpty() ){
+            enemyGoDown();
         }
-        if(!checkIfLeftEmpty() && !checkIfDownEmpty()){
-            //
+
+        else if(!checkIfDownEmpty() && playerX<getCurrentX()){
+            if(checkIfLeftEmpty()){
+                enemyGoLeft();
+            }
+            else{
+                enemyGoUp();
+            }
         }
+        else if(playerX > getCurrentX() && checkIfRightEmpty())
+            enemyGoRight();
+        else if(playerX < getCurrentX() && checkIfLeftEmpty())
+            enemyGoLeft();
+        else if(!checkIfDownEmpty() && playerX>getCurrentX()){
+            if(checkIfRightEmpty()){
+                enemyGoRight();
+            }
+            else{
+                enemyGoUp();
+            }
+        }
+        else if(checkIfUpEmpty() && !checkIfDownEmpty() && !checkIfRightEmpty() && !checkIfDownEmpty())    enemyGoUp();
+        else if(playerY<getCurrentY() && checkIfUpEmpty()){
+            enemyGoUp();
+        }
+        else startRandomTankMovement();
 
 
+    }
 
-
-        /*
-        // Obtain a random number
+    private void startRandomTankMovement(){
+        Random rand = new Random();
         int n = rand.nextInt(100);
         if (n == 0)
         {
@@ -457,8 +559,6 @@ public class Tank
             }
             moveIterator = BLOCK_SIZE / 5 - 1;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
         }
-
-         */
     }
 
     private void continueTankMovement()
@@ -483,7 +583,13 @@ public class Tank
         if (moveIterator > 0)
             continueTankMovement();
         else
-            startTankMovement();
+            if(tankType=="RUSH"){
+                startBaserushTankMovement();
+            }
+            else if(tankType=="HUNT"){
+                startHunterTankMovement();
+            }
+            else startRandomTankMovement();
     }
 
 

@@ -24,7 +24,7 @@ public class TankSecondPlayer extends Tank{
                             List<Tank> tankList, String[][] collisionMatrix, Base base, DataBaseConnector dataBaseConnector,
                             ArrayList<BrickBlock> brickList, ArrayList<ImageView> waterList, GameViewManager gameViewManager) {
 
-        super(gamePane, spawnPosX, spawnPosY, TANK_SPRITE_URL, tankList, collisionMatrix,
+        super("PLAYER", gamePane, spawnPosX, spawnPosY, TANK_SPRITE_URL, tankList, collisionMatrix,
                 5, base,dataBaseConnector, brickList, waterList, gameViewManager);
 
         lifePointIndicator = new ArrayList<>();
