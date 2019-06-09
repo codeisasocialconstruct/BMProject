@@ -467,10 +467,18 @@ public class Tank extends Thread
         int baseX = base.getCurrentX();
         int baseY = base.getCurrentY();
 
-        if (baseY > getCurrentY() && checkIfDownEmpty())
+        if (baseY > getCurrentY() - 1 && checkIfDownEmpty())
         {
             enemyGoDown();
-        } else if (!checkIfDownEmpty() && baseX < getCurrentX())
+        }
+        else if (baseY <= getCurrentY())
+        {
+            if(baseX <= getCurrentX())
+                enemyGoLeft();
+            else
+                enemyGoRight();
+        }
+        else if (!checkIfDownEmpty() && baseX < getCurrentX())
         {
             if (checkIfLeftEmpty())
             {
@@ -488,12 +496,13 @@ public class Tank extends Thread
             {
                 enemyGoUp();
             }
-        } else if (checkIfUpEmpty() && !checkIfDownEmpty() && !checkIfRightEmpty() && !checkIfDownEmpty()) enemyGoUp();
+        }
+        /*else if (checkIfUpEmpty() && !checkIfDownEmpty() && !checkIfRightEmpty() && !checkIfDownEmpty()) enemyGoUp();
         else if (baseY < getCurrentY() && checkIfUpEmpty())
         {
             enemyGoUp();
-        }
-
+        }*/
+        //shoot();
 
     }
 

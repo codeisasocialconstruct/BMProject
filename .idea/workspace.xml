@@ -5,20 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4334352d-b2aa-4155-9297-561cdef2706e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Model/MapElements/MapPieces/Water.gif" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/MapElements/BrickBlock.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/MapElements/BrickBlock.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/Projectile.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/Projectile.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/Tank.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/Tank.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/TankPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/TankPlayer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/MapManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/MapManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Tanks/Projectile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Tanks/Projectile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Tanks/Tank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Tanks/Tank.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Tanks/TankPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Tanks/TankPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/GameViewManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/GameViewManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/MapManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MapManager.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,16 +24,16 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/GameViewManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-204">
-              <caret line="117" column="28" selection-start-line="117" selection-start-column="12" selection-end-line="117" selection-end-column="28" />
+            <state relative-caret-position="3383">
+              <caret line="280" column="48" selection-start-line="280" selection-start-column="48" selection-end-line="280" selection-end-column="48" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#5511#7426#0" expanded="true" />
                 <element signature="e#7425#7426#0" expanded="true" />
-                <element signature="e#16858#16859#0" expanded="true" />
-                <element signature="e#16942#16943#0" expanded="true" />
-                <element signature="e#17063#17064#0" expanded="true" />
-                <element signature="e#17139#17140#0" expanded="true" />
+                <element signature="e#16854#16855#0" expanded="true" />
+                <element signature="e#16938#16939#0" expanded="true" />
+                <element signature="e#17059#17060#0" expanded="true" />
+                <element signature="e#17135#17136#0" expanded="true" />
                 <element signature="e#17487#17488#0" expanded="true" />
                 <element signature="e#17521#17522#0" expanded="true" />
               </folding>
@@ -61,17 +50,17 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Model/Tanks/Tank.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1861">
-              <caret line="151" column="31" selection-start-line="151" selection-start-column="31" selection-end-line="151" selection-end-column="31" />
+            <state relative-caret-position="207">
+              <caret line="478" column="31" selection-start-line="478" selection-start-column="31" selection-end-line="478" selection-end-column="31" />
               <folding>
                 <element signature="e#5821#5822#0" expanded="true" />
                 <element signature="e#5888#5889#0" expanded="true" />
                 <element signature="e#5955#5956#0" expanded="true" />
-                <element signature="e#23011#23012#0" expanded="true" />
-                <element signature="e#23224#23225#0" expanded="true" />
+                <element signature="e#23233#23234#0" expanded="true" />
+                <element signature="e#23446#23447#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -89,10 +78,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Model/Tanks/Projectile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-272">
+            <state relative-caret-position="-527">
               <caret line="69" column="9" selection-start-line="69" selection-start-column="9" selection-end-line="69" selection-end-column="9" />
               <folding>
                 <element signature="e#2850#2851#0" expanded="true" />
@@ -126,8 +115,8 @@
       <find>remove</find>
       <find>run</find>
       <find>runL</find>
-      <find>runl</find>
       <find>water</find>
+      <find>runl</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -155,9 +144,9 @@
         <option value="$PROJECT_DIR$/src/Model/MapElements/Base.java" />
         <option value="$PROJECT_DIR$/src/View/MapManager.java" />
         <option value="$PROJECT_DIR$/src/Model/Tanks/TankPlayer.java" />
-        <option value="$PROJECT_DIR$/src/Model/Tanks/Tank.java" />
-        <option value="$PROJECT_DIR$/src/View/GameViewManager.java" />
         <option value="$PROJECT_DIR$/src/Model/Tanks/Projectile.java" />
+        <option value="$PROJECT_DIR$/src/View/GameViewManager.java" />
+        <option value="$PROJECT_DIR$/src/Model/Tanks/Tank.java" />
       </list>
     </option>
   </component>
@@ -323,7 +312,7 @@
       <workItem from="1560012351282" duration="4426000" />
       <workItem from="1560016898558" duration="513000" />
       <workItem from="1560017448353" duration="484000" />
-      <workItem from="1560093613413" duration="7684000" />
+      <workItem from="1560093613413" duration="8504000" />
     </task>
     <task id="LOCAL-00001" summary="Commit after rebase">
       <created>1558538138935</created>
@@ -444,11 +433,18 @@
       <option name="project" value="LOCAL" />
       <updated>1560099013453</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="still working">
+      <created>1560101474304</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1560101474304</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="80708000" />
+    <option name="totallyTimeSpent" value="81528000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -548,7 +544,8 @@
     <MESSAGE value="Added secret theme easter egg." />
     <MESSAGE value="Added fully functional two players mode." />
     <MESSAGE value="Trying to fix multithreading" />
-    <option name="LAST_COMMIT_MESSAGE" value="Trying to fix multithreading" />
+    <MESSAGE value="still working" />
+    <option name="LAST_COMMIT_MESSAGE" value="still working" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Battle_Metropolis$Main.ic" NAME="Main Coverage Results" MODIFIED="1559402246223" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
@@ -853,45 +850,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/Tanks/Tank.java">
+    <entry file="file://$PROJECT_DIR$/src/Model/Tanks/Projectile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1861">
-          <caret line="151" column="31" selection-start-line="151" selection-start-column="31" selection-end-line="151" selection-end-column="31" />
+        <state relative-caret-position="-527">
+          <caret line="69" column="9" selection-start-line="69" selection-start-column="9" selection-end-line="69" selection-end-column="9" />
           <folding>
-            <element signature="e#5821#5822#0" expanded="true" />
-            <element signature="e#5888#5889#0" expanded="true" />
-            <element signature="e#5955#5956#0" expanded="true" />
-            <element signature="e#23011#23012#0" expanded="true" />
-            <element signature="e#23224#23225#0" expanded="true" />
+            <element signature="e#2850#2851#0" expanded="true" />
+            <element signature="e#2885#2886#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/GameViewManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-204">
-          <caret line="117" column="28" selection-start-line="117" selection-start-column="12" selection-end-line="117" selection-end-column="28" />
+        <state relative-caret-position="3383">
+          <caret line="280" column="48" selection-start-line="280" selection-start-column="48" selection-end-line="280" selection-end-column="48" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#5511#7426#0" expanded="true" />
             <element signature="e#7425#7426#0" expanded="true" />
-            <element signature="e#16858#16859#0" expanded="true" />
-            <element signature="e#16942#16943#0" expanded="true" />
-            <element signature="e#17063#17064#0" expanded="true" />
-            <element signature="e#17139#17140#0" expanded="true" />
+            <element signature="e#16854#16855#0" expanded="true" />
+            <element signature="e#16938#16939#0" expanded="true" />
+            <element signature="e#17059#17060#0" expanded="true" />
+            <element signature="e#17135#17136#0" expanded="true" />
             <element signature="e#17487#17488#0" expanded="true" />
             <element signature="e#17521#17522#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/Tanks/Projectile.java">
+    <entry file="file://$PROJECT_DIR$/src/Model/Tanks/Tank.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-272">
-          <caret line="69" column="9" selection-start-line="69" selection-start-column="9" selection-end-line="69" selection-end-column="9" />
+        <state relative-caret-position="207">
+          <caret line="478" column="31" selection-start-line="478" selection-start-column="31" selection-end-line="478" selection-end-column="31" />
           <folding>
-            <element signature="e#2850#2851#0" expanded="true" />
-            <element signature="e#2885#2886#0" expanded="true" />
+            <element signature="e#5821#5822#0" expanded="true" />
+            <element signature="e#5888#5889#0" expanded="true" />
+            <element signature="e#5955#5956#0" expanded="true" />
+            <element signature="e#23233#23234#0" expanded="true" />
+            <element signature="e#23446#23447#0" expanded="true" />
           </folding>
         </state>
       </provider>
