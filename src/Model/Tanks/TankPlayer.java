@@ -4,6 +4,7 @@ import Model.MapElements.Base;
 import Model.MapElements.BrickBlock;
 import View.DataBaseConnector;
 import View.GameViewManager;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -343,7 +344,7 @@ public class TankPlayer extends Tank{
 
     private void lifeIndicatorEmptyHeart() {
         Image emptyHeart = new Image(HEART_SPRITE_EMPTY);
-        lifePointIndicator.get(lifePoints-1).setImage(emptyHeart);
+        Platform.runLater(()->lifePointIndicator.get(lifePoints).setImage(emptyHeart));
     }
 
     public void heartsToFront()
@@ -368,4 +369,13 @@ public class TankPlayer extends Tank{
         return secondPlayer.getLifePoints();
     }
 
+    public int getSecondPlayerX()
+    {
+        return secondPlayer.currentX;
+    }
+
+    public int getSecondPlayerY()
+    {
+        return secondPlayer.currentY;
+    }
 }

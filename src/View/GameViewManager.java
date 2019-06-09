@@ -418,4 +418,14 @@ public class GameViewManager {
         for(ImageView i : waterList)
             i.toBack();
     }
+
+    public int getSecondPlayerX()
+    {
+        return ((TankPlayer)playerOneTank).getSecondPlayerX();
+    }
+
+    public int getSecondPlayerY()
+    {
+        return ((TankPlayer)playerOneTank).getSecondPlayerY();
+    }
 }

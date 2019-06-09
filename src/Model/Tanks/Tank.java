@@ -509,6 +509,11 @@ public class Tank extends Thread
         int playerX = gameViewManager.getPlayerOneTank().getCurrentX();
         int playerY = gameViewManager.getPlayerOneTank().getCurrentY();
 
+        if(gameViewManager.getPlayerOneTank().getLifePoints()<=0)
+        {
+            playerX = gameViewManager.getSecondPlayerX();
+            playerY = gameViewManager.getSecondPlayerY();
+        }
         if (playerY > getCurrentY() && checkIfDownEmpty())
         {
             enemyGoDown();
