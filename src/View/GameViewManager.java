@@ -4,7 +4,6 @@ package View;
 import Model.InfoLabel;
 import Model.MapElements.Base;
 import Model.MapElements.BrickBlock;
-import Model.MapElements.WaterChangeTimer;
 import Model.MenuPanel;
 import Model.NavigationButton;
 import Model.Tanks.Tank;
@@ -23,9 +22,10 @@ import javafx.stage.StageStyle;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-
+/** GameViewManager is responsible for managing game window.
+ * It contains game loop that checks if game is over.
+ * It also creates pause panel and win/lose panel.*/
 public class GameViewManager {
     private AnchorPane gamePane;
     private Scene gameScene;
@@ -72,6 +72,7 @@ public class GameViewManager {
     private MusicManager musicManager;
 
     ///////////////////////WINDOW INITIALIZATION////////////////////////////////////
+    /** Creates gameViewManager.*/
     public GameViewManager(MusicManager musicManager, String mapName, boolean twoPlayersMode) {
         this.musicManager = musicManager;
         this.mapName = mapName;
@@ -104,7 +105,8 @@ public class GameViewManager {
     }
 
     //////////////////////////GAME ELEMENTS////////////////////////////////////////
-    //showing game window
+    //
+    /** Creating game window with all of elements such as tanks, map and base. */
     public void createGame(Stage menuStage, boolean twoPlayersMode) {
         tanksList = new ArrayList<>();  //initializing array list that allows to manage all tanks on map
         this.menuStage = menuStage;
@@ -388,26 +390,26 @@ public class GameViewManager {
         resumeButton.setVisible(false);
         exitButton.setVisible(false);
     }
-
+    /** */
     public Tank getPlayerOneTank() {
         return playerOneTank;
     }
-
+    /** */
     public boolean isMatrixAvaliable()
     {
         return matrixAvaliable;
     }
-
+    /** */
     public void setMatrixAvaliable(boolean matrixAvaliable)
     {
         this.matrixAvaliable = matrixAvaliable;
     }
-
+    /** */
     public boolean isGamePaused()
     {
         return isGamePaused;
     }
-
+    /** */
     public boolean isGameEnded()
     {
         return isGameEnded;
@@ -418,12 +420,12 @@ public class GameViewManager {
         for(ImageView i : waterList)
             i.toBack();
     }
-
+    /** */
     public int getSecondPlayerX()
     {
         return ((TankPlayer)playerOneTank).getSecondPlayerX();
     }
-
+    /** */
     public int getSecondPlayerY()
     {
         return ((TankPlayer)playerOneTank).getSecondPlayerY();

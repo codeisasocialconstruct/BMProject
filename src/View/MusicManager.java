@@ -1,8 +1,8 @@
 package View;
 
 import javafx.scene.media.AudioClip;
-
- class MusicManager {
+/** MusicManager manages all of the sound effects and music. */
+class MusicManager {
     final static String MENU_THEME = "resources/Sounds/title_theme.mp3";
     final static String MAIN_THEME = "resources/Sounds/mecha_collection.mp3";
     final static String SECRET_THEME = "resources/Sounds/Doot.mp3";
@@ -40,6 +40,7 @@ import javafx.scene.media.AudioClip;
         click.play(0.4);
     }
 
+    /** Method used to create enable easter egg. */
     public void enableSecretTheme() {
         gameTheme = SECRET_THEME;
     }

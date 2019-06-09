@@ -9,10 +9,10 @@ import javafx.scene.text.TextAlignment;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-
+/** Basic label with custom font. */
 public class InfoLabel extends Label {
     private static final String FONT_PATH = "src/Model/Resources/Fonts/HeartbitXX.ttf";
-
+    /** Constructor that initializes label with text and given size.*/
     public InfoLabel (String text, double X, double Y, int size) {
         setPrefWidth(300);
         setPrefHeight(150);

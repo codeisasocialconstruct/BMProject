@@ -8,7 +8,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/** Class that is responsible for every projectile object. */
 public class Projectile
 {
     private AnchorPane gamePane;
@@ -25,7 +25,7 @@ public class Projectile
     private ArrayList<ImageView> waterList;
 
     private final static String PROJECTILE_SPRITE = "Model/Resources/Projectiles/shotThin.png";
-
+    /** Creates projectile and modifies the position of sprite depends on direction of the tank movement. */
     public Projectile(AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String[][] positionMatrix, char directionOfMovement,
                       List<Projectile> projectileList, List<Tank> tankList, Base base, ArrayList<BrickBlock> brickList,ArrayList<ImageView> waterList)
     {
@@ -72,7 +72,7 @@ public class Projectile
         moveIterator = 0;
         hitConfirmed = false;
     }
-
+    /** */
     public void hideProjectile()
     {
         Platform.runLater(()->{gamePane.getChildren().remove(projectileSprite);});
@@ -84,13 +84,14 @@ public class Projectile
             e.printStackTrace();
         }
     }
-
+    /** Boolean value that indicates if the projectile hit obstacles/tank. */
     public boolean getHitConfirmed()
     {
         return hitConfirmed;
     }
 
     ///////////////////////////////////DAMAGE SYSTEM////////////////////////////
+    /** Method that is responsible for finding the hit tank and deal damage. */
     public boolean damageTank(int positionArrayX, int positionArrayY)
     {
         int IDToFind;
@@ -181,7 +182,7 @@ public class Projectile
         } else
             return false;
     }
-
+    /** */
     public void moveProjectile()
     {
         if (moveIterator == 0)
@@ -260,9 +261,4 @@ public class Projectile
 
     }
 
-/*    private void waterToBack()
-    {
-        for(ImageView i : waterList)
-            Platform.runLater(()->i.toBack());
-    }*/
 }

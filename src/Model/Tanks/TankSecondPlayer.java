@@ -10,16 +10,15 @@ import javafx.scene.layout.AnchorPane;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/** TankSecondPlayer is responsible for visualization and animation of second player tank. */
 public class TankSecondPlayer extends Tank{
 
     private static final String TANK_SPRITE_URL= "Model/Resources/tankSprites/tankBlue.png";
     private final static String HEART_SPRITE_FULL = "Model/Resources/tankSprites/heart_full_blue.png";
     private final static String HEART_SPRITE_EMPTY = "Model/Resources/tankSprites/heart_empty.png";
-    GameViewManager gameViewManager;
     private List<ImageView> lifePointIndicator;
 
-
+    /** Constructor that initializes tank object giving access to all needed variables. */
     public TankSecondPlayer(AnchorPane gamePane, int spawnPosX, int spawnPosY,
                             List<Tank> tankList, String[][] collisionMatrix, Base base, DataBaseConnector dataBaseConnector,
                             ArrayList<BrickBlock> brickList, ArrayList<ImageView> waterList, GameViewManager gameViewManager) {
@@ -114,6 +113,8 @@ public class TankSecondPlayer extends Tank{
             moveTankDownOneIteration();
     }
 
+    /** Method responsible for start and continue tank movement. The move iterator is responsible for
+     * maintaining position on the middle of the map block after completing movement. */
     public void moveTank(boolean isLeftKeyPressed, boolean isRightKeyPressed, boolean isUpKeyPressed, boolean isDownKeyPressed) {
         if(moveIterator>0)
             continueTankMovement();
@@ -122,6 +123,8 @@ public class TankSecondPlayer extends Tank{
     }
 
     ///////////////////////////////////SHOOTING////////////////////////////
+    /** Method that is responsible for spawning projectiles and creating cooldown.
+     * If the tank is destroyed it also hides all of the maintaining projectiles.*/
     public void moveProjectiles(boolean isShootKeyPressed) {
         if(isShootKeyPressed && shootDelayTimer.getCanShoot()) {
             shoot();
@@ -158,7 +161,7 @@ public class TankSecondPlayer extends Tank{
         Image emptyHeart = new Image(HEART_SPRITE_EMPTY);
         lifePointIndicator.get(lifePoints-1).setImage(emptyHeart);
     }
-
+    /** Method that is used to move life indicator to the front of the game pane. */
     public void heartsToFront()
     {
         for(ImageView heart: lifePointIndicator)

@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 import java.awt.*;
 import java.util.ArrayList;
-
+/** MapManager is responsible for generating map from database data. */
 public class MapManager
 {
     //Legend:
@@ -56,6 +56,7 @@ public class MapManager
     private static String[][] positionMatrix;
     private static String map_stream = "";
 
+    /** Creates Map Manager. All of references in constructor are needed to create map.*/
     public MapManager(AnchorPane gamePane, Scene gameScene, Stage gameStage , DataBaseConnector dbConnector)
     {
         this.gamePane = gamePane;
@@ -74,6 +75,7 @@ public class MapManager
         waterList = new ArrayList<>();
     }
 
+    /** Loads the background images to the game pane */
     public void createBackground()
     {
         Image backgroundGameImage;
@@ -95,6 +97,9 @@ public class MapManager
         BackgroundImage backgroundGame = new BackgroundImage(backgroundGameImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
         gamePane.setBackground(new Background(backgroundGame));
     }
+
+    /** Creates position matrix that is used to control tanks and detect collisions.
+     * It is also used to generate obstacles on the map. */
 
     public String[][] createPositionMatrix()
     {
@@ -204,6 +209,7 @@ public class MapManager
         return positionMatrix;
     }
 
+    /** Pushes bushes to front of the game pane. */
     public void bushToFront()
     {
         for(ImageView i : bushList)
@@ -212,46 +218,50 @@ public class MapManager
         }
     }
 
+    /** Returns array list that contains positions of neutral tanks.
+     * It is used to spawn tanks in game manager. */
     public ArrayList<Point> getNeutralList()
     {
         return neutralList;
     }
 
-    public DataBaseConnector getDbConnector()
-    {
-        return dbConnector;
-    }
-
+    /** Returns player one X position. */
     public int getPlayerOneX()
     {
         return playerOneX;
     }
 
+    /** Returns player one Y position. */
     public int getPlayerOneY()
     {
         return playerOneY;
     }
 
+    /** Returns base X position. */
     public int getBaseX()
     {
         return baseX;
     }
 
+    /** Returns base Y position. */
     public int getBaseY()
     {
         return baseY;
     }
 
+    /** Returns counter of neutral tanks. */
     public boolean getNeutralCounter()
     {
         return neutralCounter;
     }
 
+    /** Returns list of brick objects. */
     public ArrayList<BrickBlock> getBrickList()
     {
         return brickList;
     }
 
+    /** Returns list of water gifs. */
     public ArrayList<ImageView> getWaterList()
     {
         return waterList;

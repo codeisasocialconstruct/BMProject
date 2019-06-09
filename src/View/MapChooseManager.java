@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.util.ArrayList;
-
+/** MapChooseManager is responsible for choosing the map. */
 public class MapChooseManager
 {
     private AnchorPane choosePane;
@@ -28,7 +28,8 @@ public class MapChooseManager
     private static final String BACKGROUND = "Model/Resources/MenuContent/Background.png";
     private MusicManager musicManager;
     private boolean twoPlayersMode;
-
+    /** Constructor of the MapChooseManager. Passes information about twoPlayersMode to the gameViewManager.
+     * Creates pane. */
     public MapChooseManager(Stage menuStage, MusicManager musicManager, boolean twoPlayersMode)
     {
         this.menuStage = menuStage;
@@ -46,6 +47,7 @@ public class MapChooseManager
         this.twoPlayersMode = twoPlayersMode;
     }
 
+    /** Creates elements of the chooseMenu. */
     public void createChooseMenu()
     {
         InfoLabel title = new InfoLabel("CHOOSE YOUR MAP:",500,0,80);

@@ -16,6 +16,7 @@ import javafx.stage.StageStyle;
 import java.util.ArrayList;
 import java.util.List;
 
+/** ViewManager manages menu window and all its elements */
 public class ViewManager {
 
     //Constants for managing layout
@@ -37,6 +38,7 @@ public class ViewManager {
 
     private MusicManager musicManager;
 
+    /** Creates menu window with basic elements such as buttons etc. */
     public ViewManager() {
         //creating list to manage buttons
         menuButtons = new ArrayList<>();
@@ -55,6 +57,7 @@ public class ViewManager {
         musicManager.playMenuTheme();
     }
 
+    /** Returning Main Stage. */
     public Stage getMainStage() {
         return mainStage;
     }

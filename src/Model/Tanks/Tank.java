@@ -8,17 +8,13 @@ import View.GameViewManager;
 import javafx.animation.Animation;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.ColorInput;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.AudioClip;
 import javafx.util.Duration;
 
 import java.util.*;
-
+/** Class that is responsible for the actions of the neutral/enemy tanks. */
 public class Tank extends Thread
 {
     AnchorPane gamePane;
@@ -44,7 +40,6 @@ public class Tank extends Thread
     Random shootChance;
     AudioClip sounds;
     GameViewManager gameViewManager;
-    ColorAdjust colorAdjust;
     ImageView tankExplosion;
     final static String EXPLOSION_SPRITE_SHEET = "Model/Resources/tankSprites/TankExplosionSpriteSheet.png";
     final static String SHOOT_SOUND = "../Resources/TankSounds/shoot_sound.wav";
@@ -58,7 +53,7 @@ public class Tank extends Thread
     static int GAME_WIDTH;  //Map divided into blocks 50x50 pixels each
     static int GAME_HEIGHT; //Map size is 16x12 blocks
     final static int BLOCK_SIZE = 50;
-
+    /** Constructor that initializes tank object giving access to all needed variables. */
     public Tank(String tankType, AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
                 String[][] collisionMatrix, int maxLifePoints, Base base, DataBaseConnector dataBaseConnector, ArrayList<BrickBlock> brickList, ArrayList<ImageView> waterList, GameViewManager gameViewManager)
     {
@@ -82,13 +77,6 @@ public class Tank extends Thread
         currentX = spawnPosArrayX;
         currentY = spawnPosArrayY;
 
-        if (tankType == "RUSH")
-        {
-
-        } else if (tankType == "HUNT")
-        {
-
-        }
         tankSprite = new ImageView(tankSpriteUrl);  //loading sprite
         tankSprite.setClip(new ImageView(tankSpriteUrl));   //deleting background from sprite
         tankSprite.setLayoutX(spawnPosArrayX * 50);
@@ -109,7 +97,7 @@ public class Tank extends Thread
         shootChance = new Random();
         this.base = base;
     }
-
+    /** Main method that starts thread. It also synchronizes actions frequency. */
     @Override
     public void run()
     {
@@ -156,17 +144,17 @@ public class Tank extends Thread
             }
         }
     }
-
+    /**  */
     public int getID()
     {
         return ID;
     }
-
+    /**  */
     public int getCurrentX()
     {
         return currentX;
     }
-
+    /**  */
     public int getCurrentY()
     {
         return currentY;
@@ -643,7 +631,7 @@ public class Tank extends Thread
         if (directionOfMovement == 'D')
             moveTankDownOneIteration();
     }
-
+    /** Method that controls movement of the tank with selected pattern. */
     public void moveTank()
     {
         if (moveIterator > 0)
@@ -683,7 +671,8 @@ public class Tank extends Thread
 
         return false;
     }
-
+    /** Method that is responsible for spawning projectiles and creating cooldown.
+     * If the tank is destroyed it also hides all of the maintaining projectiles.*/
     public void moveProjectiles()
     {
 
@@ -705,6 +694,7 @@ public class Tank extends Thread
     }
 
     ///////////////////////////LIFE POINTS AND TANK DESTRUCTION/////////////////////
+    /** */
     public int getLifePoints()
     {
         return lifePoints;
@@ -719,9 +709,10 @@ public class Tank extends Thread
 
     void hitAnimation()
     {
-        CoulorChangerTimer timer = new CoulorChangerTimer(tankSprite);
+        ColorChangerTimer timer = new ColorChangerTimer(tankSprite);
     }
-
+    /** Method responsible for the tank destruction. It creates explosion animations and sounds.
+     * After destruction the tank is removed from the tank list. */
     public void tankDestruction()
     {
         positionMatrix[currentX][currentY] = null;

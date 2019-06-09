@@ -14,7 +14,8 @@ import javafx.scene.media.AudioClip;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/** TankPlayer is responsible for visualization and animation of player tank. It extends Tank class.
+ * If the twoPlayerMode is active it also manages actions of second player tank. */
 public class TankPlayer extends Tank{
 
     private Scene gameScene;
@@ -53,7 +54,8 @@ public class TankPlayer extends Tank{
 
     TankSecondPlayer secondPlayer;
 
-
+    /** Constructor that initializes tank object giving access to all needed variables. If the twoPlayerMode is active it
+     * also initializes the second player tank. */
     public TankPlayer(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
                       String[][] collisionMatrix, Base base, DataBaseConnector dataBaseConnector,
                       ArrayList<BrickBlock> brickList, ArrayList<ImageView> waterList, boolean twoPlayersMode, GameViewManager gameViewManager) {
@@ -99,6 +101,7 @@ public class TankPlayer extends Tank{
         isPaused = false;
     }
 
+    /** Main method that starts thread. It also synchronizes actions frequency. */
     @Override
     public void run()
     {
@@ -213,8 +216,9 @@ public class TankPlayer extends Tank{
     }
 
     //////////////////////////PAUSING GAME/////////////////////////////////////////////
+    /** */
     public boolean getIsPaused() {return isPaused;}
-
+    /** */
     public void setIsPaused(boolean isPaused) {this.isPaused = isPaused;}
 
     //////////////////////////ANIMATIONS AND TANK MOTION////////////////////////////////////
@@ -301,7 +305,9 @@ public class TankPlayer extends Tank{
         if(directionOfMovement == 'D')
             moveTankDownOneIteration();
     }
-
+    /** Method responsible for start and continue tank movement. The move iterator is responsible for
+     * maintaining position on the middle of the map block after completing movement.
+     * It also manages movement of the second player tank. */
     public void moveTank() {
         if(moveIterator>0 && lifePoints>0)
             continueTankMovement();
@@ -313,6 +319,9 @@ public class TankPlayer extends Tank{
     }
 
     ///////////////////////////////////SHOOTING////////////////////////////
+    /** Method that is responsible for spawning projectiles and creating cooldown.
+     * If the tank is destroyed it also hides all of the maintaining projectiles.
+     * It also manages projectiles movement of the second player tank. */
     public void moveProjectiles() {
         if(isShootKeyPressed && shootDelayTimer.getCanShoot() && lifePoints>0) {
             shoot();
@@ -346,7 +355,7 @@ public class TankPlayer extends Tank{
         Image emptyHeart = new Image(HEART_SPRITE_EMPTY);
         Platform.runLater(()->lifePointIndicator.get(lifePoints).setImage(emptyHeart));
     }
-
+    /** Method that is used to move life indicator to the front of the game pane. */
     public void heartsToFront()
     {
         for(ImageView heart: lifePointIndicator)
@@ -364,16 +373,16 @@ public class TankPlayer extends Tank{
         playHitSound();
         hitAnimation();
     }
-
+    /** */
     public int getSecondPlayerLifePoints() {
         return secondPlayer.getLifePoints();
     }
-
+    /** */
     public int getSecondPlayerX()
     {
         return secondPlayer.currentX;
     }
-
+    /** */
     public int getSecondPlayerY()
     {
         return secondPlayer.currentY;

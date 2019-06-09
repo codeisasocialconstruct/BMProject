@@ -5,13 +5,13 @@ import javafx.scene.SubScene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
-
+/** MenuPanel is a subscene of main scene. */
 public class MenuPanel extends SubScene {
 
     private final static String FONT_PATH = "src/Model/Resources/Fonts/HeartbitXX.ttf";
     private final static String PANEL_IMAGE = "Model/Resources/MenuContent/PanelImage.png";
     private boolean isHidden;
-
+    /** Constructor that initializes all the details of panel. */
     public MenuPanel(double X, double Y) {
         super(new AnchorPane(), 400, 300);
         prefWidth(400);
@@ -28,7 +28,7 @@ public class MenuPanel extends SubScene {
 
         isHidden = true;
     }
-
+    /** Method that used to animate movement of the panel. */
     public void movePanel() { //animation of sliding
         TranslateTransition transition = new TranslateTransition();
         transition.setDuration(Duration.seconds(0.3));
@@ -44,8 +44,8 @@ public class MenuPanel extends SubScene {
         }
         transition.play();
     }
-
+    /** Returns variable that is used to synchronize animation with the other panels */
     public boolean isHid() {return isHidden;}
-
+    /** Return pane that allows adding additional elements to the panel. */
     public AnchorPane getPane() { return (AnchorPane) this.getRoot(); }
 }

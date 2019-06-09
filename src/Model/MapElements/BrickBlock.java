@@ -4,7 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-
+/** Basic obstacle that is able to be damaged and destroyed.*/
 public class BrickBlock
 {
     private AnchorPane gamePane;
@@ -17,7 +17,7 @@ public class BrickBlock
     private static final String BRICK1 = "Model/MapElements/MapPieces/Brick1.png";
     private static final String BRICK2 = "Model/MapElements/MapPieces/Brick2.png";
     private static final String BRICK3 = "Model/MapElements/MapPieces/Brick3.png";
-
+    /** Creating block object and placing it on the exact place on the map.*/
     public BrickBlock(AnchorPane gamePane, int spawnX, int spawnY, int lifePoints, String[][] collisionMatrix)
     {
         this.gamePane = gamePane;
@@ -59,22 +59,22 @@ public class BrickBlock
 
         gamePane.getChildren().add(currentSprite);
     }
-
+    /** */
     public int getLifePoints()
     {
         return lifePoints;
     }
-
+    /** */
     public int getCurrentX()
     {
         return currentX;
     }
-
+    /** */
     public int getCurrentY()
     {
         return currentY;
     }
-
+    /** Method that is responsible for taking damage and chagning sprite after hit. */
     public void takeDamage()
     {
         if (lifePoints > 0)

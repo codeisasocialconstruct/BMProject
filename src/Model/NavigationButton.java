@@ -9,7 +9,7 @@ import javafx.scene.text.Font;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-
+/** Basic navigation button that is used in all the panels and menu.*/
 public class NavigationButton extends Button {
 
     private final String FONT_PATH = "src/Model/Resources/Fonts/PressStart2P-Regular.ttf";
@@ -17,6 +17,7 @@ public class NavigationButton extends Button {
     private final String BUTTON_FREE_STYLE = "-fx-background-color: transparent; -fx-background-image: url('/Model/Resources/MenuContent/Button_BG_shadow.png')";
 
     //Main constructor containing all initializing methods
+    /** Constructor that sets button details. */
     public NavigationButton(String text) {
         setText(text);
         setButtonFont();

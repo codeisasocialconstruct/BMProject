@@ -1,5 +1,6 @@
 package Model;
 
+/** MAP contains minatures and names of each map.*/
 public enum MAP
 {
     CHAINS_OF_WAR ("Model/MapElements/MapMiniatures/chains_of_war.png", "Chains of war"),

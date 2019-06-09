@@ -5,7 +5,7 @@ import javafx.animation.Transition;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-
+/** Class that is responsible for every animation. */
 public class SpriteAnimation extends Transition {
 
     private final ImageView imageView;
@@ -17,7 +17,8 @@ public class SpriteAnimation extends Transition {
     private final int height;
 
     private int lastIndex;
-
+    /** Constructor which loads the animation sheets and all the information about
+     * animation such as size of the single sprite and duration.*/
     public SpriteAnimation(
             ImageView imageView,
             Duration duration,

@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
+/** CustomCheckBox creates checbox that is used to select map. */
 public class CustomCheckBox extends VBox
 {
     private ImageView circleImage;
@@ -13,7 +14,7 @@ public class CustomCheckBox extends VBox
     private String circleChoosen = "Model/Resources/MenuContent/circle_not_empty.png";
     private MAP map;
     private boolean isMapChoosen;
-
+    /** Initializes the checkbox with layout. */
     public CustomCheckBox(MAP map)
     {
         circleImage = new ImageView(circleNotChoosen);

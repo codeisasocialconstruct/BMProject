@@ -1,7 +1,8 @@
 package View;
 
 import java.sql.*;
-
+/** DataBaseConnecor manages the connection with database.
+ * It is used to get map stream. */
 public class DataBaseConnector
 {
     private String question;
@@ -14,7 +15,7 @@ public class DataBaseConnector
     private int background_type;
 
     //============================
-
+    /** Constructor of DataBaseConnector which is responsible for operating mysql requests. */
     public DataBaseConnector(String question)
     {
         this.question = question;
@@ -31,7 +32,7 @@ public class DataBaseConnector
             System.out.println("No database connection");
         }
     }
-
+    /** Method that is responsible for getting data from database.*/
     public void getData()
     {
         try
@@ -57,27 +58,27 @@ public class DataBaseConnector
 
         }
     }
-
+    /** */
     public String getName()
     {
         return name;
     }
-
+    /** */
     public String getMap_stream()
     {
         return map_stream;
     }
-
+    /** */
     public int getGame_width()
     {
         return game_width;
     }
-
+    /** */
     public int getGame_height()
     {
         return game_height;
     }
-
+    /** */
     public int getBackground_type()
     {
         return background_type;

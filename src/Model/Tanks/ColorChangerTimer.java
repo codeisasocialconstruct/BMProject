@@ -6,11 +6,11 @@ import javafx.scene.paint.Color;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
-public class CoulorChangerTimer {
+/** Timer that is responsible for changing damage tank color. */
+public class ColorChangerTimer {
     Timer timer;
-
-    public CoulorChangerTimer(ImageView sprite) {
+    /** Creating the timer and modifying sprite color. */
+    public ColorChangerTimer(ImageView sprite) {
         timer = new Timer();
         ColorAdjust monochrome = new ColorAdjust();
         monochrome.setSaturation(-1.0);     //changing saturation to avoid mixing colours

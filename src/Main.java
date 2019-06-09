@@ -5,7 +5,7 @@ import View.ViewManager;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/** Main class that starts the whole application. */
 public class Main extends Application
 {
     @Override

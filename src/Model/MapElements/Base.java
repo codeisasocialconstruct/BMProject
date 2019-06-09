@@ -1,7 +1,7 @@
 package Model.MapElements;
 
 import Model.SpriteAnimation;
-import Model.Tanks.CoulorChangerTimer;
+import Model.Tanks.ColorChangerTimer;
 import javafx.animation.Animation;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
@@ -10,7 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.AudioClip;
 import javafx.util.Duration;
 
-
+/** Class that represents the base that players have to protect. */
 public class Base {
     private AnchorPane gamePane;
     private int lifePoints;
@@ -24,7 +24,7 @@ public class Base {
     final static String EXPLOSION_SPRITE_SHEET = "Model/Resources/tankSprites/TankExplosionSpriteSheet.png";
     final static String BASE_EXPLOSION_SOUND = "../Resources/TankSounds/tank_explosion_sound.wav";
     private final static int BLOCK_SIZE = 50;
-
+    /** Creates base at given place on the map. */
     public Base(AnchorPane gamePane, int spawnX, int spawnY, int lifePoints, String[][] collisionMatrix)
     {
         this.gamePane = gamePane;
@@ -48,19 +48,19 @@ public class Base {
 
         gamePane.getChildren().add(baseSprite);
     }
-
+    /** */
     public int getLifePoints() {
         return lifePoints;
     }
-
+    /** */
     public int getCurrentX() {
         return currentX;
     }
-
+    /** */
     public int getCurrentY() {
         return currentY;
     }
-
+    /** Method that is responsible for taking damage and playing hit animation. */
     public void takeDamage() {
         if(lifePoints>0) {
             hitAnimation();
@@ -105,6 +105,6 @@ public class Base {
         sounds.play(0.8);
     }
     void hitAnimation() {
-        CoulorChangerTimer timer = new CoulorChangerTimer(baseSprite);
+        ColorChangerTimer timer = new ColorChangerTimer(baseSprite);
     }
 }
