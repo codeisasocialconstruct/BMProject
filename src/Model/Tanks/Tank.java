@@ -497,13 +497,6 @@ public class Tank extends Thread
                 enemyGoUp();
             }
         }
-        /*else if (checkIfUpEmpty() && !checkIfDownEmpty() && !checkIfRightEmpty() && !checkIfDownEmpty()) enemyGoUp();
-        else if (baseY < getCurrentY() && checkIfUpEmpty())
-        {
-            enemyGoUp();
-        }*/
-        //shoot();
-
     }
 
     private void startHunterTankMovement()
@@ -515,7 +508,18 @@ public class Tank extends Thread
         if (playerY > getCurrentY() && checkIfDownEmpty())
         {
             enemyGoDown();
-        } else if (!checkIfDownEmpty() && playerX < getCurrentX())
+        }
+        else if(playerY < getCurrentY()){
+            enemyGoUp();
+        }
+        else if (playerY <= getCurrentY())
+        {
+            if(playerX <= getCurrentX())
+                enemyGoLeft();
+            else
+                enemyGoRight();
+        }
+        else if (playerX <= getCurrentX())
         {
             if (checkIfLeftEmpty())
             {
@@ -524,11 +528,7 @@ public class Tank extends Thread
             {
                 enemyGoUp();
             }
-        } else if (playerX > getCurrentX() && checkIfRightEmpty())
-            enemyGoRight();
-        else if (playerX < getCurrentX() && checkIfLeftEmpty())
-            enemyGoLeft();
-        else if (!checkIfDownEmpty() && playerX > getCurrentX())
+        } else if (playerX >= getCurrentX())
         {
             if (checkIfRightEmpty())
             {
@@ -537,11 +537,7 @@ public class Tank extends Thread
             {
                 enemyGoUp();
             }
-        } else if (checkIfUpEmpty() && !checkIfDownEmpty() && !checkIfRightEmpty() && !checkIfDownEmpty()) enemyGoUp();
-        else if (playerY < getCurrentY() && checkIfUpEmpty())
-        {
-            enemyGoUp();
-        } else startRandomTankMovement();
+        }
 
     }
 
