@@ -2,6 +2,7 @@ package Model.Tanks;
 
 import Model.MapElements.Base;
 import Model.MapElements.BrickBlock;
+import javafx.application.Platform;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
@@ -59,9 +60,14 @@ public class Projectile
             projectileSprite.setLayoutY(spawnPosArrayY * 50 - 10);
         }
         projectileList.add(this);
-        gamePane.getChildren().add(projectileSprite);
-        projectileSprite.toBack();
-        waterToBack();
+        Platform.runLater(()->{gamePane.getChildren().add(projectileSprite);});
+        try
+        {
+            Thread.sleep(1);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
         this.base = base;
         moveIterator = 0;
         hitConfirmed = false;
@@ -69,7 +75,14 @@ public class Projectile
 
     public void hideProjectile()
     {
-        gamePane.getChildren().remove(projectileSprite);
+        Platform.runLater(()->{gamePane.getChildren().remove(projectileSprite);});
+        try
+        {
+            Thread.sleep(1);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public boolean getHitConfirmed()
@@ -247,9 +260,9 @@ public class Projectile
 
     }
 
-    private void waterToBack()
+/*    private void waterToBack()
     {
         for(ImageView i : waterList)
-            i.toBack();
-    }
+            Platform.runLater(()->i.toBack());
+    }*/
 }

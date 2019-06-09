@@ -3,6 +3,7 @@ package Model.MapElements;
 import Model.SpriteAnimation;
 import Model.Tanks.CoulorChangerTimer;
 import javafx.animation.Animation;
+import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -74,7 +75,7 @@ public class Base {
     private void baseDestruction() {
         playExplosionSound();
         baseDestructionAnimation();
-        gamePane.getChildren().remove(baseSprite);
+        Platform.runLater(()->gamePane.getChildren().remove(baseSprite));
     }
 
     private void baseDestructionAnimation() {
@@ -94,7 +95,7 @@ public class Base {
         );
         explosionAnimation.setCycleCount(1);
         explosionAnimation.setOnFinished(event -> gamePane.getChildren().remove(baseExplosion));    //removing sprite after animation is done
-        gamePane.getChildren().add(baseExplosion);
+        Platform.runLater(()->gamePane.getChildren().add(baseExplosion));
         explosionAnimation.play();
     }
 

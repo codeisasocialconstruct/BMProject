@@ -1,5 +1,6 @@
 package Model.MapElements;
 
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -105,6 +106,6 @@ public class BrickBlock
 
     private void brickDestruction()
     {
-        gamePane.getChildren().remove(currentSprite);
+        Platform.runLater(()->{gamePane.getChildren().remove(currentSprite);});
     }
 }

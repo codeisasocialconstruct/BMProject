@@ -51,8 +51,7 @@ public class MapManager
     private static final String WALL = "Model/MapElements/MapPieces/Wall.png";
     private static final String DESSERT = "Model/MapElements/MapPieces/Background.png";
     private static final String MEADOW = "Model/MapElements/MapPieces/Meadow.png";
-    private static final String WATER1 = "Model/MapElements/MapPieces/Water1.png";
-    private static final String WATER2 = "Model/MapElements/MapPieces/Water2.png";
+    private static final String WATER = "Model/MapElements/MapPieces/Water.gif";
 
     private static String[][] positionMatrix;
     private static String map_stream = "";
@@ -181,7 +180,7 @@ public class MapManager
                     }
                     case '7':
                     {
-                        picture = WATER1;
+                        picture = WATER;
                         break;
                     }
                 }
@@ -212,7 +211,6 @@ public class MapManager
             i.toFront();
         }
     }
-
 
     public ArrayList<Point> getNeutralList()
     {

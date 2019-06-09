@@ -6,6 +6,7 @@ import Model.SpriteAnimation;
 import View.DataBaseConnector;
 import View.GameViewManager;
 import javafx.animation.Animation;
+import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.ColorInput;
@@ -18,7 +19,7 @@ import javafx.util.Duration;
 
 import java.util.*;
 
-public class Tank
+public class Tank extends Thread
 {
     AnchorPane gamePane;
     ImageView tankSprite;
@@ -34,6 +35,7 @@ public class Tank
     int currentX; //current X position in positionMatrix
     int currentY; //current Y position in positionMatrix
     boolean allowedToMove; //For checking if congruent block is empty
+    boolean isAlive;
     Base base;
     List<Tank> tankList;
     List<Projectile> listOfActiveProjectiles;
@@ -60,7 +62,7 @@ public class Tank
     public Tank(String tankType, AnchorPane gamePane, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
                 String[][] collisionMatrix, int maxLifePoints, Base base, DataBaseConnector dataBaseConnector, ArrayList<BrickBlock> brickList, ArrayList<ImageView> waterList, GameViewManager gameViewManager)
     {
-        this.tankType=tankType;
+        this.tankType = tankType;
         this.dataBaseConnector = dataBaseConnector;
         GAME_HEIGHT = dataBaseConnector.getGame_height();
         GAME_WIDTH = dataBaseConnector.getGame_width();
@@ -68,6 +70,7 @@ public class Tank
         this.brickList = brickList;
         this.waterList = waterList;
 
+        isAlive = true;
         this.gamePane = gamePane;
         positionMatrix = collisionMatrix; //passing position matrix through reference
         ID = nextID;             //generating new ID
@@ -79,10 +82,11 @@ public class Tank
         currentX = spawnPosArrayX;
         currentY = spawnPosArrayY;
 
-        if(tankType=="RUSH") {
+        if (tankType == "RUSH")
+        {
 
-        }
-        else if(tankType=="HUNT"){
+        } else if (tankType == "HUNT")
+        {
 
         }
         tankSprite = new ImageView(tankSpriteUrl);  //loading sprite
@@ -104,6 +108,53 @@ public class Tank
         shootDelayTimer = new ShootDelayTimer();
         shootChance = new Random();
         this.base = base;
+    }
+
+    @Override
+    public void run()
+    {
+        while (true && !gameViewManager.isGameEnded() && isAlive)
+        {
+            synchronized (gameViewManager)
+            {
+                if (!gameViewManager.isGamePaused() && !((TankPlayer) gameViewManager.getPlayerOneTank()).getIsPaused())
+                {
+                    if (!gameViewManager.isMatrixAvaliable())
+                    {
+                        try
+                        {
+                            gameViewManager.wait();
+                        } catch (InterruptedException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                    gameViewManager.setMatrixAvaliable(false);
+                    if (this.getLifePoints() > 0)
+                    { //checking if tank is alive
+                        this.moveTank();   //moving every tank on the map every frame
+                        this.moveProjectiles();
+                    } else
+                    {
+                        if (this.getLifePoints() == 0)
+                        {
+                            this.tankDestruction();
+                            isAlive = false;
+                            tankList.remove(this);
+                        }
+                    }
+                    gameViewManager.setMatrixAvaliable(true);
+                    gameViewManager.notifyAll();
+                }
+            }
+            try
+            {
+                Thread.sleep(15);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
     public int getID()
@@ -188,12 +239,27 @@ public class Tank
                 angle -= 10;
         }
         if (angle >= -180 && angle <= 180)
-            tankSprite.setRotate(angle);
-
+        {
+            Platform.runLater(() -> tankSprite.setRotate(angle));
+            try
+            {
+                Thread.sleep(1);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
         //movement if tank is still in game area and congruent block is empty
         if (tankSprite.getLayoutY() < GAME_HEIGHT - BLOCK_SIZE && allowedToMove)
         {
-            tankSprite.setLayoutY(tankSprite.getLayoutY() + 5);
+            Platform.runLater(()->tankSprite.setLayoutY(tankSprite.getLayoutY() + 5));
+            try
+            {
+                Thread.sleep(1);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
             return true;
         } else
             return false;
@@ -215,12 +281,26 @@ public class Tank
             else
                 angle -= 10;
         }
-        tankSprite.setRotate(angle);
+        Platform.runLater(()->tankSprite.setRotate(angle));
+        try
+        {
+            Thread.sleep(1);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
 
         //movement if tank is still in game area and congruent block is empty
         if (tankSprite.getLayoutY() > 0 && allowedToMove)
         {
-            tankSprite.setLayoutY(tankSprite.getLayoutY() - 5);
+            Platform.runLater(()->tankSprite.setLayoutY(tankSprite.getLayoutY() - 5));
+            try
+            {
+                Thread.sleep(1);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
             return true;
         } else
             return false;
@@ -248,10 +328,24 @@ public class Tank
             angle += 360;
 
         //movement if tank is still in game area and congruent block is empty
-        tankSprite.setRotate(angle);
+        Platform.runLater(()->tankSprite.setRotate(angle));
+        try
+        {
+            Thread.sleep(1);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
         if (tankSprite.getLayoutX() < GAME_WIDTH - BLOCK_SIZE && allowedToMove)
         {
-            tankSprite.setLayoutX(tankSprite.getLayoutX() + 5);
+            Platform.runLater(()->tankSprite.setLayoutX(tankSprite.getLayoutX() + 5));
+            try
+            {
+                Thread.sleep(1);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
             return true;
         } else
             return false;
@@ -278,18 +372,26 @@ public class Tank
         else if (angle < -180)              //if passed -180 degrees point, change to plus half
             angle += 360;
 
-        tankSprite.setRotate(angle);
+        Platform.runLater(()->tankSprite.setRotate(angle));
 
         //movement if tank is still in game area and congruent block is empty
         if (tankSprite.getLayoutX() > 0.0 && allowedToMove)
         {
-            tankSprite.setLayoutX(tankSprite.getLayoutX() - 5);
+            Platform.runLater(()->tankSprite.setLayoutX(tankSprite.getLayoutX() - 5));
+            try
+            {
+                Thread.sleep(1);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
             return true;
         } else
             return false;
     }
 
-    private void enemyGoLeft(){
+    private void enemyGoLeft()
+    {
         if (angle == 90)
             fullSpin = true;
         else
@@ -306,7 +408,8 @@ public class Tank
         moveIterator = BLOCK_SIZE / 5 - 1;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
     }
 
-    private void enemyGoRight(){
+    private void enemyGoRight()
+    {
         if (angle == -90)
             fullSpin = true;
         else
@@ -323,7 +426,8 @@ public class Tank
         moveIterator = BLOCK_SIZE / 5 - 1;            //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
     }
 
-    private void enemyGoUp(){
+    private void enemyGoUp()
+    {
         if (angle == -180 || angle == 180)
             fullSpin = true;
         else
@@ -340,7 +444,8 @@ public class Tank
         moveIterator = BLOCK_SIZE / 5 - 1;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
     }
 
-    private void enemyGoDown(){
+    private void enemyGoDown()
+    {
         if (angle == 0)
             fullSpin = true;
         else
@@ -440,7 +545,8 @@ public class Tank
 
     }
 
-    private void startRandomTankMovement(){
+    private void startRandomTankMovement()
+    {
         Random rand = new Random();
         int n = rand.nextInt(100);
         if (n == 0)
@@ -497,7 +603,7 @@ public class Tank
             moveIterator = BLOCK_SIZE / 5 - 1;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
         }
 
-        if (n == 3 || n==90)
+        if (n == 3 || n == 90)
         {
             if (angle == 0)
                 fullSpin = true;
@@ -537,14 +643,13 @@ public class Tank
     {
         if (moveIterator > 0)
             continueTankMovement();
-        else
-            if(tankType=="RUSH"){
-                startBaserushTankMovement();
-            }
-            else if(tankType=="HUNT"){
-                startHunterTankMovement();
-            }
-            else startRandomTankMovement();
+        else if (tankType == "RUSH")
+        {
+            startBaserushTankMovement();
+        } else if (tankType == "HUNT")
+        {
+            startHunterTankMovement();
+        } else startRandomTankMovement();
     }
 
 
@@ -555,8 +660,7 @@ public class Tank
         {
             projectile = new Projectile(gamePane, currentX, currentY, positionMatrix,
                     'R', listOfActiveProjectiles, tankList, base, brickList, waterList);
-        }
-        else if (angle == -90)
+        } else if (angle == -90)
         {
             projectile = new Projectile(gamePane, currentX, currentY, positionMatrix,
                     'L', listOfActiveProjectiles, tankList, base, brickList, waterList);
@@ -625,7 +729,14 @@ public class Tank
 
         destructionAnimation();
         listOfActiveProjectiles.clear();
-        gamePane.getChildren().remove(tankSprite);
+        Platform.runLater(()->gamePane.getChildren().remove(tankSprite));
+        try
+        {
+            Thread.sleep(1);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private void destructionAnimation()
@@ -646,7 +757,14 @@ public class Tank
         );
         explosionAnimation.setCycleCount(1);
         explosionAnimation.setOnFinished(event -> gamePane.getChildren().remove(tankExplosion));    //removing sprite after animation is done
-        gamePane.getChildren().add(tankExplosion);
+        Platform.runLater(()->{gamePane.getChildren().add(tankExplosion);});
+        try
+        {
+            Thread.sleep(1);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
         explosionAnimation.play();
     }
 
