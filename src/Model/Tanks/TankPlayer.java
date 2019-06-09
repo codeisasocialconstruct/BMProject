@@ -101,7 +101,7 @@ public class TankPlayer extends Tank{
     @Override
     public void run()
     {
-        while(true)
+        while(true && !gameViewManager.isGameEnded())
         {
             synchronized(gameViewManager)
             {
@@ -130,7 +130,7 @@ public class TankPlayer extends Tank{
             }
             try
             {
-                Thread.sleep(20);
+                Thread.sleep(15);
             } catch (InterruptedException e)
             {
                 e.printStackTrace();

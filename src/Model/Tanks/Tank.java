@@ -35,6 +35,7 @@ public class Tank extends Thread
     int currentX; //current X position in positionMatrix
     int currentY; //current Y position in positionMatrix
     boolean allowedToMove; //For checking if congruent block is empty
+    boolean isAlive;
     Base base;
     List<Tank> tankList;
     List<Projectile> listOfActiveProjectiles;
@@ -69,6 +70,7 @@ public class Tank extends Thread
         this.brickList = brickList;
         this.waterList = waterList;
 
+        isAlive = true;
         this.gamePane = gamePane;
         positionMatrix = collisionMatrix; //passing position matrix through reference
         ID = nextID;             //generating new ID
@@ -111,7 +113,7 @@ public class Tank extends Thread
     @Override
     public void run()
     {
-        while (true)
+        while (true && !gameViewManager.isGameEnded() && isAlive)
         {
             synchronized (gameViewManager)
             {
@@ -137,6 +139,7 @@ public class Tank extends Thread
                         if (this.getLifePoints() == 0)
                         {
                             this.tankDestruction();
+                            isAlive = false;
                             tankList.remove(this);
                         }
                     }
@@ -146,7 +149,7 @@ public class Tank extends Thread
             }
             try
             {
-                Thread.sleep(20);
+                Thread.sleep(15);
             } catch (InterruptedException e)
             {
                 e.printStackTrace();
@@ -236,12 +239,27 @@ public class Tank extends Thread
                 angle -= 10;
         }
         if (angle >= -180 && angle <= 180)
-            Platform.runLater(()->tankSprite.setRotate(angle));
-
+        {
+            Platform.runLater(() -> tankSprite.setRotate(angle));
+            try
+            {
+                Thread.sleep(1);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
         //movement if tank is still in game area and congruent block is empty
         if (tankSprite.getLayoutY() < GAME_HEIGHT - BLOCK_SIZE && allowedToMove)
         {
             Platform.runLater(()->tankSprite.setLayoutY(tankSprite.getLayoutY() + 5));
+            try
+            {
+                Thread.sleep(1);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
             return true;
         } else
             return false;
@@ -264,11 +282,25 @@ public class Tank extends Thread
                 angle -= 10;
         }
         Platform.runLater(()->tankSprite.setRotate(angle));
+        try
+        {
+            Thread.sleep(1);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
 
         //movement if tank is still in game area and congruent block is empty
         if (tankSprite.getLayoutY() > 0 && allowedToMove)
         {
             Platform.runLater(()->tankSprite.setLayoutY(tankSprite.getLayoutY() - 5));
+            try
+            {
+                Thread.sleep(1);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
             return true;
         } else
             return false;
@@ -297,9 +329,23 @@ public class Tank extends Thread
 
         //movement if tank is still in game area and congruent block is empty
         Platform.runLater(()->tankSprite.setRotate(angle));
+        try
+        {
+            Thread.sleep(1);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
         if (tankSprite.getLayoutX() < GAME_WIDTH - BLOCK_SIZE && allowedToMove)
         {
             Platform.runLater(()->tankSprite.setLayoutX(tankSprite.getLayoutX() + 5));
+            try
+            {
+                Thread.sleep(1);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
             return true;
         } else
             return false;
@@ -332,6 +378,13 @@ public class Tank extends Thread
         if (tankSprite.getLayoutX() > 0.0 && allowedToMove)
         {
             Platform.runLater(()->tankSprite.setLayoutX(tankSprite.getLayoutX() - 5));
+            try
+            {
+                Thread.sleep(1);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
             return true;
         } else
             return false;
@@ -453,54 +506,6 @@ public class Tank extends Thread
         if (playerY > getCurrentY() && checkIfDownEmpty())
         {
             enemyGoDown();
-        } else if (playerY == getCurrentY() && playerX < getCurrentX())
-        {
-            if (angle > -90 && angle <= 90)
-            {     //checking angle of tank do select rotation direction - 1st & 4th quarter of circle
-                if (fullSpin)
-                    angle -= 18;
-                else
-                    angle -= 10;
-            }
-            if (angle < -90 || angle >= 90)
-            {     //3rd & 4th quarter
-                if (fullSpin)        //if tank is spinning 180 degrees for each frame it needs to spin by 18 degrees
-                    angle += 18;
-                else
-                    angle += 10;
-            }
-            if (angle > 180)                    //if passed 180 degrees point, change to minus half
-                angle -= 360;
-            else if (angle < -180)              //if passed -180 degrees point, change to plus half
-                angle += 360;
-            Platform.runLater(()->tankSprite.setRotate(angle));
-            directionOfMovement = 'L';
-
-        } else if (playerY == getCurrentY() && playerX > getCurrentX())
-        {
-            if (angle >= -90 && angle < 90)
-            { //checking angle of tank do select rotation direction - 1st & 4th quarter
-                if (fullSpin)
-                    angle += 18;             //changing angle rotation due to fullSpin, makes sure that spin will be complete after 10 frames
-                else
-                    angle += 10;
-            }
-            if (angle <= -90 || angle > 90)
-            { //3rd & 4th quarter
-                if (fullSpin)
-                    angle -= 18;
-                else
-                    angle -= 10;
-            }
-            if (angle > 180)                //if passed 180 degrees point, change to minus half
-                angle -= 360;
-            else if (angle < -180)          //if passed -180 degrees point, change to plus half
-                angle += 360;
-
-            //movement if tank is still in game area and congruent block is empty
-            Platform.runLater(()->tankSprite.setRotate(angle));
-            directionOfMovement = 'R';
-
         } else if (!checkIfDownEmpty() && playerX < getCurrentX())
         {
             if (checkIfLeftEmpty())
@@ -528,7 +533,6 @@ public class Tank extends Thread
         {
             enemyGoUp();
         } else startRandomTankMovement();
-
 
     }
 
@@ -717,6 +721,13 @@ public class Tank extends Thread
         destructionAnimation();
         listOfActiveProjectiles.clear();
         Platform.runLater(()->gamePane.getChildren().remove(tankSprite));
+        try
+        {
+            Thread.sleep(1);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private void destructionAnimation()
@@ -738,6 +749,13 @@ public class Tank extends Thread
         explosionAnimation.setCycleCount(1);
         explosionAnimation.setOnFinished(event -> gamePane.getChildren().remove(tankExplosion));    //removing sprite after animation is done
         Platform.runLater(()->{gamePane.getChildren().add(tankExplosion);});
+        try
+        {
+            Thread.sleep(1);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
         explosionAnimation.play();
     }
 

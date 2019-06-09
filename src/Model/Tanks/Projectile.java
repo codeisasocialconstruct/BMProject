@@ -61,8 +61,13 @@ public class Projectile
         }
         projectileList.add(this);
         Platform.runLater(()->{gamePane.getChildren().add(projectileSprite);});
-        projectileSprite.toBack();
-        waterToBack();
+        try
+        {
+            Thread.sleep(1);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
         this.base = base;
         moveIterator = 0;
         hitConfirmed = false;
@@ -71,6 +76,13 @@ public class Projectile
     public void hideProjectile()
     {
         Platform.runLater(()->{gamePane.getChildren().remove(projectileSprite);});
+        try
+        {
+            Thread.sleep(1);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public boolean getHitConfirmed()
@@ -248,9 +260,9 @@ public class Projectile
 
     }
 
-    private void waterToBack()
+/*    private void waterToBack()
     {
         for(ImageView i : waterList)
-            i.toBack();
-    }
+            Platform.runLater(()->i.toBack());
+    }*/
 }
