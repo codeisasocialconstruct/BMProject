@@ -51,6 +51,7 @@ public class GameViewManager {
     private boolean isGamePaused;
     private boolean twoPlayersMode;
     private boolean gridMode;
+    private boolean matrixAvaliable;
 
     private static int GAME_WIDTH;  //Map divided into blocks 50x50 pixels each
     private static int GAME_HEIGHT; //Map has size 16x12 blocks
@@ -80,6 +81,7 @@ public class GameViewManager {
         createShadowOverlay();
         createPausePanel();
         this.twoPlayersMode = twoPlayersMode;
+        matrixAvaliable = true;
     }
 
     private void initializeStage() {
@@ -128,33 +130,34 @@ public class GameViewManager {
     This makes sure, user input won`t interrupt animation, because continueTankMovement does not depends on user input.
     Thanks to that, we make sure that tank is moving only by 50, which is map block size and animation will be smooth.
     */
+
     private void createGameLoop() {
         gameTimer = new AnimationTimer() {
 
             @Override
             public void handle(long now) {
                 if (!isGamePaused && !((TankPlayer) playerOneTank).getIsPaused()) {
-                    for (int iterator = 0; iterator < tanksList.size(); iterator++) {
-                        if (tanksList.get(iterator) instanceof TankPlayer) { //maintaining control of the second tank if first is destroyed
+                    //for (int iterator = 0; iterator < tanksList.size(); iterator++) {
+                        /*if (tanksList.get(iterator) instanceof TankPlayer) { //maintaining control of the second tank if first is destroyed
                             if (tanksList.get(iterator).getLifePoints() <= 0) {
                                 tanksList.get(iterator).moveTank();   //moving every tank on the map every frame
                                 tanksList.get(iterator).moveProjectiles();
                             }
-                        }
+                        }*/
 
-                        if (tanksList.get(iterator).getLifePoints() > 0) { //checking if tank is alive
-                            if (!(tanksList.get(iterator) instanceof TankSecondPlayer)) {
-                                tanksList.get(iterator).moveTank();   //moving every tank on the map every frame
-                                tanksList.get(iterator).moveProjectiles();
-                            }
-                        } else {
-                            if (tanksList.get(iterator).getLifePoints() == 0)
-                                tanksList.get(iterator).tankDestruction();
-
-                            if (!(tanksList.get(iterator) instanceof TankPlayer))
-                                tanksList.remove(iterator);
-                        }
-                    }
+//                        if (tanksList.get(iterator).getLifePoints() > 0) { //checking if tank is alive
+//                            if (!(tanksList.get(iterator) instanceof TankSecondPlayer)) {
+//                                tanksList.get(iterator).moveTank();   //moving every tank on the map every frame
+//                                tanksList.get(iterator).moveProjectiles();
+//                            }
+//                        } else {
+//                            if (tanksList.get(iterator).getLifePoints() == 0)
+//                                tanksList.get(iterator).tankDestruction();
+//
+//                            if (!(tanksList.get(iterator) instanceof TankPlayer))
+//                                tanksList.remove(iterator);
+//                        }
+                    //}
                     if (twoPlayersMode) {
                         if ((playerOneTank.getLifePoints() <= 0 && ((TankPlayer) playerOneTank).getSecondPlayerLifePoints() <= 0) || base.getLifePoints() == 0) {
                             tanksList.remove(playerOneTank);
@@ -289,9 +292,9 @@ public class GameViewManager {
             if (collisionMatrix[spawnPosArrayX][spawnPosArrayY] == null) {
                 if (Math.round(Math.random()) == 0) {
                     if ((Math.round(Math.random()) == 0)) {
-                        spawningTank = new Tank("RUSH", gamePane, spawnPosArrayX, spawnPosArrayY, rushTankSprite,
+                        spawningTank = new Tank("RANDOM", gamePane, spawnPosArrayX, spawnPosArrayY, rushTankSprite,
                                 tankList, collisionMatrix, 3, base, dataBaseConnector, brickList, waterList, this);
-                        System.out.println("RUSH");
+                        System.out.println("RANDOM");
                     } else {
                         spawningTank = new Tank("RANDOM", gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl,
                                 tankList, collisionMatrix, 3, base, dataBaseConnector, brickList, waterList, this);
@@ -303,6 +306,7 @@ public class GameViewManager {
                             tankList, collisionMatrix, 3, base, dataBaseConnector, brickList, waterList, this);
                     System.out.println("HUNT");
                 }
+                spawningTank.start();
                 return true;
             }
         }
@@ -318,6 +322,7 @@ public class GameViewManager {
                 playerOneTank = new TankPlayer(gamePane, gameScene, spawnPosArrayX, spawnPosArrayY,
                         tankSpriteUrl, tankList, collisionMatrix, base,
                         dataBaseConnector, brickList, waterList, twoPlayersMode, this);
+                playerOneTank.start();
                 return true;
             }
         }
@@ -402,5 +407,20 @@ public class GameViewManager {
 
     public Tank getPlayerOneTank() {
         return playerOneTank;
+    }
+
+    public boolean isMatrixAvaliable()
+    {
+        return matrixAvaliable;
+    }
+
+    public void setMatrixAvaliable(boolean matrixAvaliable)
+    {
+        this.matrixAvaliable = matrixAvaliable;
+    }
+
+    public boolean isGamePaused()
+    {
+        return isGamePaused;
     }
 }

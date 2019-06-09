@@ -51,7 +51,6 @@ public class TankPlayer extends Tank{
     private final static String HEART_SPRITE_EMPTY = "Model/Resources/tankSprites/heart_empty.png";
 
     TankSecondPlayer secondPlayer;
-    GameViewManager gameViewManager;
 
 
     public TankPlayer(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
@@ -97,6 +96,46 @@ public class TankPlayer extends Tank{
         createLifeIndicator();
 
         isPaused = false;
+    }
+
+    @Override
+    public void run()
+    {
+        while(true)
+        {
+            synchronized(gameViewManager)
+            {
+                if (!gameViewManager.isGamePaused() && !((TankPlayer) gameViewManager.getPlayerOneTank()).getIsPaused())
+                {
+                    if(!gameViewManager.isMatrixAvaliable())
+                    {
+                        try
+                        {
+                            gameViewManager.wait();
+                        } catch (InterruptedException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                    gameViewManager.setMatrixAvaliable(false);
+                    this.moveTank();   //moving every tank on the map every frame
+                    this.moveProjectiles();
+                    if (this.getLifePoints() == 0)
+                        this.tankDestruction();
+
+                    gameViewManager.setMatrixAvaliable(true);
+                    gameViewManager.notifyAll();
+                }
+
+            }
+            try
+            {
+                Thread.sleep(20);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
     //Creating Listeners to inform which buttons are pressed - used to determine which animation is called
