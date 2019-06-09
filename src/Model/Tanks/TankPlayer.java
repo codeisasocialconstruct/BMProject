@@ -126,6 +126,8 @@ public class TankPlayer extends Tank{
                     this.moveProjectiles();
                     if (this.getLifePoints() == 0)
                         this.tankDestruction();
+                    if(secondPlayer.getLifePoints()==0)
+                        secondPlayer.tankDestruction();
 
                     gameViewManager.setMatrixAvaliable(true);
                     gameViewManager.notifyAll();
@@ -353,7 +355,16 @@ public class TankPlayer extends Tank{
 
     private void lifeIndicatorEmptyHeart() {
         Image emptyHeart = new Image(HEART_SPRITE_EMPTY);
-        Platform.runLater(()->lifePointIndicator.get(lifePoints).setImage(emptyHeart));
+        if (lifePoints<=0)
+            Platform.runLater(()->lifePointIndicator.get(0).setImage(emptyHeart));
+        else {
+            try {
+            Platform.runLater(() -> lifePointIndicator.get(lifePoints).setImage(emptyHeart));
+            }
+            catch (ArrayIndexOutOfBoundsException e) {
+
+            }
+        }
     }
     /** Method that is used to move life indicator to the front of the game pane. */
     public void heartsToFront()
@@ -367,8 +378,8 @@ public class TankPlayer extends Tank{
     }
 
     void takeDamage() {
-        lifeIndicatorEmptyHeart(); //empty one heart
         lifePoints--;
+        lifeIndicatorEmptyHeart(); //empty one heart
 
         playHitSound();
         hitAnimation();

@@ -4,6 +4,7 @@ import Model.MapElements.Base;
 import Model.MapElements.BrickBlock;
 import View.DataBaseConnector;
 import View.GameViewManager;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -140,8 +141,8 @@ public class TankSecondPlayer extends Tank{
 
     ///////////////////////////////////DAMAGE////////////////////////////
     void takeDamage() {
-        lifeIndicatorEmptyHeart(); //empty one heart
         lifePoints--;
+        lifeIndicatorEmptyHeart(); //empty one heart
         playHitSound();
         hitAnimation();
     }
@@ -159,7 +160,16 @@ public class TankSecondPlayer extends Tank{
 
     private void lifeIndicatorEmptyHeart() {
         Image emptyHeart = new Image(HEART_SPRITE_EMPTY);
-        lifePointIndicator.get(lifePoints-1).setImage(emptyHeart);
+        if(lifePoints<=0)
+            Platform.runLater(()->lifePointIndicator.get(0).setImage(emptyHeart));
+        else {
+            try {
+                Platform.runLater(() -> lifePointIndicator.get(lifePoints).setImage(emptyHeart));
+            }
+            catch (ArrayIndexOutOfBoundsException e) {
+
+            }
+        }
     }
     /** Method that is used to move life indicator to the front of the game pane. */
     public void heartsToFront()
