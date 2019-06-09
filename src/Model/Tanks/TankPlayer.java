@@ -3,6 +3,7 @@ package Model.Tanks;
 import Model.MapElements.Base;
 import Model.MapElements.BrickBlock;
 import View.DataBaseConnector;
+import View.GameViewManager;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -50,12 +51,13 @@ public class TankPlayer extends Tank{
     private final static String HEART_SPRITE_EMPTY = "Model/Resources/tankSprites/heart_empty.png";
 
     TankSecondPlayer secondPlayer;
+    GameViewManager gameViewManager;
 
 
     public TankPlayer(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
                       String[][] collisionMatrix, Base base, DataBaseConnector dataBaseConnector,
-                      ArrayList<BrickBlock> brickList,ArrayList<ImageView> waterList, boolean twoPlayersMode) {
-        super(gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 5, base,dataBaseConnector, brickList, waterList);
+                      ArrayList<BrickBlock> brickList, ArrayList<ImageView> waterList, boolean twoPlayersMode, GameViewManager gameViewManager) {
+        super("PLAYER",gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 5, base,dataBaseConnector, brickList, waterList, gameViewManager);
 
         this.gameScene = gameScene;
         this.twoPlayersMode = twoPlayersMode;
@@ -68,19 +70,19 @@ public class TankPlayer extends Tank{
         if(twoPlayersMode) {
             if(checkIfLeftEmpty())
                 secondPlayer = new TankSecondPlayer(gamePane, spawnPosArrayX-1, spawnPosArrayY, tankList, collisionMatrix,
-                        base, dataBaseConnector, brickList, waterList);
+                        base, dataBaseConnector, brickList, waterList,gameViewManager);
             else if(checkIfRightEmpty())
                 secondPlayer = new TankSecondPlayer(gamePane, spawnPosArrayX+1, spawnPosArrayY, tankList, collisionMatrix,
-                        base, dataBaseConnector, brickList, waterList);
+                        base, dataBaseConnector, brickList, waterList,gameViewManager);
             else if(checkIfUpEmpty())
                 secondPlayer = new TankSecondPlayer(gamePane, spawnPosArrayX, spawnPosArrayY-1, tankList, collisionMatrix,
-                        base, dataBaseConnector, brickList, waterList);
+                        base, dataBaseConnector, brickList, waterList,gameViewManager);
             else if(checkIfDownEmpty())
                 secondPlayer = new TankSecondPlayer(gamePane, spawnPosArrayX+1, spawnPosArrayY, tankList, collisionMatrix,
-                        base, dataBaseConnector, brickList, waterList);
+                        base, dataBaseConnector, brickList, waterList,gameViewManager);
             else
                 secondPlayer = new TankSecondPlayer(gamePane, spawnPosArrayX, spawnPosArrayY, tankList, collisionMatrix,
-                        base, dataBaseConnector, brickList, waterList);
+                        base, dataBaseConnector, brickList, waterList,gameViewManager);
 
             this.moveLeftSecondPlayerKey = KeyCode.A;
             this.moveRightSecondPlayerKey = KeyCode.D;
