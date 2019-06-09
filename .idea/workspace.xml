@@ -7,35 +7,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4334352d-b2aa-4155-9297-561cdef2706e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/battle_metropolis.sql" beforeDir="false" afterPath="$PROJECT_DIR$/battle_metropolis.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/CustomCheckBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/CustomCheckBox.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/InfoLabel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/InfoLabel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/MAP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/MAP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/MapElements/Base.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/MapElements/Base.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/MapElements/BrickBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/MapElements/BrickBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/MapElements/MapMiniatures/chains_of_war.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/MapElements/MapMiniatures/chains_of_war.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/MapElements/MapPieces/Water1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/MapElements/MapPieces/Water2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/MapElements/WaterChangeTimer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/MenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/MenuPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/NavigationButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/NavigationButton.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/SecretButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/SecretButton.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/SpriteAnimation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/SpriteAnimation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Tanks/CoulorChangerTimer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Tanks/ColorChangerTimer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Tanks/Projectile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Tanks/Projectile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Tanks/ShootDelayTimer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Tanks/ShootDelayTimer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Tanks/Tank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Tanks/Tank.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Tanks/TankPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Tanks/TankPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Tanks/TankSecondPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Tanks/TankSecondPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/DataBaseConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/DataBaseConnector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/GameViewManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/GameViewManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/MapChooseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MapChooseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/MapManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MapManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/MusicManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MusicManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/ViewManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ViewManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Controller.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/CustomCheckBox.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/CustomCheckBox.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/MAP.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/MAP.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/MapElements/Base.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/MapElements/Base.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/MapElements/MapMiniatures/chains_of_war.png" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/MapElements/MapMiniatures/chains_of_war.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/MapElements/MapPieces/Water1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/MapElements/MapPieces/Water2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/MapElements/WaterChangeTimer$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/MapElements/WaterChangeTimer$waterChanger.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/MapElements/WaterChangeTimer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/NavigationButton.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/NavigationButton.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/SpriteAnimation.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/SpriteAnimation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/CoulorChangerTimer$colourDeleter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/CoulorChangerTimer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/Projectile.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/Projectile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/Tank.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/Tank.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/TankPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/TankPlayer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/TankSecondPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/TankSecondPlayer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/DataBaseConnector.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/DataBaseConnector.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/MapChooseManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/MapChooseManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/MapManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/MapManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/MusicManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/MusicManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/ViewManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/ViewManager.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -144,8 +140,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="9" column="1" lean-forward="true" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+            <state relative-caret-position="361">
+              <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
               <folding>
                 <element signature="e#466#467#0" expanded="true" />
                 <element signature="e#494#495#0" expanded="true" />
@@ -413,7 +409,7 @@
       <workItem from="1560016898558" duration="513000" />
       <workItem from="1560017448353" duration="484000" />
       <workItem from="1560093613413" duration="8504000" />
-      <workItem from="1560105441167" duration="3912000" />
+      <workItem from="1560105441167" duration="4209000" />
     </task>
     <task id="LOCAL-00001" summary="Commit after rebase">
       <created>1558538138935</created>
@@ -541,11 +537,18 @@
       <option name="project" value="LOCAL" />
       <updated>1560101474304</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Final commit.">
+      <created>1560109555336</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1560109555336</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="86199000" />
+    <option name="totallyTimeSpent" value="86496000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -560,7 +563,7 @@
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49918962" visible="true" weight="0.22921109" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49918962" visible="true" weight="0.22921109" />
       <window_info id="Structure" order="1" sideWeight="0.5008104" side_tool="true" weight="0.26385927" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -569,7 +572,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.4989339" weight="0.32917964" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.7241611" weight="0.33044422" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.7241611" visible="true" weight="0.33021808" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.77651006" weight="0.39943343" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -646,7 +649,8 @@
     <MESSAGE value="Added fully functional two players mode." />
     <MESSAGE value="Trying to fix multithreading" />
     <MESSAGE value="still working" />
-    <option name="LAST_COMMIT_MESSAGE" value="still working" />
+    <MESSAGE value="Final commit." />
+    <option name="LAST_COMMIT_MESSAGE" value="Final commit." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Battle_Metropolis$Main.ic" NAME="Main Coverage Results" MODIFIED="1559402246223" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
@@ -997,8 +1001,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="9" column="1" lean-forward="true" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+        <state relative-caret-position="361">
+          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
           <folding>
             <element signature="e#466#467#0" expanded="true" />
             <element signature="e#494#495#0" expanded="true" />
