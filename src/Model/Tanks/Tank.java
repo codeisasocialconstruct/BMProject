@@ -362,202 +362,81 @@ public class Tank
         int baseX = base.getCurrentX();
         int baseY = base.getCurrentY();
 
-        if((baseY==getCurrentY() || baseY==getCurrentY()-1 )&&baseX<getCurrentX()){
-            if (angle > -90 && angle <= 90)
-            {     //checking angle of tank do select rotation direction - 1st & 4th quarter of circle
-                if (fullSpin)
-                    angle -= 18;
-                else
-                    angle -= 10;
-            }
-            if (angle < -90 || angle >= 90)
-            {     //3rd & 4th quarter
-                if (fullSpin)        //if tank is spinning 180 degrees for each frame it needs to spin by 18 degrees
-                    angle += 18;
-                else
-                    angle += 10;
-            }
-            if (angle > 180)                    //if passed 180 degrees point, change to minus half
-                angle -= 360;
-            else if (angle < -180)              //if passed -180 degrees point, change to plus half
-                angle += 360;
-            tankSprite.setRotate(angle);
-            directionOfMovement='L';
-
-        }
-        else if((baseY==getCurrentY()+1) && baseX==getCurrentX()){
-            if (angle < 180 && angle >= 0)
-            {  //checking angle of tank do select rotation direction - 3rd & 4th quarter
-                if (fullSpin)
-                    angle += 18;
-                else
-                    angle += 10;
-            }
-            if (angle > -180 && angle < 0)
-            {  //movement if tank is still in game area
-                if (fullSpin)
-                    angle -= 18;
-                else
-                    angle -= 10;
-            }
-            if (angle >= -180 && angle <= 180)
-                tankSprite.setRotate(angle);
-            directionOfMovement='D';
-        }
-        else if((baseY==getCurrentY() || baseY==getCurrentY()-1 )&&baseX>getCurrentX()){
-            if (angle >= -90 && angle < 90)
-            { //checking angle of tank do select rotation direction - 1st & 4th quarter
-                if (fullSpin)
-                    angle += 18;             //changing angle rotation due to fullSpin, makes sure that spin will be complete after 10 frames
-                else
-                    angle += 10;
-            }
-            if (angle <= -90 || angle > 90)
-            { //3rd & 4th quarter
-                if (fullSpin)
-                    angle -= 18;
-                else
-                    angle -= 10;
-            }
-            if (angle > 180)                //if passed 180 degrees point, change to minus half
-                angle -= 360;
-            else if (angle < -180)          //if passed -180 degrees point, change to plus half
-                angle += 360;
-
-            //movement if tank is still in game area and congruent block is empty
-            tankSprite.setRotate(angle);
-            directionOfMovement='R';
-
-        }
-        else if(baseY>getCurrentY() && !checkIfDownEmpty()){
-            if (angle < 180 && angle >= 0)
-            {  //checking angle of tank do select rotation direction - 3rd & 4th quarter
-                if (fullSpin)
-                    angle += 18;
-                else
-                    angle += 10;
-            }
-            if (angle > -180 && angle < 0)
-            {  //movement if tank is still in game area
-                if (fullSpin)
-                    angle -= 18;
-                else
-                    angle -= 10;
-            }
-            if (angle >= -180 && angle <= 180)
-                tankSprite.setRotate(angle);
-            directionOfMovement='D';
-        }
-        if(baseY>getCurrentY() && checkIfDownEmpty() ){
+        if (baseY > getCurrentY() - 1 && checkIfDownEmpty())
+        {
             enemyGoDown();
         }
-
-        else if(!checkIfDownEmpty() && baseX<getCurrentX()){
-            if(checkIfLeftEmpty()){
+        else if (baseY > currentY && baseX == currentX)
+        {
+            enemyGoDown();
+        }
+        else if (baseY <= getCurrentY())
+        {
+            if(baseX <= getCurrentX())
                 enemyGoLeft();
-            }
-            else{
-                enemyGoUp();
-            }
-        }
-        else if(!checkIfDownEmpty() && baseX>getCurrentX()){
-            if(checkIfRightEmpty()){
+            else
                 enemyGoRight();
+        }
+        else if (!checkIfDownEmpty() && baseX < getCurrentX())
+        {
+            if (checkIfLeftEmpty())
+            {
+                enemyGoLeft();
+            } else
+            {
+                enemyGoUp();
             }
-            else{
+        } else if (!checkIfDownEmpty() && baseX > getCurrentX())
+        {
+            if (checkIfRightEmpty())
+            {
+                enemyGoRight();
+            } else
+            {
                 enemyGoUp();
             }
         }
-        else if(checkIfUpEmpty() && !checkIfDownEmpty() && !checkIfRightEmpty() && !checkIfDownEmpty())    enemyGoUp();
-        else if(baseY<getCurrentY() && checkIfUpEmpty()){
-            enemyGoUp();
-        }
-
-
     }
+
     private void startHunterTankMovement()
     {
 
         int playerX = gameViewManager.getPlayerOneTank().getCurrentX();
         int playerY = gameViewManager.getPlayerOneTank().getCurrentY();
 
-        if(playerY>getCurrentY() && checkIfDownEmpty() ){
+        if (playerY > getCurrentY() && checkIfDownEmpty())
+        {
             enemyGoDown();
         }
-        else if(playerY==getCurrentY()&&playerX<getCurrentX()){
-            if (angle > -90 && angle <= 90)
-            {     //checking angle of tank do select rotation direction - 1st & 4th quarter of circle
-                if (fullSpin)
-                    angle -= 18;
-                else
-                    angle -= 10;
-            }
-            if (angle < -90 || angle >= 90)
-            {     //3rd & 4th quarter
-                if (fullSpin)        //if tank is spinning 180 degrees for each frame it needs to spin by 18 degrees
-                    angle += 18;
-                else
-                    angle += 10;
-            }
-            if (angle > 180)                    //if passed 180 degrees point, change to minus half
-                angle -= 360;
-            else if (angle < -180)              //if passed -180 degrees point, change to plus half
-                angle += 360;
-            tankSprite.setRotate(angle);
-            directionOfMovement='L';
-
-        }
-        else if(playerY==getCurrentY()&&playerX>getCurrentX()){
-            if (angle >= -90 && angle < 90)
-            { //checking angle of tank do select rotation direction - 1st & 4th quarter
-                if (fullSpin)
-                    angle += 18;             //changing angle rotation due to fullSpin, makes sure that spin will be complete after 10 frames
-                else
-                    angle += 10;
-            }
-            if (angle <= -90 || angle > 90)
-            { //3rd & 4th quarter
-                if (fullSpin)
-                    angle -= 18;
-                else
-                    angle -= 10;
-            }
-            if (angle > 180)                //if passed 180 degrees point, change to minus half
-                angle -= 360;
-            else if (angle < -180)          //if passed -180 degrees point, change to plus half
-                angle += 360;
-
-            //movement if tank is still in game area and congruent block is empty
-            tankSprite.setRotate(angle);
-            directionOfMovement='R';
-
-        }
-        else if(!checkIfDownEmpty() && playerX<getCurrentX()){
-            if(checkIfLeftEmpty()){
-                enemyGoLeft();
-            }
-            else{
-                enemyGoUp();
-            }
-        }
-        else if(playerX > getCurrentX() && checkIfRightEmpty())
-            enemyGoRight();
-        else if(playerX < getCurrentX() && checkIfLeftEmpty())
-            enemyGoLeft();
-        else if(!checkIfDownEmpty() && playerX>getCurrentX()){
-            if(checkIfRightEmpty()){
-                enemyGoRight();
-            }
-            else{
-                enemyGoUp();
-            }
-        }
-        else if(checkIfUpEmpty() && !checkIfDownEmpty() && !checkIfRightEmpty() && !checkIfDownEmpty())    enemyGoUp();
-        else if(playerY<getCurrentY() && checkIfUpEmpty()){
+        else if(playerY < getCurrentY()){
             enemyGoUp();
         }
-        else startRandomTankMovement();
-
+        else if (playerY <= getCurrentY())
+        {
+            if(playerX <= getCurrentX())
+                enemyGoLeft();
+            else
+                enemyGoRight();
+        }
+        else if (playerX <= getCurrentX())
+        {
+            if (checkIfLeftEmpty())
+            {
+                enemyGoLeft();
+            } else
+            {
+                enemyGoUp();
+            }
+        } else if (playerX >= getCurrentX())
+        {
+            if (checkIfRightEmpty())
+            {
+                enemyGoRight();
+            } else
+            {
+                enemyGoUp();
+            }
+        }
 
     }
 
