@@ -4,9 +4,12 @@
     <bookmark url="file://$PROJECT_DIR$/src/Model/Tanks/TankPlayer.java" line="174" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4334352d-b2aa-4155-9297-561cdef2706e" name="Default Changelist" comment="Added fully functional two players mode.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/Tank.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/Tank.class" afterDir="false" />
+    <list default="true" id="4334352d-b2aa-4155-9297-561cdef2706e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/MapElements/Base.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/MapElements/Base.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/Projectile.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/Projectile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/TankPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/TankPlayer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/TankSecondPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/Model/Tanks/TankSecondPlayer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Battle Metropolis/View/GameViewManager.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Tanks/Tank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Tanks/Tank.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -24,8 +27,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/GameViewManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4095">
-              <caret line="295" column="55" selection-start-line="295" selection-start-column="55" selection-end-line="295" selection-end-column="55" />
+            <state relative-caret-position="689">
+              <caret line="322" column="9" lean-forward="true" selection-start-line="322" selection-start-column="9" selection-end-line="322" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#17902#17903#0" expanded="true" />
@@ -38,63 +41,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Model/Tanks/Tank.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="485" column="9" selection-start-line="485" selection-start-column="9" selection-end-line="485" selection-end-column="9" />
+            <state relative-caret-position="213">
+              <caret line="370" column="26" selection-start-line="370" selection-start-column="26" selection-end-line="370" selection-end-column="26" />
               <folding>
                 <element signature="e#9644#10272#0" />
                 <element signature="e#10278#10911#0" />
                 <element signature="e#10917#11557#0" />
                 <element signature="e#11563#12190#0" />
-                <element signature="e#12196#15953#0" />
+                <element signature="e#25333#25334#0" expanded="true" />
                 <element signature="e#25366#25367#0" expanded="true" />
+                <element signature="e#25502#25503#0" expanded="true" />
                 <element signature="e#25579#25580#0" expanded="true" />
               </folding>
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_211/src.zip!/java/lang/String.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1125">
-              <caret line="110" column="19" selection-start-line="110" selection-start-column="19" selection-end-line="110" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/Resources/tankSprites/tank_dark.png">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/Resources/tankSprites/tank_hunt.png">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/Resources/tankSprites/tank_red.png">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/Resources/tankSprites/tankBlue.png">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/Resources/tankSprites/TankExplosionSpriteSheet.png">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/Resources/tankSprites/heart_full.png">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/Resources/tankSprites/heart_empty.png">
-          <provider selected="true" editor-type-id="images" />
         </entry>
       </file>
     </leaf>
@@ -123,7 +83,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="thread" />
       </map>
     </option>
   </component>
@@ -183,7 +143,7 @@
               <item name="Battle_Metropolis" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="Model" type="462c0819:PsiDirectoryNode" />
-              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+              <item name="MapElements" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Battle_Metropolis" type="b2602c69:ProjectViewProjectNode" />
@@ -191,7 +151,12 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="Model" type="462c0819:PsiDirectoryNode" />
               <item name="Resources" type="462c0819:PsiDirectoryNode" />
-              <item name="tankSprites" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Battle_Metropolis" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Battle_Metropolis" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="View" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -409,7 +374,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="73024000" />
+    <option name="totallyTimeSpent" value="73474000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -421,10 +386,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49918962" visible="true" weight="0.2249467" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49918962" visible="true" weight="0.22707888" />
       <window_info id="Structure" order="1" sideWeight="0.5008104" side_tool="true" weight="0.26385927" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -433,7 +398,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.4989339" weight="0.32936078" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.7241611" visible="true" weight="0.33125648" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.7241611" visible="true" weight="0.33044422" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.77651006" weight="0.39943343" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -637,13 +602,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_211/javafx-src.zip!/javafx/animation/AnimationTimer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="59" selection-start-line="59" selection-end-line="59" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_211/javafx-src.zip!/javafx/animation/AnimationTimer.java" />
     <entry file="file://$PROJECT_DIR$/mysql-connector-java-5.1.47/src/com/mysql/fabric/proto/xmlrpc/DigestAuthentication.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1173">
@@ -759,25 +718,7 @@
     <entry file="file://$PROJECT_DIR$/src/Model/Resources/tankSprites/heart_full_blue.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/GameViewManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4095">
-          <caret line="295" column="55" selection-start-line="295" selection-start-column="55" selection-end-line="295" selection-end-column="55" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#17902#17903#0" expanded="true" />
-            <element signature="e#17938#17939#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_211/src.zip!/java/lang/String.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1125">
-          <caret line="110" column="19" selection-start-line="110" selection-start-column="19" selection-end-line="110" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_211/src.zip!/java/lang/String.java" />
     <entry file="file://$PROJECT_DIR$/src/Model/Resources/tankSprites/tank_dark.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -799,17 +740,30 @@
     <entry file="file://$PROJECT_DIR$/src/Model/Resources/tankSprites/heart_empty.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/GameViewManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="689">
+          <caret line="322" column="9" lean-forward="true" selection-start-line="322" selection-start-column="9" selection-end-line="322" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#17902#17903#0" expanded="true" />
+            <element signature="e#17938#17939#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Model/Tanks/Tank.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="485" column="9" selection-start-line="485" selection-start-column="9" selection-end-line="485" selection-end-column="9" />
+        <state relative-caret-position="213">
+          <caret line="370" column="26" selection-start-line="370" selection-start-column="26" selection-end-line="370" selection-end-column="26" />
           <folding>
             <element signature="e#9644#10272#0" />
             <element signature="e#10278#10911#0" />
             <element signature="e#10917#11557#0" />
             <element signature="e#11563#12190#0" />
-            <element signature="e#12196#15953#0" />
+            <element signature="e#25333#25334#0" expanded="true" />
             <element signature="e#25366#25367#0" expanded="true" />
+            <element signature="e#25502#25503#0" expanded="true" />
             <element signature="e#25579#25580#0" expanded="true" />
           </folding>
         </state>
