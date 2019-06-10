@@ -19,8 +19,7 @@ import java.util.List;
  * TankPlayer is responsible for visualization and animation of player tank. It extends Tank class.
  * If the twoPlayerMode is active it also manages actions of second player tank.
  */
-public class TankPlayer extends Tank
-{
+public class TankPlayer extends Tank {
 
     private Scene gameScene;
 
@@ -56,7 +55,12 @@ public class TankPlayer extends Tank
     private final static String HEART_SPRITE_FULL = "Model/Resources/tankSprites/heart_full.png";
     private final static String HEART_SPRITE_EMPTY = "Model/Resources/tankSprites/heart_empty.png";
 
+    private boolean isVisible;
+
     TankSecondPlayer secondPlayer;
+    int starX;
+    int starY;
+    int starTimeCounter;
 
     /**
      * Constructor that initializes tank object giving access to all needed variables. If the twoPlayerMode is active it
@@ -64,8 +68,7 @@ public class TankPlayer extends Tank
      */
     public TankPlayer(AnchorPane gamePane, Scene gameScene, int spawnPosArrayX, int spawnPosArrayY, String tankSpriteUrl, List<Tank> tankList,
                       String[][] collisionMatrix, Base base, DataBaseConnector dataBaseConnector,
-                      ArrayList<BrickBlock> brickList, ArrayList<ImageView> waterList, boolean twoPlayersMode, GameViewManager gameViewManager)
-    {
+                      ArrayList<BrickBlock> brickList, ArrayList<ImageView> waterList, boolean twoPlayersMode, GameViewManager gameViewManager) {
         super("PLAYER", gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl, tankList, collisionMatrix, 5, base, dataBaseConnector, brickList, waterList, gameViewManager);
 
         this.gameScene = gameScene;
@@ -76,8 +79,7 @@ public class TankPlayer extends Tank
         this.moveDownKey = KeyCode.DOWN;
         this.shootKey = KeyCode.CONTROL;
 
-        if (twoPlayersMode)
-        {
+        if (twoPlayersMode) {
             if (checkIfLeftEmpty())
                 secondPlayer = new TankSecondPlayer(gamePane, spawnPosArrayX - 1, spawnPosArrayY, tankList, collisionMatrix,
                         base, dataBaseConnector, brickList, waterList, gameViewManager);
@@ -107,27 +109,24 @@ public class TankPlayer extends Tank
         createLifeIndicator();
 
         isPaused = false;
+        isVisible = true;
+        starX = -1;
+        starY = -1;
+        starTimeCounter= -1;
     }
 
     /**
      * Main method that starts thread. It also synchronizes actions frequency.
      */
     @Override
-    public void run()
-    {
-        while (true && !gameViewManager.isGameEnded())
-        {
-            synchronized (gameViewManager)
-            {
-                if (!gameViewManager.isGamePaused() && !((TankPlayer) gameViewManager.getPlayerOneTank()).getIsPaused())
-                {
-                    if (!gameViewManager.isMatrixAvaliable())
-                    {
-                        try
-                        {
+    public void run() {
+        while (true && !gameViewManager.isGameEnded()) {
+            synchronized (gameViewManager) {
+                if (!gameViewManager.isGamePaused() && !((TankPlayer) gameViewManager.getPlayerOneTank()).getIsPaused()) {
+                    if (!gameViewManager.isMatrixAvaliable()) {
+                        try {
                             gameViewManager.wait();
-                        } catch (InterruptedException e)
-                        {
+                        } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
@@ -145,48 +144,51 @@ public class TankPlayer extends Tank
                 }
 
             }
-            try
-            {
+            if((currentX == starX && currentY==starY) || (secondPlayer.currentX==starX && secondPlayer.currentY==starY)) {
+                isVisible= false;
+                gameViewManager.removeStar();
+                starTimeCounter=0;
+            }
+            if(starTimeCounter>=0) {
+                starTimeCounter++;
+
+                if(starTimeCounter==100) {
+                    starTimeCounter = -1;
+                    isVisible = true;
+                }
+            }
+            try {
                 Thread.sleep(15);
-            } catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
     //Creating Listeners to inform which buttons are pressed - used to determine which animation is called
-    private void createKeyListeners()
-    {
+    private void createKeyListeners() {
         gameScene.setOnKeyPressed(event ->
         {    //lambda function to handle key pressing event
-            if (event.getCode() == moveLeftKey)
-            {
+            if (event.getCode() == moveLeftKey) {
                 isLeftKeyPressed = true;
-            } else if (event.getCode() == moveRightKey)
-            {
+            } else if (event.getCode() == moveRightKey) {
                 isRightKeyPressed = true;
 
-            } else if (event.getCode() == moveUpKey)
-            {
+            } else if (event.getCode() == moveUpKey) {
                 isUpKeyPressed = true;
 
-            } else if (event.getCode() == moveDownKey)
-            {
+            } else if (event.getCode() == moveDownKey) {
                 isDownKeyPressed = true;
             }
 
-            if (event.getCode() == shootKey)
-            {
+            if (event.getCode() == shootKey) {
                 isShootKeyPressed = true;
             }
-            if (event.getCode() == KeyCode.ESCAPE)
-            {
+            if (event.getCode() == KeyCode.ESCAPE) {
                 isPaused = true;
             }
 
-            if (twoPlayersMode)
-            {
+            if (twoPlayersMode) {
                 if (event.getCode() == moveLeftSecondPlayerKey)
                     isLeftSecondPlayerKeyPressed = true;
                 else if (event.getCode() == moveRightSecondPlayerKey)
@@ -203,26 +205,20 @@ public class TankPlayer extends Tank
 
         gameScene.setOnKeyReleased(event ->
         {
-            if (event.getCode() == moveLeftKey)
-            {
+            if (event.getCode() == moveLeftKey) {
                 isLeftKeyPressed = false;
-            } else if (event.getCode() == moveRightKey)
-            {
+            } else if (event.getCode() == moveRightKey) {
                 isRightKeyPressed = false;
-            } else if (event.getCode() == moveUpKey)
-            {
+            } else if (event.getCode() == moveUpKey) {
                 isUpKeyPressed = false;
-            } else if (event.getCode() == moveDownKey)
-            {
+            } else if (event.getCode() == moveDownKey) {
                 isDownKeyPressed = false;
             }
-            if (event.getCode() == shootKey)
-            {
+            if (event.getCode() == shootKey) {
                 isShootKeyPressed = false;
             }
 
-            if (twoPlayersMode)
-            {
+            if (twoPlayersMode) {
                 if (event.getCode() == moveLeftSecondPlayerKey)
                     isLeftSecondPlayerKeyPressed = false;
                 else if (event.getCode() == moveRightSecondPlayerKey)
@@ -243,26 +239,22 @@ public class TankPlayer extends Tank
     /**
      *
      */
-    public boolean getIsPaused()
-    {
+    public boolean getIsPaused() {
         return isPaused;
     }
 
     /**
      *
      */
-    public void setIsPaused(boolean isPaused)
-    {
+    public void setIsPaused(boolean isPaused) {
         this.isPaused = isPaused;
     }
 
     //////////////////////////ANIMATIONS AND TANK MOTION////////////////////////////////////
 
-    private void startTankMovement()
-    {
+    private void startTankMovement() {
         //Checking if only one key is pressed
-        if (isLeftKeyPressed && !isRightKeyPressed && !isUpKeyPressed && !isDownKeyPressed)
-        {
+        if (isLeftKeyPressed && !isRightKeyPressed && !isUpKeyPressed && !isDownKeyPressed) {
             if (angle == 90)
                 fullSpin = true;
             else
@@ -270,8 +262,7 @@ public class TankPlayer extends Tank
 
             directionOfMovement = 'L';  //giving direction to continue movement
             allowedToMove = checkIfLeftEmpty();
-            if (moveTankLeftOneIteration())
-            {
+            if (moveTankLeftOneIteration()) {
                 positionMatrix[currentX - 1][currentY] = Integer.toString(ID);
                 positionMatrix[currentX][currentY] = null;
                 currentX--;
@@ -279,8 +270,7 @@ public class TankPlayer extends Tank
             moveIterator = BLOCK_SIZE / 5 - 1;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
         }
 
-        if (isRightKeyPressed && !isLeftKeyPressed && !isUpKeyPressed && !isDownKeyPressed)
-        {
+        if (isRightKeyPressed && !isLeftKeyPressed && !isUpKeyPressed && !isDownKeyPressed) {
             if (angle == -90)
                 fullSpin = true;
             else
@@ -288,8 +278,7 @@ public class TankPlayer extends Tank
 
             directionOfMovement = 'R';  //giving direction to continue movement
             allowedToMove = checkIfRightEmpty();
-            if (moveTankRightOneIteration())
-            {
+            if (moveTankRightOneIteration()) {
                 positionMatrix[currentX + 1][currentY] = Integer.toString(ID);
                 positionMatrix[currentX][currentY] = null;
                 currentX++;
@@ -297,8 +286,7 @@ public class TankPlayer extends Tank
             moveIterator = BLOCK_SIZE / 5 - 1;            //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
         }
 
-        if (isUpKeyPressed && !isDownKeyPressed && !isLeftKeyPressed && !isRightKeyPressed)
-        {
+        if (isUpKeyPressed && !isDownKeyPressed && !isLeftKeyPressed && !isRightKeyPressed) {
             if (angle == -180 || angle == 180)
                 fullSpin = true;
             else
@@ -306,8 +294,7 @@ public class TankPlayer extends Tank
 
             directionOfMovement = 'U';  //giving direction to continue movement
             allowedToMove = checkIfUpEmpty();
-            if (moveTankUpOneIteration())
-            {
+            if (moveTankUpOneIteration()) {
                 positionMatrix[currentX][currentY - 1] = Integer.toString(ID);
                 positionMatrix[currentX][currentY] = null;
                 currentY--;
@@ -315,8 +302,7 @@ public class TankPlayer extends Tank
             moveIterator = BLOCK_SIZE / 5 - 1;           //moveIterator is set to 9, so continueTankMovement will be called in next frame instead of startTankMovement
         }
 
-        if (isDownKeyPressed && !isUpKeyPressed && !isLeftKeyPressed && !isRightKeyPressed)
-        {
+        if (isDownKeyPressed && !isUpKeyPressed && !isLeftKeyPressed && !isRightKeyPressed) {
             if (angle == 0)
                 fullSpin = true;
             else
@@ -324,8 +310,7 @@ public class TankPlayer extends Tank
 
             directionOfMovement = 'D';  //giving direction to continue movement
             allowedToMove = checkIfDownEmpty();
-            if (moveTankDownOneIteration())
-            {
+            if (moveTankDownOneIteration()) {
                 positionMatrix[currentX][currentY + 1] = Integer.toString(ID);
                 positionMatrix[currentX][currentY] = null;
                 currentY++;
@@ -334,8 +319,7 @@ public class TankPlayer extends Tank
         }
     }
 
-    private void continueTankMovement()
-    {   //function to continue movement started by pressing button, that make sure tank moves only by 50 pixels
+    private void continueTankMovement() {   //function to continue movement started by pressing button, that make sure tank moves only by 50 pixels
         moveIterator--;
 
         if (directionOfMovement == 'L')
@@ -356,8 +340,7 @@ public class TankPlayer extends Tank
      * maintaining position on the middle of the map block after completing movement.
      * It also manages movement of the second player tank.
      */
-    public void moveTank()
-    {
+    public void moveTank() {
         if (moveIterator > 0 && lifePoints > 0)
             continueTankMovement();
         else
@@ -374,16 +357,13 @@ public class TankPlayer extends Tank
      * If the tank is destroyed it also hides all of the maintaining projectiles.
      * It also manages projectiles movement of the second player tank.
      */
-    public void moveProjectiles()
-    {
-        if (isShootKeyPressed && shootDelayTimer.getCanShoot() && lifePoints > 0)
-        {
+    public void moveProjectiles() {
+        if (isShootKeyPressed && shootDelayTimer.getCanShoot() && lifePoints > 0) {
             shoot();
             shootDelayTimer.afterShootDelay(400);
         }
 
-        for (int x = 0; x < listOfActiveProjectiles.size(); x++)
-        {
+        for (int x = 0; x < listOfActiveProjectiles.size(); x++) {
             listOfActiveProjectiles.get(x).moveProjectile();
             if (listOfActiveProjectiles.get(x).getHitConfirmed())
                 listOfActiveProjectiles.remove(x);  //if projectile hit anything it is deleted
@@ -395,11 +375,9 @@ public class TankPlayer extends Tank
 
     ///////////////////////////////////DAMAGE AND LIFE POINTS////////////////////////////
 
-    private void createLifeIndicator()
-    {
+    private void createLifeIndicator() {
         ImageView heart;
-        for (int iterator = 0; iterator < lifePoints; iterator++)
-        {
+        for (int iterator = 0; iterator < lifePoints; iterator++) {
             heart = new ImageView(HEART_SPRITE_FULL);
             heart.setLayoutX(GAME_WIDTH - (BLOCK_SIZE * (iterator + 1)) + 8);
             heart.setLayoutY(8);
@@ -408,18 +386,14 @@ public class TankPlayer extends Tank
         }
     }
 
-    private void lifeIndicatorEmptyHeart()
-    {
+    private void lifeIndicatorEmptyHeart() {
         Image emptyHeart = new Image(HEART_SPRITE_EMPTY);
         if (lifePoints <= 0)
             Platform.runLater(() -> lifePointIndicator.get(0).setImage(emptyHeart));
-        else
-        {
-            try
-            {
+        else {
+            try {
                 Platform.runLater(() -> lifePointIndicator.get(lifePoints).setImage(emptyHeart));
-            } catch (ArrayIndexOutOfBoundsException e)
-            {
+            } catch (ArrayIndexOutOfBoundsException e) {
 
             }
         }
@@ -428,18 +402,15 @@ public class TankPlayer extends Tank
     /**
      * Method that is used to move life indicator to the front of the game pane.
      */
-    public void heartsToFront()
-    {
-        for (ImageView heart : lifePointIndicator)
-        {
+    public void heartsToFront() {
+        for (ImageView heart : lifePointIndicator) {
             heart.toFront();
         }
         if (twoPlayersMode)
             secondPlayer.heartsToFront();
     }
 
-    void takeDamage()
-    {
+    void takeDamage() {
         lifePoints--;
         lifeIndicatorEmptyHeart(); //empty one heart
 
@@ -450,24 +421,42 @@ public class TankPlayer extends Tank
     /**
      *
      */
-    public int getSecondPlayerLifePoints()
-    {
-        return secondPlayer.getLifePoints();
+    public int getSecondPlayerLifePoints() {
+        if (twoPlayersMode)
+            return secondPlayer.getLifePoints();
+        else
+            return 0;
     }
 
     /**
      *
      */
-    public int getSecondPlayerX()
-    {
-        return secondPlayer.currentX;
+    public int getSecondPlayerX() {
+        if (twoPlayersMode)
+            return secondPlayer.currentX;
+        else
+            return 0;
     }
 
     /**
      *
      */
-    public int getSecondPlayerY()
-    {
-        return secondPlayer.currentY;
+    public int getSecondPlayerY() {
+        if (twoPlayersMode)
+            return secondPlayer.currentY;
+        else
+            return 0;
+    }
+
+    public boolean getIsVisible() {
+        return isVisible;
+    }
+
+    public void setStarX(int starX) {
+        this.starX = starX;
+    }
+
+    public void setStarY(int starY) {
+        this.starY = starY;
     }
 }

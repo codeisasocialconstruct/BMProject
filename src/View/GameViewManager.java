@@ -22,6 +22,7 @@ import javafx.stage.StageStyle;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /** GameViewManager is responsible for managing game window.
  * It contains game loop that checks if game is over.
@@ -63,6 +64,7 @@ public class GameViewManager {
     Tank spawningTank;
     private int hunterCount;
     private int baseRasherCount;
+    private ImageView star;
     //array used to detect collisions. It contains strings. If string is a number
     //that means in this position tank is present and number equals it`s. If any other string
 
@@ -72,7 +74,7 @@ public class GameViewManager {
     private final static String playerOneTankSprite = "Model/Resources/tankSprites/tank_red.png";
 
     private MusicManager musicManager;
-
+    private boolean starAvaliable;
     ///////////////////////WINDOW INITIALIZATION////////////////////////////////////
     /** Creates gameViewManager.*/
     public GameViewManager(MusicManager musicManager, String mapName, boolean twoPlayersMode) {
@@ -86,6 +88,12 @@ public class GameViewManager {
         this.twoPlayersMode = twoPlayersMode;
         matrixAvaliable = true;
         isGameEnded = false;
+        starAvaliable=false;
+        star = new ImageView("Model/MapElements/MapPieces/star.png");
+        star.setFitHeight(50);
+        star.setFitWidth(50);
+        star.setVisible(false);
+        gamePane.getChildren().add(star);
     }
 
     private void initializeStage() {
@@ -140,9 +148,27 @@ public class GameViewManager {
 
     private void createGameLoop() {
         gameTimer = new AnimationTimer() {
+            Random random = new Random();
+            int posX;
+            int posY;
 
             @Override
             public void handle(long now) {
+                if(!starAvaliable && Math.random()<0.01) {
+
+                    posX = random.nextInt(dataBaseConnector.getGame_width()/50);
+                    posY = random.nextInt(dataBaseConnector.getGame_height()/50);
+
+                    if(positionMatrix[posX][posY] == null) {
+                        star.setLayoutX(posX*50);
+                        star.setLayoutY(posY*50);
+                        star.setVisible(true);
+                        starAvaliable =true;
+                        ((TankPlayer)playerOneTank).setStarX(posX);
+                        ((TankPlayer)playerOneTank).setStarY(posY);
+                    }
+
+                }
                 if (!isGamePaused && !((TankPlayer) playerOneTank).getIsPaused()) {
 
                     if (twoPlayersMode) {
@@ -441,5 +467,16 @@ public class GameViewManager {
     public int getSecondPlayerY()
     {
         return ((TankPlayer)playerOneTank).getSecondPlayerY();
+    }
+    /** */
+    public boolean getPlayerIsVisible() {
+        return ((TankPlayer)playerOneTank).getIsVisible();
+    }
+    /** */
+    public void removeStar() {
+        starAvaliable = false;
+        star.setVisible(false);
+        ((TankPlayer)playerOneTank).setStarX(-1);
+        ((TankPlayer)playerOneTank).setStarY(-1);
     }
 }
