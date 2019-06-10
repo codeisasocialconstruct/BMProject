@@ -61,6 +61,8 @@ public class GameViewManager {
     private ArrayList<BrickBlock> brickList;
     private ArrayList<ImageView> waterList;
     Tank spawningTank;
+    private int hunterCount;
+    private int baseRasherCount;
     //array used to detect collisions. It contains strings. If string is a number
     //that means in this position tank is present and number equals it`s. If any other string
 
@@ -102,6 +104,8 @@ public class GameViewManager {
         isGamePaused = false;
         mapManager = new MapManager(gamePane, gameScene, gameStage, dataBaseConnector);
         waterList = mapManager.getWaterList();
+        hunterCount=0;
+        baseRasherCount=0;
     }
 
     //////////////////////////GAME ELEMENTS////////////////////////////////////////
@@ -277,20 +281,28 @@ public class GameViewManager {
         if (spawnPosArrayX < GAME_WIDTH / BLOCK_SIZE && spawnPosArrayY < GAME_HEIGHT / BLOCK_SIZE) {
             if (collisionMatrix[spawnPosArrayX][spawnPosArrayY] == null) {
                 if (Math.round(Math.random()) == 0) {
-                    if ((Math.round(Math.random()) == 0)) {
+                    if ((Math.round(Math.random()) == 0) && baseRasherCount<3) {
                         spawningTank = new Tank("RUSH", gamePane, spawnPosArrayX, spawnPosArrayY, rushTankSprite,
-                                tankList, collisionMatrix, 3, base, dataBaseConnector, brickList, waterList, this);
+                                tankList, collisionMatrix, 4, base, dataBaseConnector, brickList, waterList, this);
                         System.out.println("RUSH");
+                        baseRasherCount++;
                     } else {
                         spawningTank = new Tank("RANDOM", gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl,
                                 tankList, collisionMatrix, 3, base, dataBaseConnector, brickList, waterList, this);
                         System.out.println("RAND");
-
                     }
                 } else {
-                    spawningTank = new Tank("HUNT", gamePane, spawnPosArrayX, spawnPosArrayY, huntTankSprite,
-                            tankList, collisionMatrix, 3, base, dataBaseConnector, brickList, waterList, this);
-                    System.out.println("HUNT");
+                    if (hunterCount < 5) {
+                        spawningTank = new Tank("HUNT", gamePane, spawnPosArrayX, spawnPosArrayY, huntTankSprite,
+                                tankList, collisionMatrix, 2, base, dataBaseConnector, brickList, waterList, this);
+                        System.out.println("HUNT");
+                        hunterCount++;
+                    }
+                    else {
+                        spawningTank = new Tank("RANDOM", gamePane, spawnPosArrayX, spawnPosArrayY, tankSpriteUrl,
+                                tankList, collisionMatrix, 3, base, dataBaseConnector, brickList, waterList, this);
+                        System.out.println("RAND");
+                    }
                 }
                 spawningTank.start();
                 return true;
