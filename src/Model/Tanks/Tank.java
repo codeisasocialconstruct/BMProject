@@ -493,7 +493,6 @@ public class Tank extends Thread
 
     private void startHunterTankMovement()
     {
-
         int playerX = gameViewManager.getPlayerOneTank().getCurrentX();
         int playerY = gameViewManager.getPlayerOneTank().getCurrentY();
 
