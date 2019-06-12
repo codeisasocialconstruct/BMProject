@@ -89,7 +89,7 @@ public class GameViewManager {
         matrixAvaliable = true;
         isGameEnded = false;
         starAvaliable=false;
-        star = new ImageView("Model/MapElements/MapPieces/star.png");
+        star = new ImageView("Model/MapElements/MapPieces/starAnimated.gif");
         star.setFitHeight(50);
         star.setFitWidth(50);
         star.setVisible(false);
