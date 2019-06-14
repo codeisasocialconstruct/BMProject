@@ -144,7 +144,14 @@ public class TankPlayer extends Tank {
                 }
 
             }
-            if((currentX == starX && currentY==starY) || (secondPlayer.currentX==starX && secondPlayer.currentY==starY)) {
+            if (twoPlayersMode) {
+                if((secondPlayer.currentX==starX && secondPlayer.currentY==starY)) {
+                    isVisible= false;
+                    gameViewManager.removeStar();
+                    starTimeCounter=0;
+                }
+            }
+            if((currentX == starX && currentY==starY)) {
                 isVisible= false;
                 gameViewManager.removeStar();
                 starTimeCounter=0;
